@@ -31,7 +31,7 @@ function ManageStudent() {
                 padding: "0 20px",
               }}
             >
-              <Box>
+              <Box sx={{paddingRight:5}}>
                 <TextField
                   type="search"
                   variant="outlined"
