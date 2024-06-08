@@ -20,18 +20,20 @@ function ManageStudent() {
         >
           <h1>Manage Student</h1>
         </Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ padding: "0 20px" }}>
           <Grid item xs={12} md={8} rowSpacing={5}>
             <Box
               sx={{
                 display: "flex",
-                justifyContent:{ xs: "space-between", sm: "space-around" },
+                justifyContent: { xs: "space-between", sm: "space-around" },
                 alignItems: "center",
                 // gap: "10px",
-                padding: "0 20px",
+                padding: "10px 20px",
+                backgroundColor: "royalblue",
+                borderRadius:5
               }}
             >
-              <Box sx={{paddingRight:5}}>
+              <Box sx={{ paddingRight: 5 }}>
                 <TextField
                   type="search"
                   variant="outlined"
@@ -57,9 +59,45 @@ function ManageStudent() {
                 </Button>
               </Box>
             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                border: "3px solid darkblue",
+                borderRadius: 5,
+                margin: 1,
+                minHeight: 450,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                // gap: "10px",
+                padding: "0 20px",
+              }}
+            >
+              <h3>Student List</h3>
+              <p>The list of student will appears here</p>
+            </Box>
           </Grid>
           <Grid item xs={12} md={4}>
-            Class Stats
+            <Box
+              sx={{
+                padding: "20px",
+                display: "flex",
+                border: "3px solid darkblue",
+                borderRadius: 5,
+                margin: 1,
+                minHeight: 500,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                // gap: "10px",
+              }}
+            >
+              <h1>Class Stats</h1>
+              <p>
+                Class stats will contain each class and the number of students
+                in the class
+              </p>
+            </Box>
           </Grid>
         </Grid>
       </section>
