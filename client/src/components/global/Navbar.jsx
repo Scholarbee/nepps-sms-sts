@@ -48,6 +48,16 @@ function Navbar() {
     alert("Fees detail");
     handleCloseNavMenu();
   };
+  const handleStudent = (e) => {
+    e.preventDefault();
+    navigate("/students");
+    handleCloseNavMenu();
+  };
+  const handleStaff = (e) => {
+    e.preventDefault();
+    navigate("/staffs");
+    handleCloseNavMenu();
+  };
   const handleExam = (e) => {
     e.preventDefault();
     alert("Examination detail");
@@ -95,8 +105,14 @@ function Navbar() {
               <MenuItem onClick={handleDashboard}>
                 <Typography textAlign="center">{"Dashboard"}</Typography>
               </MenuItem>
+              <MenuItem onClick={handleStudent}>
+                <Typography textAlign="center">{"Manage Student"}</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleStaff}>
+                <Typography textAlign="center">{"Manage Staff"}</Typography>
+              </MenuItem>
               <MenuItem onClick={handleFees}>
-                <Typography textAlign="center">{"Fees"}</Typography>
+                <Typography textAlign="center">{"Manage Fees"}</Typography>
               </MenuItem>
               <MenuItem onClick={handleExam}>
                 <Typography textAlign="center">{"Examination"}</Typography>
@@ -140,10 +156,22 @@ function Navbar() {
               {"Dashboard"}
             </Button>
             <Button
+              onClick={handleStudent}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              {"Manage Students"}
+            </Button>
+            <Button
+              onClick={handleStaff}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              {"Manage Staffs"}
+            </Button>
+            <Button
               onClick={handleFees}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              {"Fees"}
+              {"Manage Fees"}
             </Button>
             <Button
               onClick={handleExam}
@@ -166,11 +194,16 @@ function Navbar() {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  marginRight:1
+                  marginRight: 1,
                 }}
               >
                 <Typography
-                  sx={{ padding: 0, margin: 0, fontSize: 10, fontWeight:"bold" }}
+                  sx={{
+                    padding: 0,
+                    margin: 0,
+                    fontSize: 10,
+                    fontWeight: "bold",
+                  }}
                   textAlign="center"
                 >
                   Isaac Appiatu

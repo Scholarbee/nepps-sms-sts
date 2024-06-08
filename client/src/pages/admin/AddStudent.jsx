@@ -1,5 +1,5 @@
-import React from 'react'
-import Navbar from '../../components/global/Navbar';
+import React from "react";
+import Navbar from "../../components/global/Navbar";
 
 function AddStudent() {
   return (
@@ -10,4 +10,4 @@ function AddStudent() {
   );
 }
 
-export default AddStudent
+export default AddStudent;
