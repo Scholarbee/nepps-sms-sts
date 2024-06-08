@@ -21,7 +21,7 @@ function ManageStudent() {
           <h1>Manage Student</h1>
         </Box>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} rowSpacing={5}>
             <Box
               sx={{
                 display: "flex",
@@ -36,7 +36,7 @@ function ManageStudent() {
                   type="search"
                   variant="outlined"
                   placeholder="Search student"
-                  // sx={{ width: { xs: "100%", sm: "300px" } }}
+                  sx={{ width: { xs: "100%", sm: "300px" } }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
