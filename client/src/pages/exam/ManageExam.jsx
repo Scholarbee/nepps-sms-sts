@@ -1,8 +1,8 @@
-import React from "react";
-import Navbar from "../../components/global/Navbar";
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
+import React from 'react'
+import Navbar from '../../components/global/Navbar';
 
-function ManageStudent() {
+function ManageExam() {
   return (
     <>
       <Navbar />
@@ -16,11 +16,11 @@ function ManageStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Manage Student</h1>
+          <h1>Examination Center</h1>
         </Box>
       </section>
     </>
   );
 }
 
-export default ManageStudent;
+export default ManageExam

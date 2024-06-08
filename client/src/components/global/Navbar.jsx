@@ -45,7 +45,7 @@ function Navbar() {
   };
   const handleFees = (e) => {
     e.preventDefault();
-    alert("Fees detail");
+    navigate("/accounts");
     handleCloseNavMenu();
   };
   const handleStudent = (e) => {
@@ -60,12 +60,12 @@ function Navbar() {
   };
   const handleExam = (e) => {
     e.preventDefault();
-    alert("Examination detail");
+    navigate("/exams");
     handleCloseNavMenu();
   };
   const handleAttendance = (e) => {
     e.preventDefault();
-    alert("Attendance details");
+    navigate("/attendance");
     handleCloseNavMenu();
   };
 

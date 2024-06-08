@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../../components/global/Navbar";
 import { Box } from "@mui/material";
 
-function ManageStudent() {
+function Attendance() {
   return (
     <>
       <Navbar />
@@ -16,11 +16,11 @@ function ManageStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Manage Student</h1>
+          <h1>Attendance Management</h1>
         </Box>
       </section>
     </>
   );
 }
 
-export default ManageStudent;
+export default Attendance;

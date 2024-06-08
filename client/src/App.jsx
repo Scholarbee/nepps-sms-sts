@@ -13,6 +13,9 @@ import ManageStudent from "./pages/admin/ManageStudent";
 import AddStudent from "./pages/admin/AddStudent";
 import UpdateStudent from "./pages/admin/UpdateStudent";
 import GetStudent from "./pages/admin/GetStudent";
+import ManageFees from "./pages/account/ManageFees";
+import ManageExam from "./pages/exam/ManageExam";
+import Attendance from "./pages/staff/Attendance";
 
 function App() {
   return (
@@ -32,9 +35,17 @@ function App() {
           <Route path="/students/edit-student/:id" Component={UpdateStudent}></Route>
           <Route path="/students/get-student/:id" Component={GetStudent}></Route>
 
+          {/* Account */}
+          <Route path="/accounts" Component={ManageFees}></Route>
+
+          {/* Examination */}
+          <Route path="/exams" Component={ManageExam}></Route>
+
           {/* Staff routes */}
           <Route path="/staff/login" Component={StaffLogin}></Route>
           <Route path="/dashboard" Component={StaffDashboard}></Route>
+          <Route path="/attendance" Component={Attendance}></Route>
+
 
           {/* Student routs */}
           <Route path="/student/login" Component={StudentLogin}></Route>
