@@ -121,7 +121,7 @@ function AddStudent() {
                           value={name}
                           id="name"
                           label="Full name"
-                          autoFocus
+                          // autoFocus
                           onChange={(e) => {
                             setName(e.target.value);
                           }}
