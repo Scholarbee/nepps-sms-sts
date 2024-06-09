@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -7,34 +7,51 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Navbar from "../../components/global/Navbar";
 import Footer from "../../components/global/Footer";
-import { Checkbox, FormControlLabel, Grid, TextField } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function AddStudent() {
   const navigate = useNavigate();
-  const [name, setName] = React.useState("");
+  const [firstName, setFirstName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [otherName, setOtherName] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
-  const [motherName, setMotherName] = React.useState("");
-  const [motherAddress, setMotherAddress] = React.useState("");
-  const [motherOccupation, setMotherOccupation] = React.useState("");
-  const [motherPhone, setMotherPhone] = React.useState("");
+  const [motherName, setMotherName] = useState("");
+  const [motherAddress, setMotherAddress] = useState("");
+  const [motherOccupation, setMotherOccupation] = useState("");
+  const [motherPhone, setMotherPhone] = useState("");
 
-  const [fatherName, setFatherName] = React.useState("");
-  const [fatherAddress, setFatherAddress] = React.useState("");
-  const [fatherOccupation, setFatherOccupation] = React.useState("");
-  const [fatherPhone, setFatherPhone] = React.useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [fatherAddress, setFatherAddress] = useState("");
+  const [fatherOccupation, setFatherOccupation] = useState("");
+  const [fatherPhone, setFatherPhone] = useState("");
 
-  const [emergencyContactName, setEmergencyContactName] = React.useState("");
-  const [emergencyContactAddress, setEmergencyContactAddress] =
-    React.useState("");
+  const [emergencyContactName, setEmergencyContactName] = useState("");
+  const [emergencyContactAddress, setEmergencyContactAddress] = useState("");
   const [emergencyContactOccupation, setEmergencyContactOccupation] =
-    React.useState("");
-  const [emergencyContactPhone, setEmergencyContactPhone] = React.useState("");
+    useState("");
+  const [emergencyContactPhone, setEmergencyContactPhone] = useState("");
 
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = useState(1);
 
   const handleNext = () => {
     if (activeStep === 3) {
@@ -96,9 +113,9 @@ function AddStudent() {
             })}
           </Stepper>
           <Box>
-            <Grid container sx={{display:"flex", justifyContent:"center"}}>
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
               <Grid item xs={12} md={8}>
-                {activeStep === 4 && (
+                {/* {activeStep === 4 && (
                   <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1 }}>
                       All steps completed.
@@ -108,24 +125,99 @@ function AddStudent() {
                       <Button onClick={handleReset}>Reset</Button>
                     </Box>
                   </React.Fragment>
-                )}
+                )} */}
                 {activeStep === 1 && (
                   <React.Fragment>
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={12}>
+                      <Grid item xs={12} sm={4}>
                         <TextField
-                          autoComplete="given-name"
-                          name="name"
+                          autoComplete="firstname"
+                          name="firstname"
                           required
                           fullWidth
-                          value={name}
-                          id="name"
-                          label="Full name"
+                          value={firstName}
+                          id="firstname"
+                          label="First name"
                           // autoFocus
                           onChange={(e) => {
-                            setName(e.target.value);
+                            setFirstName(e.target.value);
                           }}
                         />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <TextField
+                          autoComplete="surname"
+                          name="surname"
+                          required
+                          fullWidth
+                          value={surname}
+                          id="surname"
+                          label="Surname"
+                          // autoFocus
+                          onChange={(e) => {
+                            setSurname(e.target.value);
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <TextField
+                          autoComplete="othername"
+                          name="othername"
+                          required
+                          fullWidth
+                          value={otherName}
+                          id="othername"
+                          label="Other Names"
+                          // autoFocus
+                          onChange={(e) => {
+                            setOtherName(e.target.value);
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12}>
+                        <FormControl required sx={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-required-label">
+                            Gender
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-required-label"
+                            id="demo-simple-select-required"
+                            value={gender}
+                            label="Gender *"
+                            onChange={(e) => {
+                              setGender(e.target.value);
+                            }}
+                          >
+                            <MenuItem value="">
+                              <em>select gender</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Male</MenuItem>
+                            <MenuItem value={2}>Female</MenuItem>
+                            <MenuItem value={0}>Others</MenuItem>
+                          </Select>
+                          {/* <FormHelperText>Required</FormHelperText> */}
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        {/* <Box
+                          component="input"
+                          type="date"
+                          sx={{
+                            padding: "10px",
+                            borderRadius: "4px",
+                            border: "1px solid #ccc",
+                            width: { xs: "100%", sm: "auto" },
+                          }}
+                        /> */}
+                        {/* </Box> */}
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                            label="Select Date"
+                            value={birthDate}
+                            onChange={(newValue) => setBirthDate(newValue)}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </LocalizationProvider>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <TextField
@@ -150,7 +242,7 @@ function AddStudent() {
                         />
                       </Grid>
                     </Grid>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                    {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                       <Button
                         color="inherit"
                         disabled={activeStep === 1}
@@ -164,7 +256,7 @@ function AddStudent() {
                       <Button onClick={handleNext}>
                         {activeStep === 3 ? "Submit" : "Next"}
                       </Button>
-                    </Box>
+                    </Box> */}
                   </React.Fragment>
                 )}
                 {activeStep === 2 && (
@@ -408,7 +500,7 @@ function AddStudent() {
                         />
                       </Grid>
                     </Grid>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                    {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                       <Button
                         color="inherit"
                         disabled={activeStep === 0}
@@ -422,7 +514,7 @@ function AddStudent() {
                       <Button onClick={handleNext}>
                         {activeStep === 3 ? "Submit" : "Next"}
                       </Button>
-                    </Box>
+                    </Box> */}
                   </Box>
                 )}
                 {activeStep === 3 && (
@@ -430,23 +522,29 @@ function AddStudent() {
                     <Typography sx={{ mt: 2, mb: 1 }}>
                       All other info will be captured here
                     </Typography>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                      <Button
-                        color="inherit"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{ mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                      <Box sx={{ flex: "1 1 auto" }} />
-
-                      <Button onClick={handleNext}>
-                        {activeStep === 3 ? "Submit" : "Next"}
-                      </Button>
-                    </Box>
                   </React.Fragment>
                 )}
+                <Box sx={{ display: "flex", flexDirection: "row", p: 4 }}>
+                  <Button
+                    variant="contained"
+                    // color="primary"
+                    color="inherit"
+                    disabled={activeStep === 1}
+                    onClick={handleBack}
+                    sx={{ mr: 1 }}
+                  >
+                    Back
+                  </Button>
+                  <Box sx={{ flex: "1 1 auto" }} />
+
+                  <Button
+                    variant="contained"
+                    color={activeStep === 3 ? "success" : "primary"}
+                    onClick={handleNext}
+                  >
+                    {activeStep === 3 ? "Submit" : "Next"}
+                  </Button>
+                </Box>
               </Grid>
             </Grid>
           </Box>
