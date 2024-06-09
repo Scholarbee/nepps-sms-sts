@@ -210,7 +210,7 @@ function AddStudent() {
                         <Box
                           component="input"
                           type="date"
-                          placeholder="Birth Date"
+                          // label="Date"
                           sx={{
                             padding: "10px 10px",
                             borderRadius: "4px",
@@ -533,7 +533,7 @@ function AddStudent() {
                     onClick={handleBack}
                     sx={{ mr: 1 }}
                   >
-                    Back
+                    {"<< Back"}
                   </Button>
                   <Box sx={{ flex: "1 1 auto" }} />
 
@@ -542,7 +542,7 @@ function AddStudent() {
                     color={activeStep === 3 ? "success" : "primary"}
                     onClick={handleNext}
                   >
-                    {activeStep === 3 ? "Submit" : "Next"}
+                    {activeStep === 3 ? "Submit" : "Next >>"}
                   </Button>
                 </Box>
               </Grid>
