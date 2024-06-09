@@ -199,7 +199,7 @@ function AddStudent() {
                           value={motherName}
                           id="mothername"
                           label="Mother's Name"
-                          autoFocus
+                          // autoFocus
                           onChange={(e) => {
                             setMotherName(e.target.value);
                           }}
