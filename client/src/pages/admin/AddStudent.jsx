@@ -526,17 +526,17 @@ function AddStudent() {
                         }}
                       >
                         <Avatar
-                          variant="rounded"
+                          // variant="rounded"
                           src={profilePicture}
-                          sx={{ width: 150, height: 170 }}
+                          sx={{ width: 120, height: 120 }}
                         />
                         <input
                           style={{
                             border: "1px solid black",
                             padding: "5px",
                             width: 150,
-                            marginTop:"5px",
-                            borderRadius:2
+                            marginTop: "5px",
+                            borderRadius: 2,
                           }}
                           type="file"
                           accept="image/*"
@@ -544,6 +544,7 @@ function AddStudent() {
                           onChange={handleFileChange}
                           className="coverPhoto"
                         />
+                        <label htmlFor="profilePicture">Set Profile Picture</label>
                       </Grid>
                       <Grid item xs={12} sm={4}>
                         <TextField
