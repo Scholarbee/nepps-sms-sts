@@ -114,7 +114,7 @@ function AddStudent() {
               <Grid item xs={12} md={8}>
                 {activeStep === 1 && (
                   <React.Fragment>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} sx={{ padding:{ xs:2, md:1}}}>
                       <Grid item xs={12} sm={4}>
                         <TextField
                           autoComplete="firstname"
