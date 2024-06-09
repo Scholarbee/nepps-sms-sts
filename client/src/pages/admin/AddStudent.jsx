@@ -21,10 +21,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 const steps = ["Bio", "Parent", "Others"];
 
 function AddStudent() {
@@ -34,6 +30,7 @@ function AddStudent() {
   const [otherName, setOtherName] = useState("");
   const [gender, setGender] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [religion, setReligion] = useState("");
 
   const [motherName, setMotherName] = useState("");
   const [motherAddress, setMotherAddress] = useState("");
@@ -68,9 +65,9 @@ function AddStudent() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(1);
-  };
+  // const handleReset = () => {
+  //   setActiveStep(1);
+  // };
 
   return (
     <>
@@ -115,17 +112,6 @@ function AddStudent() {
           <Box>
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
               <Grid item xs={12} md={8}>
-                {/* {activeStep === 4 && (
-                  <React.Fragment>
-                    <Typography sx={{ mt: 2, mb: 1 }}>
-                      All steps completed.
-                    </Typography>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                      <Box sx={{ flex: "1 1 auto" }} />
-                      <Button onClick={handleReset}>Reset</Button>
-                    </Box>
-                  </React.Fragment>
-                )} */}
                 {activeStep === 1 && (
                   <React.Fragment>
                     <Grid container spacing={2}>
@@ -138,7 +124,6 @@ function AddStudent() {
                           value={firstName}
                           id="firstname"
                           label="First name"
-                          // autoFocus
                           onChange={(e) => {
                             setFirstName(e.target.value);
                           }}
@@ -153,7 +138,6 @@ function AddStudent() {
                           value={surname}
                           id="surname"
                           label="Surname"
-                          // autoFocus
                           onChange={(e) => {
                             setSurname(e.target.value);
                           }}
@@ -168,13 +152,12 @@ function AddStudent() {
                           value={otherName}
                           id="othername"
                           label="Other Names"
-                          // autoFocus
                           onChange={(e) => {
                             setOtherName(e.target.value);
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={12}>
+                      <Grid item xs={12} sm={4}>
                         <FormControl required sx={{ width: "100%" }}>
                           <InputLabel id="demo-simple-select-required-label">
                             Gender
@@ -195,29 +178,46 @@ function AddStudent() {
                             <MenuItem value={2}>Female</MenuItem>
                             <MenuItem value={0}>Others</MenuItem>
                           </Select>
-                          {/* <FormHelperText>Required</FormHelperText> */}
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        {/* <Box
+                      <Grid item xs={12} sm={4}>
+                        <FormControl required sx={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-required-label">
+                            Religion
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-required-label"
+                            id="demo-simple-select-required"
+                            value={religion}
+                            label="Religion *"
+                            onChange={(e) => {
+                              setReligion(e.target.value);
+                            }}
+                          >
+                            <MenuItem value="">
+                              <em>select Religion</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Christian</MenuItem>
+                            <MenuItem value={2}>Islamic</MenuItem>
+                            <MenuItem value={0}>Traditional</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <InputLabel id="demo-simple-select-required-label">
+                          Date Of Birth
+                        </InputLabel>
+                        <Box
                           component="input"
                           type="date"
+                          placeholder="Birth Date"
                           sx={{
-                            padding: "10px",
+                            padding: "10px 10px",
                             borderRadius: "4px",
                             border: "1px solid #ccc",
-                            width: { xs: "100%", sm: "auto" },
+                            width: "100%",
                           }}
-                        /> */}
-                        {/* </Box> */}
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <DatePicker
-                            label="Select Date"
-                            value={birthDate}
-                            onChange={(newValue) => setBirthDate(newValue)}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <TextField
