@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Navbar from "../../components/global/Navbar";
 import Footer from "../../components/global/Footer";
 import {
+  Avatar,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -31,6 +32,11 @@ function AddStudent() {
   const [gender, setGender] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [religion, setReligion] = useState("");
+  const [nhis, setNHIS] = useState("");
+  const [Class, setClass] = useState("");
+  const [residency, setResidency] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+
 
   const [motherName, setMotherName] = useState("");
   const [motherAddress, setMotherAddress] = useState("");
@@ -63,6 +69,17 @@ function AddStudent() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfilePicture(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // const handleReset = () => {
@@ -114,7 +131,11 @@ function AddStudent() {
               <Grid item xs={12} md={8}>
                 {activeStep === 1 && (
                   <React.Fragment>
-                    <Grid container spacing={2} sx={{ padding:{ xs:2, md:1}}}>
+                    <Grid
+                      container
+                      spacing={2}
+                      sx={{ padding: { xs: 2, md: 1 } }}
+                    >
                       <Grid item xs={12} sm={4}>
                         <TextField
                           autoComplete="firstname"
@@ -242,21 +263,6 @@ function AddStudent() {
                         />
                       </Grid>
                     </Grid>
-                    {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                      <Button
-                        color="inherit"
-                        disabled={activeStep === 1}
-                        onClick={handleBack}
-                        sx={{ mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                      <Box sx={{ flex: "1 1 auto" }} />
-
-                      <Button onClick={handleNext}>
-                        {activeStep === 3 ? "Submit" : "Next"}
-                      </Button>
-                    </Box> */}
                   </React.Fragment>
                 )}
                 {activeStep === 2 && (
@@ -500,28 +506,105 @@ function AddStudent() {
                         />
                       </Grid>
                     </Grid>
-                    {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                      <Button
-                        color="inherit"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{ mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                      <Box sx={{ flex: "1 1 auto" }} />
-
-                      <Button onClick={handleNext}>
-                        {activeStep === 3 ? "Submit" : "Next"}
-                      </Button>
-                    </Box> */}
                   </Box>
                 )}
                 {activeStep === 3 && (
                   <React.Fragment>
-                    <Typography sx={{ mt: 2, mb: 1 }}>
-                      All other info will be captured here
-                    </Typography>
+                    <Grid
+                      container
+                      spacing={2}
+                      sx={{ padding: { xs: 2, md: 1 } }}
+                    >
+                      <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar
+                          variant="rounded"
+                          src={profilePicture}
+                          sx={{ width: 150, height: 170 }}
+                        />
+                        <input
+                          style={{
+                            border: "1px solid black",
+                            padding: "5px",
+                            width: 150,
+                            marginTop:"5px",
+                            borderRadius:2
+                          }}
+                          type="file"
+                          accept="image/*"
+                          name="profilePicture"
+                          onChange={handleFileChange}
+                          className="coverPhoto"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <TextField
+                          autoComplete="nhis"
+                          name="nhis"
+                          required
+                          fullWidth
+                          value={nhis}
+                          id="nhis"
+                          label="NHIS"
+                          onChange={(e) => {
+                            setNHIS(e.target.value);
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <FormControl required sx={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-required-label">
+                            Class
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-required-label"
+                            id="demo-simple-select-required"
+                            value={Class}
+                            label="Class *"
+                            onChange={(e) => {
+                              setClass(e.target.value);
+                            }}
+                          >
+                            <MenuItem value="">
+                              <em>select class</em>
+                            </MenuItem>
+                            <MenuItem value={1}>JHS 1</MenuItem>
+                            <MenuItem value={2}>JHS 2</MenuItem>
+                            <MenuItem value={0}>JHS 3</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <FormControl required sx={{ width: "100%" }}>
+                          <InputLabel id="demo-simple-select-required-label">
+                            Residency
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-required-label"
+                            id="demo-simple-select-required"
+                            value={residency}
+                            label="Residency *"
+                            onChange={(e) => {
+                              setResidency(e.target.value);
+                            }}
+                          >
+                            <MenuItem value="">
+                              <em>select residency</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Day</MenuItem>
+                            <MenuItem value={2}>Boarder</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   </React.Fragment>
                 )}
                 <Box sx={{ display: "flex", flexDirection: "row", p: 4 }}>
