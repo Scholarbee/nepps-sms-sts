@@ -3,8 +3,10 @@ import Navbar from "../../components/global/Navbar";
 import { Box, Button, TextField, InputAdornment, Grid } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 function ManageStudent() {
+  const navigate = useNavigate()
   return (
     <>
       <Navbar />
@@ -54,6 +56,7 @@ function ManageStudent() {
                   color="primary"
                   startIcon={<AddIcon />}
                   sx={{ width: { xs: "100%", sm: "auto" } }}
+                  onClick={()=>{navigate("/students/add-student");}}
                 >
                   Add
                 </Button>

@@ -16,6 +16,8 @@ import GetStudent from "./pages/admin/GetStudent";
 import ManageFees from "./pages/account/ManageFees";
 import ManageExam from "./pages/exam/ManageExam";
 import Attendance from "./pages/staff/Attendance";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -29,11 +31,17 @@ function App() {
           <Route path="/staffs/add-staff" Component={AddStaff}></Route>
           <Route path="/staffs/edit-staff/:id" Component={UpdateStaff}></Route>
           <Route path="/staffs/get-staff/:id" Component={GetStaff}></Route>
-          
+
           <Route path="/students" Component={ManageStudent}></Route>
           <Route path="/students/add-student" Component={AddStudent}></Route>
-          <Route path="/students/edit-student/:id" Component={UpdateStudent}></Route>
-          <Route path="/students/get-student/:id" Component={GetStudent}></Route>
+          <Route
+            path="/students/edit-student/:id"
+            Component={UpdateStudent}
+          ></Route>
+          <Route
+            path="/students/get-student/:id"
+            Component={GetStudent}
+          ></Route>
 
           {/* Account */}
           <Route path="/accounts" Component={ManageFees}></Route>
@@ -46,11 +54,11 @@ function App() {
           <Route path="/dashboard" Component={StaffDashboard}></Route>
           <Route path="/attendance" Component={Attendance}></Route>
 
-
           {/* Student routs */}
           <Route path="/student/login" Component={StudentLogin}></Route>
           <Route path="/student/dashboard" Component={StudentDashboard}></Route>
         </Routes>
+        <ToastContainer theme="dark" position="top-center" />
       </HashRouter>
     </>
   );
