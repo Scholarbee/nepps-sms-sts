@@ -147,7 +147,7 @@ function ManageStudent() {
                 // padding: "0 20px",
               }}
             >
-              <Grid container spacing={2} >
+              <Grid container spacing={2}>
                 {students.map((student) => (
                   <Grid item xs={12} md={8} key={student.id}>
                     <Card
@@ -209,6 +209,18 @@ function ManageStudent() {
                             color="info"
                           >
                             <InfoIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleArchive(student.id)}
+                            color="info"
+                          >
+                            <ArchiveIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleSuspend(student.id)}
+                            color="secondary"
+                          >
+                            <BlockIcon />
                           </IconButton>
                         </CardActions>
                       </CardContent>
