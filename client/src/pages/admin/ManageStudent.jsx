@@ -12,12 +12,15 @@ import {
   Typography,
   CardActions,
   IconButton,
+  Divider,
+  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 
 import BlockIcon from "@mui/icons-material/Block";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -160,68 +163,103 @@ function ManageStudent() {
                           boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
                         },
                         marginBottom: 1,
-                        padding: 2,
+                        padding: 1,
                       }}
                     >
                       <CardMedia
                         component="img"
-                        sx={{ width: 150, height: 150 }}
+                        sx={{
+                          width: 150,
+                          height: 150,
+                          borderRadius: { xs: "100%", md: 2 },
+                        }}
                         image={"/me.jpg"}
                         alt={student.name}
                       />
-                      <CardContent sx={{ flex: 1 }}>
-                        <Typography variant="h5" component="div" gutterBottom>
-                          {student.name}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          ID: {student.id}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Class: {student.class}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Age: {student.age}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Phone: {student.phone}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Emergency Contact: {student.emergencyContact}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Address: {student.address}
-                        </Typography>
-                        <CardActions>
-                          <IconButton
-                            onClick={() => handleEdit(student.id)}
-                            color="primary"
-                          >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleDelete(student.id)}
-                            color="secondary"
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleInfo(student.id)}
-                            color="info"
-                          >
-                            <InfoIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleArchive(student.id)}
-                            color="info"
-                          >
-                            <ArchiveIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleSuspend(student.id)}
-                            color="secondary"
-                          >
-                            <BlockIcon />
-                          </IconButton>
+                      <CardContent
+                        sx={{
+                          flex: 1,
+                          padding: 1,
+                          paddingBottom: 0,
+                          display: "flex",
+                          flexDirection: { xs: "column", sm: "row" },
+                          justifyContent: "space-between",
+                          "&:last-child": {
+                            paddingBottom: "0px",
+                          },
+                        }}
+                      >
+                        <Box>
+                          <Typography variant="h5" component="div" gutterBottom>
+                            {student.name}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            ID: {student.id}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Class: {student.class}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Age: {student.age}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Phone: {student.phone}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Emergency Contact: {student.emergencyContact}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Address: {student.address}
+                          </Typography>
+                        </Box>
+                        <Divider sx={{ margin: "25px 0 0 0" }} />
+                        <CardActions
+                          sx={{
+                            paddingBottom: 0,
+                            display: "flex",
+                            flexDirection: { xs: "row", sm: "column" },
+                          }}
+                        >
+                          <Tooltip title="Edit">
+                            <IconButton
+                              onClick={() => handleEdit(student.id)}
+                              color="primary"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              onClick={() => handleDelete(student.id)}
+                              color="secondary"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Info">
+                            <IconButton
+                              onClick={() => handleInfo(student.id)}
+                              color="info"
+                            >
+                              <InfoIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Suspend">
+                            <IconButton
+                              onClick={() => handleSuspend(student.id)}
+                              color="warning"
+                            >
+                              <PauseCircleOutlineIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Archive">
+                            <IconButton
+                              onClick={() => handleArchive(student.id)}
+                              color="default"
+                            >
+                              <ArchiveIcon />
+                            </IconButton>
+                          </Tooltip>
                         </CardActions>
                       </CardContent>
                     </Card>
