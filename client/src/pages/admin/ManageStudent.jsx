@@ -17,9 +17,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 
+import BlockIcon from "@mui/icons-material/Block";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
+import { toast } from "react-toastify";
 
 const studentsData = [
   {
@@ -50,7 +53,7 @@ function ManageStudent() {
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    navigate(`/students/edit/${id}`);
+    navigate(`/students/edit-student/${id}`);
   };
 
   const handleDelete = (id) => {
@@ -58,8 +61,21 @@ function ManageStudent() {
   };
 
   const handleInfo = (id) => {
-    navigate(`/students/info/${id}`);
+    navigate(`/students/get-student-info/${id}`);
   };
+
+  const handleSuspend = (id) => {
+    // Implement suspend logic here
+    toast.success(`Student with ID ${id} has been suspended.`);
+    // console.log(`Student with ID ${id} has been suspended.`);
+  };
+
+  const handleArchive = (id) => {
+    // Implement archive logic here
+    toast.success(`Student with ID ${id} has been archived.`);
+    // console.log(`Student with ID ${id} has been archived.`);
+  };
+
   return (
     <>
       <Navbar />
@@ -139,9 +155,9 @@ function ManageStudent() {
                         display: "flex",
                         flexDirection: { xs: "column", sm: "row" },
                         alignItems: "center",
-                        boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+                        boxShadow: "2 8px 20px -12px rgba(0,0,0,0.3)",
                         "&:hover": {
-                          boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)",
+                          boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
                         },
                         marginBottom: 1,
                         padding: 2,

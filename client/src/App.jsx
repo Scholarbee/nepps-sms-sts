@@ -39,7 +39,7 @@ function App() {
             Component={UpdateStudent}
           ></Route>
           <Route
-            path="/students/get-student/:id"
+            path="/students/get-student-info/:id"
             Component={GetStudent}
           ></Route>
 

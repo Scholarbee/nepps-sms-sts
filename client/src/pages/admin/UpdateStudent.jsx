@@ -59,7 +59,7 @@ function UpdateStudent() {
   };
   const handleSumit = () => {
     navigate("/students");
-    toast.success("Student added successfully.");
+    toast.success("Student record updated successfully.");
   };
 
   const handleBack = () => {
@@ -76,10 +76,6 @@ function UpdateStudent() {
       reader.readAsDataURL(file);
     }
   };
-
-  // const handleReset = () => {
-  //   setActiveStep(1);
-  // };
 
   return (
     <>
@@ -102,7 +98,7 @@ function UpdateStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Add Student</h1>
+          <h1>Update Student Records</h1>
         </Box>
         <Box sx={{ width: "100%" }}>
           <Stepper
