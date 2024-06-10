@@ -131,7 +131,7 @@ function ManageStudent() {
                 // padding: "0 20px",
               }}
             >
-              <Grid container spacing={2} sx={{ padding: "0 20px" }}>
+              <Grid container spacing={2} >
                 {students.map((student) => (
                   <Grid item xs={12} md={8} key={student.id}>
                     <Card
