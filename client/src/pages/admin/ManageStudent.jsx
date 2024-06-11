@@ -218,6 +218,8 @@ function ManageStudent() {
                             paddingBottom: 0,
                             display: "flex",
                             flexDirection: { xs: "row", sm: "column" },
+                            // justifyContent: "center",
+                            // alignItems:"center"
                           }}
                         >
                           <Tooltip title="Edit">
