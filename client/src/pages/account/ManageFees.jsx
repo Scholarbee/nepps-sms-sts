@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import Navbar from "../../components/global/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const studentsData = [
   {
@@ -52,6 +53,7 @@ const studentsData = [
 ];
 
 function ManageFees() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   //   const [searchResults, setSearchResults] = useState([]);
   const [students, setStudents] = useState(studentsData);
@@ -98,7 +100,7 @@ function ManageFees() {
             value={searchQuery}
             onChange={handleSearch}
             sx={{
-            //   marginTop: "20px",
+              //   marginTop: "20px",
               width: "100%",
               maxWidth: "400px",
             }}
@@ -156,6 +158,9 @@ function ManageFees() {
                   <Button
                     variant="outlined"
                     color="success"
+                    onClick={() => {
+                      navigate(`/accounts/payment/${student.id}`);
+                    }}
                     startIcon={<PaymentIcon />}
                   >
                     Payment
@@ -163,6 +168,9 @@ function ManageFees() {
                   <Button
                     variant="outlined"
                     color="primary"
+                    onClick={() => {
+                      navigate(`/accounts/bills/${student.id}`);
+                    }}
                     startIcon={<ReceiptIcon />}
                   >
                     Bill
