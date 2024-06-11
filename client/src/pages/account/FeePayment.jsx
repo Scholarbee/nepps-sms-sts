@@ -9,13 +9,31 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import InfoIcon from "@mui/icons-material/Money";
+import { toast } from "react-toastify";
 
 function FeePayment() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [amount, setAmount] = useState();
+  // const [date, setDate] = useState("")
+  const [phone, setPhone] = useState("");
+
+  const handlePayment = () => {
+    toast.success("Payment made successfully");
+  };
+  const handleBill = () => {
+    toast.success("Hey there, Here is your bill");
+  };
+  const handleHistory = () => {
+    toast.success("Hey there, Here is your payment history");
+  };
+
   return (
     <>
       <Navbar />
@@ -83,12 +101,12 @@ function FeePayment() {
                 name="name"
                 required
                 fullWidth
-                //   value={firstName}
+                value={name}
                 id="name"
                 label="Name"
-                //   onChange={(e) => {
-                //     setFirstName(e.target.value);
-                //   }}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -97,12 +115,12 @@ function FeePayment() {
                 name="email"
                 required
                 fullWidth
-                //   value={firstName}
+                value={email}
                 id="email"
                 label="Email"
-                //   onChange={(e) => {
-                //     setFirstName(e.target.value);
-                //   }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -111,12 +129,12 @@ function FeePayment() {
                 name="phone"
                 required
                 fullWidth
-                //   value={phone}
+                value={phone}
                 id="phone"
                 label="Phone"
-                //   onChange={(e) => {
-                //     setPhone(e.target.value);
-                //   }}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -125,12 +143,12 @@ function FeePayment() {
                 name="address"
                 required
                 fullWidth
-                //   value={address}
+                value={address}
                 id="address"
                 label="Address"
-                //   onChange={(e) => {
-                //     setAddress(e.target.value);
-                //   }}
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={6} md={6}>
@@ -139,17 +157,17 @@ function FeePayment() {
                 name="amount"
                 required
                 fullWidth
-                //   value={amount}
+                value={amount}
                 id="amount"
                 label="Amount"
-                //   onChange={(e) => {
-                //     setAmount(e.target.value);
-                //   }}
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={6} sm={6}>
               <InputLabel id="demo-simple-select-required-label">
-                Date Of Birth
+                Payment Date
               </InputLabel>
               <Box
                 component="input"
@@ -178,29 +196,15 @@ function FeePayment() {
                 <Button
                   variant="contained"
                   color="success"
-                  // onClick={() => {
-                  //   navigate(`/accounts/payment/${student.id}`);
-                  // }}
+                  onClick={handlePayment}
                   startIcon={<PaymentIcon />}
-                  sx={
-                    {
-                      // width: { sx: "100%", md: "auto" },
-                      // display: "flex",
-                      // justifyContent: "flex-start",
-                      // marginTop: "15px",
-                      // gap: "10px",
-                      // flexFlow: 1,
-                    }
-                  }
                 >
                   Make Payment
                 </Button>
                 <Button
                   variant="contained"
                   color="secondary"
-                  // onClick={() => {
-                  //   navigate(`/accounts/bills/${student.id}`);
-                  // }}
+                  onClick={handleBill}
                   startIcon={<ReceiptIcon />}
                 >
                   View Bill
@@ -208,9 +212,7 @@ function FeePayment() {
                 <Button
                   variant="contained"
                   color="info"
-                  // onClick={() => {
-                  //   navigate(`/accounts/bills/${student.id}`);
-                  // }}
+                  onClick={handleHistory}
                   startIcon={<InfoIcon />}
                 >
                   Payment History
