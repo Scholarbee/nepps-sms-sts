@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
@@ -23,9 +23,24 @@ function FeePayment() {
   const [amount, setAmount] = useState();
   // const [date, setDate] = useState("")
   const [phone, setPhone] = useState("");
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    handleValidation();
+  });
+
+  const handleValidation = () => {
+    if (!name || !phone || !address || !amount) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  };
 
   const handlePayment = () => {
-    toast.success("Payment made successfully");
+    toast.success(
+      `An amount of $${amount} has been paid successfully by ${name}`
+    );
   };
   const handleBill = () => {
     toast.success("Hey there, Here is your bill");
@@ -78,7 +93,6 @@ function FeePayment() {
             display: "flex",
             justifyContent: "center",
             margin: "20px 0",
-            // alignItems: "center",
           }}
         >
           <Grid
@@ -88,10 +102,7 @@ function FeePayment() {
             xs={12}
             md={8}
             sx={{
-              //   display: "flex",
-              //   justifyContent: "center",
-              //   margin: "20px 0",
-              // alignItems: "center",
+             
               padding: 2,
             }}
           >
@@ -195,6 +206,7 @@ function FeePayment() {
               >
                 <Button
                   variant="contained"
+                  disabled={active}
                   color="success"
                   onClick={handlePayment}
                   startIcon={<PaymentIcon />}
