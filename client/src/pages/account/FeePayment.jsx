@@ -92,7 +92,7 @@ function FeePayment() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            margin: "20px 0",
+            margin: "20px 20px",
           }}
         >
           <Grid

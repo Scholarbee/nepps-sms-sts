@@ -1,6 +1,48 @@
-import React from 'react'
-import Navbar from '../../components/global/Navbar';
-import { Box, Typography } from '@mui/material';
+import React from "react";
+import Navbar from "../../components/global/Navbar";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+  styled,
+  tableCellClasses,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.common.white,
+    fontWeight: "bold",
+    fontSize: "18px",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
 
 function CurrentBill() {
   return (
@@ -16,13 +58,141 @@ function CurrentBill() {
             textAlign: "center",
           }}
         >
-          <Typography variant="h4" sx={{ color: "darkblue", fontWeight:"bolder" }}>
+          <Typography
+            variant="h4"
+            sx={{ color: "darkblue", fontWeight: "bolder" }}
+          >
             Current Bill
           </Typography>
         </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Chip
+            avatar={<Avatar alt="" src="/me.jpg" />}
+            label="Scholar Bee"
+            variant="outlined"
+          />
+          <Chip
+            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
+            label="ID: NEPPS5051241"
+            variant="outlined"
+          />
+        </Box>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "20px 0",
+          }}
+        >
+          <Grid
+            item
+            xs={12}
+            md={8}
+            sx={{
+              padding: 2,
+            }}
+          >
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Sn</StyledTableCell>
+                    <StyledTableCell>Description</StyledTableCell>
+                    <StyledTableCell align="right">Amount</StyledTableCell>
+                    <StyledTableCell align="right">Actions</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <StyledTableRow>
+                    <StyledTableCell>1</StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      School fees
+                    </StyledTableCell>
+                    <StyledTableCell align="right">200</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Tooltip title="Edit">
+                        <IconButton
+                          //   onClick={() => handleEdit(student.id)}
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          //   onClick={() => handleDelete(student.id)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>2</StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      Books
+                    </StyledTableCell>
+                    <StyledTableCell align="right">650</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Tooltip title="Edit">
+                        <IconButton
+                          //   onClick={() => handleEdit(student.id)}
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          //   onClick={() => handleDelete(student.id)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell>3</StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      Extra Classes Fees
+                    </StyledTableCell>
+                    <StyledTableCell align="right">150</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Tooltip title="Edit">
+                        <IconButton
+                          //   onClick={() => handleEdit(student.id)}
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton
+                          //   onClick={() => handleDelete(student.id)}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
       </section>
     </>
   );
 }
 
-export default CurrentBill
+export default CurrentBill;
