@@ -3,6 +3,7 @@ import Navbar from "../../components/global/Navbar";
 import {
   Avatar,
   Box,
+  Button,
   Chip,
   Grid,
   IconButton,
@@ -20,6 +21,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,7 +44,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
 
 function CurrentBill() {
   return (
@@ -99,6 +100,25 @@ function CurrentBill() {
               padding: 2,
             }}
           >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                margin: "10px 0",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<AddIcon />}
+                // sx={{ width: { xs: "100%", sm: "auto" } }}
+                // onClick={() => {
+                //   navigate("/students/add-student");
+                // }}
+              >
+                New
+              </Button>
+            </Box>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
