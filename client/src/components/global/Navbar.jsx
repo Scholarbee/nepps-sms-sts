@@ -63,6 +63,11 @@ function Navbar() {
     navigate("/exams");
     handleCloseNavMenu();
   };
+  const handleClass = (e) => {
+    e.preventDefault();
+    navigate("/classes");
+    handleCloseNavMenu();
+  };
   const handleAttendance = (e) => {
     e.preventDefault();
     navigate("/attendance");
@@ -116,6 +121,9 @@ function Navbar() {
               </MenuItem>
               <MenuItem onClick={handleExam}>
                 <Typography textAlign="center">{"Examination"}</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleClass}>
+                <Typography textAlign="center">{"Manage Class"}</Typography>
               </MenuItem>
               <MenuItem onClick={handleAttendance}>
                 <Typography textAlign="center">{"Attendance"}</Typography>
@@ -172,6 +180,12 @@ function Navbar() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               {"Manage Fees"}
+            </Button>
+            <Button
+              onClick={handleClass}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              {"Manage Class"}
             </Button>
             <Button
               onClick={handleExam}

@@ -20,6 +20,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CurrentBill from "./pages/account/CurrentBill";
 import FeePayment from "./pages/account/FeePayment";
+import ManageClass from "./pages/admin/class/ManageClass";
 
 function App() {
   return (
@@ -44,6 +45,11 @@ function App() {
             path="/students/get-student-info/:id"
             Component={GetStudent}
           ></Route>
+
+          <Route path="/classes" Component={ManageClass}></Route>
+          <Route path="/classes/add-class" Component={AddClass}></Route>
+          <Route path="/classes/edit-class/:id" Component={UpdateClass}></Route>
+          <Route path="/classes/get-class/:id" Component={GetClass}></Route>
 
           {/* Account */}
           <Route path="/accounts" Component={ManageFees}></Route>
