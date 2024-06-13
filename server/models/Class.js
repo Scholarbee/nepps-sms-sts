@@ -12,11 +12,21 @@ const classSchema = mongoose.Schema(
         required: true,
         default: 500,
       },
-      boarder: {
-        type: Number,
-        required: true,
-        default: 900,
-      },
+    },
+    schoolFees: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    admissionFee: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    boardingFee: {
+      type: Number,
+      required: true,
+      default: 0,
     },
     // boardingBills: [
     //   {
@@ -56,7 +66,7 @@ const classSchema = mongoose.Schema(
       // required: true,
       ref: "Student",
     },
-    classMaster: {
+    classHead: {
       type: mongoose.Schema.Types.ObjectId,
       // required: true,
       ref: "Staff",

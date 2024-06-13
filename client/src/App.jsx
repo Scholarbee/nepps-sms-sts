@@ -21,6 +21,9 @@ import "react-toastify/dist/ReactToastify.css";
 import CurrentBill from "./pages/account/CurrentBill";
 import FeePayment from "./pages/account/FeePayment";
 import ManageClass from "./pages/admin/class/ManageClass";
+import AddClass from "./pages/admin/class/AddClass";
+import UpdateClass from "./pages/admin/class/UpdateClass";
+import GetClass from "./pages/admin/class/GetClass";
 
 function App() {
   return (

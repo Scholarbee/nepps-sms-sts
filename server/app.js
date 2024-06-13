@@ -40,7 +40,7 @@ app.use("/api/admin", adminRouter);
 // Error display format
 app.use(errorHandler);
 // Setting up databse and starting the API server
-mongoose.connect(process.env.MONGO_URI).then(() => {
+mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log("Connected to mongoDB");
   app.listen(port, () => {
     console.log(`App running on http://localhost:${port}`);

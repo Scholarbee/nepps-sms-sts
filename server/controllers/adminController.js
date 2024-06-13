@@ -14,30 +14,46 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-// Add staff
+// Add class
 exports.addClass = expressAsyncHandler(async (req, res, next) => {
-  if (!req.body.className) {
-    res.status(400).json({ success: false, message: "Class name is required" });
+  const {
+    className,
+    classRep,
+    classHead,
+    schoolFees,
+    admissionFee,
+    boardingFee,
+  } = req.body;
+
+  if (!className) {
+    res.status(400);
     throw new Error("Class name is required");
   }
+
   let classExist = await Class.findOne({ className: req.body.className });
   if (classExist) {
-    res.status(400).json({ success: false, message: "Class already exist" });
+    res.status(400);
     throw new Error("Class already exist");
   }
-  let result = await Class.create(req.body);
+
+  let result = await Class.create({
+    className,
+    // classRep,
+    // classHead,
+    schoolFees: parseFloat(schoolFees).toFixed(2),
+    admissionFee: parseFloat(admissionFee).toFixed(2),
+    boardingFee: parseFloat(boardingFee).toFixed(2),
+  });
   if (result) {
-    res.status(201).json({success:true, message:"Class created successfully.", result})
-  } else {
     res
-      .status(500)
-      .json({
-        success: false,
-        message: "Something went wrong, please try again.",
-      });
+      .status(201)
+      .json({ success: true, message: "Class created successfully.", result });
+  } else {
+    res.status(500);
     throw new Error("Something went wrong, please try again.");
   }
 });
+
 // Add Class
 exports.editClass = expressAsyncHandler(async (req, res, next) => {
   res.send("Class updated");
@@ -52,7 +68,17 @@ exports.deleteClass = expressAsyncHandler(async (req, res, next) => {
 exports.getClass = expressAsyncHandler(async (req, res, next) => {
   res.send("Single Class");
 });
-// Add Class
+
+// get Classes
 exports.getClasses = expressAsyncHandler(async (req, res, next) => {
-  res.send("All Class");
+  const classes = await Class.find({});
+  if (classes) {
+    res.status(201).json({
+      success: true,
+      classes,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
