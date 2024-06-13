@@ -125,7 +125,7 @@ function CurrentBill() {
                   <TableRow>
                     <StyledTableCell>Sn</StyledTableCell>
                     <StyledTableCell>Description</StyledTableCell>
-                    <StyledTableCell align="right">Amount</StyledTableCell>
+                    <StyledTableCell>Amount</StyledTableCell>
                     <StyledTableCell align="right">Actions</StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -135,7 +135,7 @@ function CurrentBill() {
                     <StyledTableCell component="th" scope="row">
                       School fees
                     </StyledTableCell>
-                    <StyledTableCell align="right">200</StyledTableCell>
+                    <StyledTableCell>200</StyledTableCell>
                     <StyledTableCell align="right">
                       <Tooltip title="Edit">
                         <IconButton
@@ -160,7 +160,7 @@ function CurrentBill() {
                     <StyledTableCell component="th" scope="row">
                       Books
                     </StyledTableCell>
-                    <StyledTableCell align="right">650</StyledTableCell>
+                    <StyledTableCell>650</StyledTableCell>
                     <StyledTableCell align="right">
                       <Tooltip title="Edit">
                         <IconButton
@@ -185,7 +185,7 @@ function CurrentBill() {
                     <StyledTableCell component="th" scope="row">
                       Extra Classes Fees
                     </StyledTableCell>
-                    <StyledTableCell align="right">150</StyledTableCell>
+                    <StyledTableCell>150</StyledTableCell>
                     <StyledTableCell align="right">
                       <Tooltip title="Edit">
                         <IconButton
