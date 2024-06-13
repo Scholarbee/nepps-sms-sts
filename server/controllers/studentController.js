@@ -8,8 +8,9 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const { studentIdGenerator } = require("../utils/studentIdGenerator");
 const Student = require("../models/Student");
-const Class = require("../models/Class");
+// const Class = require("../models/Class");
 const Fee = require("../models/Fee");
+const Class = require("../models/classModel");
 // const sendEmail = require("../utils/sendEmail");
 
 /**

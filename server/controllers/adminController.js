@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 // const Token = require("../models/tokenModel");
 const crypto = require("crypto");
-const Class = require("../models/CLass");
+const Class = require("../models/classModel");
+// const Class = require("../models/CLass");
 // const sendEmail = require("../utils/sendEmail");
 
 // Generate Token
