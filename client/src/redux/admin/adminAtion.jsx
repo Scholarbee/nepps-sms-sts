@@ -9,7 +9,7 @@ export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const addClass = async (formData) => {
   try {
     const response = axios.post(
-      `http://localhost:5050/api/admin/classes/add-class`,
+      `${BACKEND_URL}/api/admin/classes/add-class`,
       formData
     );
     if (response.statusText === "OK") {
@@ -29,7 +29,7 @@ export const addClass = async (formData) => {
  */
 export const getClasses = async () => {
   try {
-    const response = axios.get(`http://localhost:5050/api/admin/classes`);
+    const response = axios.get(`${BACKEND_URL}/api/admin/classes`);
     if (response.statusText === "OK") {
       toast.success("Login Successful...");
     }
