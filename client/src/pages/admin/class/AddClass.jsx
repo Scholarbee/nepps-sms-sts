@@ -17,16 +17,16 @@ import { toast } from "react-toastify";
 function AddClass() {
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
-  const [classRep, setClassRep] = useState("");
-  const [classHead, setClassHead] = useState("");
+  // const [classRep, setClassRep] = useState("");
+  // const [classHead, setClassHead] = useState("");
   const [schoolFees, setSchoolFees] = useState();
   const [boardingFee, setBoardingFee] = useState();
   const [admissionFee, setAdmissionFee] = useState();
 
   const formDate = {
     className,
-    classRep,
-    classHead,
+    // classRep,
+    // classHead,
     schoolFees: parseFloat(schoolFees).toFixed(2),
     admissionFee: parseFloat(admissionFee).toFixed(2),
     boardingFee: parseFloat(boardingFee).toFixed(2),
@@ -94,7 +94,7 @@ function AddClass() {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <FormControl required sx={{ width: "100%" }}>
                 <InputLabel id="demo-simple-select-required-label">
                   Class Head
@@ -139,20 +139,6 @@ function AddClass() {
                   <MenuItem value={"Tieku"}>Tieku</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            {/* <Grid item xs={12} sm={4}>
-              <TextField
-                autoComplete="className"
-                name="className"
-                required
-                fullWidth
-                value={className}
-                id="className"
-                label="Class Name"
-                onChange={(e) => {
-                  setClassName(e.target.value);
-                }}
-              />
             </Grid> */}
             <Grid item xs={12} sm={4}>
               <TextField

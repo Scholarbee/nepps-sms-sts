@@ -63,11 +63,20 @@ exports.editClass = expressAsyncHandler(async (req, res, next) => {
 exports.deleteClass = expressAsyncHandler(async (req, res, next) => {
   res.send("Class deleted");
 });
-// Add Class
 
-// Add Class
+/**
+ *  get Class
+ */
 exports.getClass = expressAsyncHandler(async (req, res, next) => {
-  res.send("Single Class");
+  const id = req.params.id;
+  // console.log(req.params);
+  const data = await Class.findById({ _id: id });
+  if (data) {
+    res.status(200).json(data);
+  } else {
+    res.status(400);
+    throw new Error("Class not found");
+  }
 });
 
 // get Classes

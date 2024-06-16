@@ -4,6 +4,44 @@ import { toast } from "react-toastify";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 /**
+ * Get all students
+ */
+export const getStudents = async () => {
+  try {
+    const response = axios.get(`${BACKEND_URL}/api/students`);
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Add student
+ */
+export const addStudent = async (formData) => {
+  try {
+    const response = axios.post(
+      `${BACKEND_URL}/api/students/add-student`,
+      formData
+    );
+    if (response.statusText === "OK") {
+      toast.success("Class Created successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
  * Add class
  */
 export const addClass = async (formData) => {
@@ -24,15 +62,29 @@ export const addClass = async (formData) => {
     toast.error(message);
   }
 };
+
 /**
  * Get all classes
  */
 export const getClasses = async () => {
   try {
     const response = axios.get(`${BACKEND_URL}/api/admin/classes`);
-    if (response.statusText === "OK") {
-      toast.success("Login Successful...");
-    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Get single class
+ */
+export const getClass = async (id) => {
+  try {
+    const response = axios.get(`${BACKEND_URL}/api/admin/class/${id}`);
     return response;
   } catch (error) {
     const message =

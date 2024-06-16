@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { addStudent, getClasses } from "../../redux/admin/adminAtion";
 
 const steps = ["Bio", "Parent", "Others"];
 
@@ -31,12 +32,14 @@ function AddStudent() {
   const [otherName, setOtherName] = useState("");
   const [gender, setGender] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [religion, setReligion] = useState("");
   const [nhis, setNHIS] = useState("");
-  const [Class, setClass] = useState("");
+  const [classId, setClassId] = useState("");
   const [residency, setResidency] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
-
+  const [my_file, setMy_file] = useState("");
 
   const [motherName, setMotherName] = useState("");
   const [motherAddress, setMotherAddress] = useState("");
@@ -56,15 +59,57 @@ function AddStudent() {
 
   const [activeStep, setActiveStep] = useState(1);
 
+  const [classes, setClasses] = useState([]);
+
+  useEffect(() => {
+    getAllClasses();
+  }, []);
+
+  const getAllClasses = async () => {
+    const { data } = await getClasses();
+    setClasses(data.classes);
+    console.log(data);
+  };
+
   const handleNext = () => {
     if (activeStep === 3) {
       handleSumit();
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-  const handleSumit = () => {
-    navigate("/students");
-    toast.success("Student added successfully.");
+
+  const handleSumit = async () => {
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("surname", surname);
+    formData.append("otherName", otherName);
+    formData.append("gender", gender);
+    formData.append("birthDate", birthDate);
+    formData.append("my_file", my_file);
+    formData.append("phone", phone);
+    formData.append("address", address);
+    formData.append("classId", classId);
+    formData.append("residency", residency);
+    formData.append("motherName", motherName);
+    formData.append("motherAddress", motherAddress);
+    formData.append("motherPhone", motherPhone);
+    formData.append("motherOccupation", motherOccupation);
+    formData.append("fatherName", fatherName);
+    formData.append("fatherAddress", fatherAddress);
+    formData.append("fatherPhone", fatherPhone);
+    formData.append("fatherOccupation", fatherOccupation);
+    formData.append("emergencyContactName", emergencyContactName);
+    formData.append("emergencyContactAddress", emergencyContactAddress);
+    formData.append("emergencyContactPhone", emergencyContactPhone);
+    formData.append("emergencyContactOccupation", emergencyContactOccupation);
+    try {
+      await addStudent(formData);
+      console.log(formData);
+      toast.success("Student added successfully.");
+      navigate("/students");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleBack = () => {
@@ -74,6 +119,7 @@ function AddStudent() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setMy_file(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setProfilePicture(e.target.result);
@@ -195,9 +241,9 @@ function AddStudent() {
                             <MenuItem value="">
                               <em>select gender</em>
                             </MenuItem>
-                            <MenuItem value={1}>Male</MenuItem>
-                            <MenuItem value={2}>Female</MenuItem>
-                            <MenuItem value={0}>Others</MenuItem>
+                            <MenuItem value={"Male"}>Male</MenuItem>
+                            <MenuItem value={"Female"}>Female</MenuItem>
+                            <MenuItem value={"Others"}>Others</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -218,9 +264,11 @@ function AddStudent() {
                             <MenuItem value="">
                               <em>select Religion</em>
                             </MenuItem>
-                            <MenuItem value={1}>Christian</MenuItem>
-                            <MenuItem value={2}>Islamic</MenuItem>
-                            <MenuItem value={0}>Traditional</MenuItem>
+                            <MenuItem value={"Christian"}>Christian</MenuItem>
+                            <MenuItem value={"Islamic"}>Islamic</MenuItem>
+                            <MenuItem value={"Traditional"}>
+                              Traditional
+                            </MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -231,6 +279,10 @@ function AddStudent() {
                         <Box
                           component="input"
                           type="date"
+                          value={birthDate}
+                          onChange={(e) => {
+                            setBirthDate(e.target.value);
+                          }}
                           // label="Date"
                           sx={{
                             padding: "10px 10px",
@@ -245,10 +297,13 @@ function AddStudent() {
                           required
                           fullWidth
                           id="city"
-                          label="Home Town"
+                          label="Address"
                           name="city"
+                          value={address}
                           autoComplete="city"
-                          // onChange={handleInputChange}
+                          onChange={(e) => {
+                            setAddress(e.target.value);
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -257,9 +312,12 @@ function AddStudent() {
                           fullWidth
                           id="phone"
                           label="Phone"
+                          value={phone}
                           name="phone"
                           autoComplete="phone"
-                          // onChange={handleInputChange}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                          }}
                         />
                       </Grid>
                     </Grid>
@@ -544,7 +602,9 @@ function AddStudent() {
                           onChange={handleFileChange}
                           className="coverPhoto"
                         />
-                        <label htmlFor="profilePicture">Set Profile Picture</label>
+                        <label htmlFor="profilePicture">
+                          Set Profile Picture
+                        </label>
                       </Grid>
                       <Grid item xs={12} sm={4}>
                         <TextField
@@ -568,18 +628,22 @@ function AddStudent() {
                           <Select
                             labelId="demo-simple-select-required-label"
                             id="demo-simple-select-required"
-                            value={Class}
+                            value={classId}
                             label="Class *"
                             onChange={(e) => {
-                              setClass(e.target.value);
+                              setClassId(e.target.value);
                             }}
                           >
                             <MenuItem value="">
                               <em>select class</em>
                             </MenuItem>
-                            <MenuItem value={1}>JHS 1</MenuItem>
-                            <MenuItem value={2}>JHS 2</MenuItem>
-                            <MenuItem value={0}>JHS 3</MenuItem>
+                            {classes.map((c, i) => {
+                              return (
+                                <MenuItem key={i} value={c._id}>
+                                  {c.className}
+                                </MenuItem>
+                              );
+                            })}
                           </Select>
                         </FormControl>
                       </Grid>
@@ -600,8 +664,8 @@ function AddStudent() {
                             <MenuItem value="">
                               <em>select residency</em>
                             </MenuItem>
-                            <MenuItem value={1}>Day</MenuItem>
-                            <MenuItem value={2}>Boarder</MenuItem>
+                            <MenuItem value={"Day"}>Day</MenuItem>
+                            <MenuItem value={"Boarder"}>Boarder</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>

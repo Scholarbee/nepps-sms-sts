@@ -1,79 +1,130 @@
-// const cloudinary = require("../utils/cloudinary");
+const cloudinary = require("../utils/cloudinary");
 const expressAsyncHandler = require("express-async-handler");
-// const User = require("../models/userModel");
-// const Post = require("../models/postModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-// const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const { studentIdGenerator } = require("../utils/studentIdGenerator");
 const Student = require("../models/Student");
-// const Class = require("../models/Class");
 const Fee = require("../models/Fee");
 const Class = require("../models/classModel");
-// const sendEmail = require("../utils/sendEmail");
 
 /**
  * This is a function/method that handles the logics to add new student
  */
 exports.addStudent = expressAsyncHandler(async (req, res, next) => {
-  const { name, gender, town, phone, classId } = req.body;
+  console.log(req.body);
+  const {
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    nhis,
+    classId,
+    residency,
+    phone,
+    address,
+    motherName,
+    motherAddress,
+    motherPhone,
+    motherOccupation,
+    fatherName,
+    fatherAddress,
+    fatherPhone,
+    fatherOccupation,
+    emergencyContactName,
+    emergencyContactAddress,
+    emergencyContactPhone,
+    emergencyContactOccupation,
+  } = req.body;
 
   // Validation of fields
-  if (!name) {
+  // if (!firstName || !surname) {
+  //   res.status(400);
+  //   throw new Error("First name and surname are required");
+  // }
+  // if (!phone) {
+  //   res.status(400);
+  //   throw new Error("Phone is required");
+  // }
+  // if (!gender) {
+  //   res.status(400);
+  //   throw new Error("Gender is required");
+  // }
+  // if (!town) {
+  //   res.status(400);
+  //   throw new Error("Town is required");
+  // }
+  // if (!classId) {
+  //   res.status(400);
+  //   throw new Error("Class is required");
+  // }
+
+  // upload image in cloudinary
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  const result = await cloudinary.handleUpload(dataURI);
+
+  if (!result) {
     res.status(400);
-    throw new Error("Name is required");
-  }
-  if (!phone) {
-    res.status(400);
-    throw new Error("Phone is required");
-  }
-  if (!gender) {
-    res.status(400);
-    throw new Error("Gender is required");
-  }
-  if (!town) {
-    res.status(400);
-    throw new Error("Town is required");
-  }
-  if (!classId) {
-    res.status(400);
-    throw new Error("Class is required");
+    throw new Error(
+      "Something went wrong whiles saving image. Please try again"
+    );
   }
 
   // Generating unique Student ID
   let studentId = await studentIdGenerator();
   const student = await Student.create({
-    name,
-    phone,
-    town,
-    classId,
+    firstName,
+    surname,
+    otherName,
     gender,
+    birthDate,
+    religion,
+    nhis,
+    classId,
+    residency,
+    phone,
+    address,
+    image: {
+      public_id: result.public_id,
+      url: result.secure_url,
+    },
+    motherName,
+    motherAddress,
+    motherPhone,
+    motherOccupation,
+    fatherName,
+    fatherAddress,
+    fatherPhone,
+    fatherOccupation,
+    emergencyContactName,
+    emergencyContactAddress,
+    emergencyContactPhone,
+    emergencyContactOccupation,
     user: { id: studentId, password: studentId },
   });
 
   //
-  const c = await Class.findById(classId);
+  // const c = await Class.findById(classId);
 
-  let fees = 0;
-  if (student.residency == "Day") {
-    fees = c.fees.day;
-  } else {
-    fees = c.fees.boarder;
-  }
+  // let fees = 0;
+  // if (student.residency == "Day") {
+  //   fees = c.fees.day;
+  // } else {
+  //   fees = c.fees.boarder;
+  // }
 
   //
-  const fee = await Fee.create({
-    studentId: student._id,
-    term: "1",
-    year: "2024",
-    bills: { desc: "School Fees", amount: fees },
-  });
+  // const fee = await Fee.create({
+  //   studentId: student._id,
+  //   term: "1",
+  //   year: "2024",
+  //   bills: { desc: "School Fees", amount: fees },
+  // });
 
-  if (!student || !fee) {
-    res.status(500);
-    throw new Error("Something went wrong, please try again.");
-  }
+  // 
 
   if (student) {
     res.status(201).json({
@@ -166,7 +217,19 @@ exports.archiveStudent = expressAsyncHandler(async (req, res, next) => {
 exports.getStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Single Student");
 });
-// Add Student
+
+// Get all students
 exports.getStudents = expressAsyncHandler(async (req, res, next) => {
-  res.send("All Student");
+  const students = await Student.find({})
+    .populate("classId", "className")
+    .sort("-createdAt");
+  if (students) {
+    res.status(200).json({
+      success: true,
+      students,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });

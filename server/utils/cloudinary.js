@@ -6,16 +6,14 @@ cloudinary.config({
   api_secret: process.env.CLOUD_KEY_SECRET,
 });
 
-exports.handleUpload = async (file) => {
+exports.handleUpload = async(file) => {
   const res = await cloudinary.uploader.upload(file, {
     resource_type: "auto",
-    folder: "artikon",
+    folder: "sts_neppsoca-sms",
     width: 1200,
     crop: "scale",
   });
   return res;
 };
-
-
 
 // module.exports = cloudinary;

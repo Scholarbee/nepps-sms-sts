@@ -129,7 +129,7 @@ function ManageClass() {
                         <StyledTableCell align="right">
                           <Tooltip title="Edit">
                             <IconButton
-                              //   onClick={() => handleEdit(student.id)}
+                              onClick={() => navigate(`/classes/edit-class/${c._id}`)}
                               color="primary"
                             >
                               <EditIcon />

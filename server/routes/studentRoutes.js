@@ -1,3 +1,4 @@
+const router = require("express").Router();
 const {
   addStudent,
   editStudent,
@@ -9,15 +10,20 @@ const {
   getStudents,
 } = require("../controllers/studentController");
 
-const router = require("express").Router();
+const Multer = require("multer");
 
-router.post("/add-student", addStudent);
+const storage = new Multer.memoryStorage();
+const upload = Multer({
+  storage,
+});
+
+router.post("/add-student", upload.single("my_file"), addStudent);
 router.put("/edit-student/:id", editStudent);
 router.delete("/delete-student/:id", deleteStudent);
 router.put("/suspend-student/:id", suspendStudent);
 router.put("/activate-student/:id", activateStudent);
 router.put("/archive-student/:id", archiveStudent);
 router.get("/get-student/:id", getStudent);
-router.get("/get-students", getStudents);
+router.get("/", getStudents);
 
 module.exports = router;
