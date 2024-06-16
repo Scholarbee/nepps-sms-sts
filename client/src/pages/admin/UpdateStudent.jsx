@@ -1,37 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import Navbar from "../../components/global/Navbar";
 import Footer from "../../components/global/Footer";
 import {
   Avatar,
+  Checkbox,
   FormControl,
+  FormControlLabel,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  addStudent,
+  getClasses,
+  getStudent,
+} from "../../redux/admin/adminAtion";
+import moment from "moment";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function UpdateStudent() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
   const [otherName, setOtherName] = useState("");
   const [gender, setGender] = useState("");
-  // const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [religion, setReligion] = useState("");
   const [nhis, setNHIS] = useState("");
-  const [Class, setClass] = useState("");
+  const [classId, setClassId] = useState("");
   const [residency, setResidency] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [my_file, setMy_file] = useState("");
 
   const [motherName, setMotherName] = useState("");
   const [motherAddress, setMotherAddress] = useState("");
@@ -51,15 +65,97 @@ function UpdateStudent() {
 
   const [activeStep, setActiveStep] = useState(1);
 
+  const [classes, setClasses] = useState([]);
+
+  useEffect(() => {
+    getAllClasses();
+    showRecord();
+  }, []);
+
+  const showRecord = async () => {
+    try {
+      let { data } = await getStudent(id);
+      console.log(data);
+      setFirstName(data.student.firstName);
+      setSurname(data.student.surname);
+      setOtherName(data.student.otherName);
+      setNHIS(data.student.nhis);
+      setClassId(data.student.classId._id);
+      setResidency(data.student.residency);
+      setAddress(data.student.address);
+      setPhone(data.student.phone);
+      setProfilePicture(data.student.image.url);
+      setGender(data.student.gender);
+      setReligion(data.student.religion);
+      setBirthDate(moment(data.student.birthDate).format("yyyy-MM-DD"));
+      setMotherName(data.student.motherName);
+      setMotherAddress(data.student.motherAddress);
+      setMotherOccupation(data.student.motherOccupation);
+      setMotherPhone(data.student.motherPhone);
+      setFatherName(data.student.fatherName);
+      setFatherAddress(data.student.fatherAddress);
+      setFatherOccupation(data.student.fatherOccupation);
+      setFatherPhone(data.student.fatherPhone);
+      setEmergencyContactName(data.student.emergencyContactName);
+      setEmergencyContactAddress(data.student.emergencyContactAddress);
+      setEmergencyContactOccupation(data.student.emergencyContactOccupation);
+      setEmergencyContactPhone(data.student.emergencyContactPhone);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const getAllClasses = async () => {
+    const { data } = await getClasses();
+    setClasses(data.classes);
+    console.log(data);
+  };
+
   const handleNext = () => {
     if (activeStep === 3) {
       handleSumit();
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
-  const handleSumit = () => {
-    navigate("/students");
+
+  const handleSumit = async () => {
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("surname", surname);
+    formData.append("otherName", otherName);
+    formData.append("gender", gender);
+    formData.append("birthDate", birthDate);
+    formData.append("my_file", my_file);
+    formData.append("phone", phone);
+    formData.append("nhis", nhis);
+    formData.append("address", address);
+    formData.append("religion", religion);
+    formData.append("classId", classId);
+    formData.append("residency", residency);
+    formData.append("motherName", motherName);
+    formData.append("motherAddress", motherAddress);
+    formData.append("motherPhone", motherPhone);
+    formData.append("motherOccupation", motherOccupation);
+    formData.append("fatherName", fatherName);
+    formData.append("fatherAddress", fatherAddress);
+    formData.append("fatherPhone", fatherPhone);
+    formData.append("fatherOccupation", fatherOccupation);
+    formData.append("emergencyContactName", emergencyContactName);
+    formData.append("emergencyContactAddress", emergencyContactAddress);
+    formData.append("emergencyContactPhone", emergencyContactPhone);
+    formData.append("emergencyContactOccupation", emergencyContactOccupation);
+    // try {
+    //   await addStudent(formData);
+    //   // console.log(formData);
+    //   toast.success("Student record updated successfully.");
+    //   navigate("/students");
+    // } catch (error) {
+    //   // console.log(error.response.data.message);
+    //   toast.error(error.response.data.message);
+    // }
     toast.success("Student record updated successfully.");
+    navigate("/students");
   };
 
   const handleBack = () => {
@@ -69,6 +165,7 @@ function UpdateStudent() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setMy_file(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setProfilePicture(e.target.result);
@@ -76,6 +173,10 @@ function UpdateStudent() {
       reader.readAsDataURL(file);
     }
   };
+
+  // const handleReset = () => {
+  //   setActiveStep(1);
+  // };
 
   return (
     <>
@@ -98,7 +199,7 @@ function UpdateStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Update Student Records</h1>
+          <h1>Add Student</h1>
         </Box>
         <Box sx={{ width: "100%" }}>
           <Stepper
@@ -186,9 +287,9 @@ function UpdateStudent() {
                             <MenuItem value="">
                               <em>select gender</em>
                             </MenuItem>
-                            <MenuItem value={1}>Male</MenuItem>
-                            <MenuItem value={2}>Female</MenuItem>
-                            <MenuItem value={0}>Others</MenuItem>
+                            <MenuItem value={"Male"}>Male</MenuItem>
+                            <MenuItem value={"Female"}>Female</MenuItem>
+                            <MenuItem value={"Others"}>Others</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -209,9 +310,11 @@ function UpdateStudent() {
                             <MenuItem value="">
                               <em>select Religion</em>
                             </MenuItem>
-                            <MenuItem value={1}>Christian</MenuItem>
-                            <MenuItem value={2}>Islamic</MenuItem>
-                            <MenuItem value={0}>Traditional</MenuItem>
+                            <MenuItem value={"Christian"}>Christian</MenuItem>
+                            <MenuItem value={"Islamic"}>Islamic</MenuItem>
+                            <MenuItem value={"Traditional"}>
+                              Traditional
+                            </MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -222,6 +325,10 @@ function UpdateStudent() {
                         <Box
                           component="input"
                           type="date"
+                          value={birthDate}
+                          onChange={(e) => {
+                            setBirthDate(e.target.value);
+                          }}
                           // label="Date"
                           sx={{
                             padding: "10px 10px",
@@ -236,10 +343,13 @@ function UpdateStudent() {
                           required
                           fullWidth
                           id="city"
-                          label="Home Town"
+                          label="Address"
                           name="city"
+                          value={address}
                           autoComplete="city"
-                          // onChange={handleInputChange}
+                          onChange={(e) => {
+                            setAddress(e.target.value);
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -248,9 +358,12 @@ function UpdateStudent() {
                           fullWidth
                           id="phone"
                           label="Phone"
+                          value={phone}
                           name="phone"
                           autoComplete="phone"
-                          // onChange={handleInputChange}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                          }}
                         />
                       </Grid>
                     </Grid>
@@ -561,18 +674,22 @@ function UpdateStudent() {
                           <Select
                             labelId="demo-simple-select-required-label"
                             id="demo-simple-select-required"
-                            value={Class}
+                            value={classId}
                             label="Class *"
                             onChange={(e) => {
-                              setClass(e.target.value);
+                              setClassId(e.target.value);
                             }}
                           >
                             <MenuItem value="">
                               <em>select class</em>
                             </MenuItem>
-                            <MenuItem value={1}>JHS 1</MenuItem>
-                            <MenuItem value={2}>JHS 2</MenuItem>
-                            <MenuItem value={0}>JHS 3</MenuItem>
+                            {classes.map((c, i) => {
+                              return (
+                                <MenuItem key={i} value={c._id}>
+                                  {c.className}
+                                </MenuItem>
+                              );
+                            })}
                           </Select>
                         </FormControl>
                       </Grid>
@@ -593,8 +710,8 @@ function UpdateStudent() {
                             <MenuItem value="">
                               <em>select residency</em>
                             </MenuItem>
-                            <MenuItem value={1}>Day</MenuItem>
-                            <MenuItem value={2}>Boarder</MenuItem>
+                            <MenuItem value={"Day"}>Day</MenuItem>
+                            <MenuItem value={"Boarder"}>Boarder</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>

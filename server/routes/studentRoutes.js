@@ -23,7 +23,7 @@ router.delete("/delete-student/:id", deleteStudent);
 router.put("/suspend-student/:id", suspendStudent);
 router.put("/activate-student/:id", activateStudent);
 router.put("/archive-student/:id", archiveStudent);
-router.get("/get-student/:id", getStudent);
+router.get("/student/:id", getStudent);
 router.get("/", getStudents);
 
 module.exports = router;

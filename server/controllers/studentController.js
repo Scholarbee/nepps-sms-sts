@@ -128,7 +128,7 @@ exports.addStudent = expressAsyncHandler(async (req, res, next) => {
   //   bills: { desc: "School Fees", amount: fees },
   // });
 
-  // 
+  //
 
   if (student) {
     res.status(201).json({
@@ -217,9 +217,23 @@ exports.activateStudent = expressAsyncHandler(async (req, res, next) => {
 exports.archiveStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student archived");
 });
-// Add Student
+
+// Get single Student
 exports.getStudent = expressAsyncHandler(async (req, res, next) => {
-  res.send("Single Student");
+  const student = await Student.findById(req.params.id).populate(
+    "classId",
+    "className"
+  );
+
+  if (student) {
+    res.status(200).json({
+      success: true,
+      student,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
 
 // Get all students

@@ -88,7 +88,9 @@ function AddStudent() {
     formData.append("birthDate", birthDate);
     formData.append("my_file", my_file);
     formData.append("phone", phone);
+    formData.append("nhis", nhis);
     formData.append("address", address);
+    formData.append("religion", religion);
     formData.append("classId", classId);
     formData.append("residency", residency);
     formData.append("motherName", motherName);

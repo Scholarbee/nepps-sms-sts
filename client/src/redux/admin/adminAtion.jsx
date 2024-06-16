@@ -20,6 +20,22 @@ export const getStudents = async () => {
 };
 
 /**
+ * Get all students
+ */
+export const getStudent = async (id) => {
+  try {
+    const response = axios.get(`${BACKEND_URL}/api/students/student/${id}`);
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
  * Add student
  */
 export const addStudent = async (formData) => {

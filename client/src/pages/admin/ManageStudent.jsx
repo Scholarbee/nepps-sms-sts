@@ -246,7 +246,7 @@ function ManageStudent() {
                           >
                             <Tooltip title="Edit">
                               <IconButton
-                                onClick={() => handleEdit(student.id)}
+                                onClick={() => handleEdit(student._id)}
                                 color="primary"
                               >
                                 <EditIcon />
@@ -254,7 +254,7 @@ function ManageStudent() {
                             </Tooltip>
                             <Tooltip title="Delete">
                               <IconButton
-                                onClick={() => handleDelete(student.id)}
+                                onClick={() => handleDelete(student._id)}
                                 color="secondary"
                               >
                                 <DeleteIcon />
@@ -262,7 +262,7 @@ function ManageStudent() {
                             </Tooltip>
                             <Tooltip title="Info">
                               <IconButton
-                                onClick={() => handleInfo(student.id)}
+                                onClick={() => handleInfo(student._id)}
                                 color="info"
                               >
                                 <InfoIcon />
@@ -270,7 +270,7 @@ function ManageStudent() {
                             </Tooltip>
                             <Tooltip title="Suspend">
                               <IconButton
-                                onClick={() => handleSuspend(student.id)}
+                                onClick={() => handleSuspend(student._id)}
                                 color="warning"
                               >
                                 <PauseCircleOutlineIcon />
@@ -278,7 +278,7 @@ function ManageStudent() {
                             </Tooltip>
                             <Tooltip title="Archive">
                               <IconButton
-                                onClick={() => handleArchive(student.id)}
+                                onClick={() => handleArchive(student._id)}
                                 color="default"
                               >
                                 <ArchiveIcon />
