@@ -22,11 +22,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addStudent, getClasses } from "../../redux/admin/adminAtion";
+import { ClipLoader } from "react-spinners";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function AddStudent() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
   const [otherName, setOtherName] = useState("");
@@ -80,6 +82,7 @@ function AddStudent() {
   };
 
   const handleSumit = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("firstName", firstName);
     formData.append("surname", surname);
@@ -113,7 +116,9 @@ function AddStudent() {
     } catch (error) {
       // console.log(error.response.data.message);
       toast.error(error.response.data.message);
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleBack = () => {
@@ -693,8 +698,10 @@ function AddStudent() {
                     variant="contained"
                     color={activeStep === 3 ? "success" : "primary"}
                     onClick={handleNext}
+                    disabled={loading}
                   >
                     {activeStep === 3 ? "Submit" : "Next >>"}
+                    {loading && <ClipLoader size={20} color="white" />}
                   </Button>
                 </Box>
               </Grid>
