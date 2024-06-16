@@ -115,6 +115,7 @@ function ManageStudent() {
                 alignItems: "center",
                 // gap: "10px",
                 padding: "10px 20px",
+                marginBottom:3,
                 backgroundColor: "royalblue",
                 borderRadius: 5,
               }}
@@ -164,10 +165,10 @@ function ManageStudent() {
                 // padding: "0 20px",
               }}
             >
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{display:"flex", justifyContent:"center"}}>
                 {students.map((student) => {
                   return (
-                    <Grid item xs={12} md={8} key={student._id}>
+                    <Grid item xs={12} md={10} key={student._id}>
                       <Card
                         sx={{
                           display: "flex",
@@ -178,15 +179,16 @@ function ManageStudent() {
                             boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
                           },
                           marginBottom: 1,
-                          padding: 1,
+                          // padding: 1,
                         }}
                       >
                         <CardMedia
                           component="img"
                           sx={{
-                            width: 150,
-                            height: 150,
-                            borderRadius: { xs: "100%", md: 2 },
+                            margin: { xs: "10px", md: "0px" },
+                            width: { xs: "110px", md: "224px" },
+                            height: { xs: "110px", md: "224px" },
+                            borderRadius: { xs: "100%", md: 0 },
                           }}
                           image={student.image.url}
                           alt={student.firstName}
@@ -194,8 +196,8 @@ function ManageStudent() {
                         <CardContent
                           sx={{
                             flex: 1,
-                            padding: 1,
-                            paddingBottom: 0,
+                            // padding: 2,
+                            // paddingBottom: 0,
                             display: "flex",
                             flexDirection: { xs: "column", sm: "row" },
                             justifyContent: "space-between",
@@ -208,7 +210,12 @@ function ManageStudent() {
                             <Typography
                               variant="h5"
                               component="div"
-                              gutterBottom
+                              sx={{
+                                color: "black",
+                                fontSize: "1.3rem",
+                                fontWeight: "bold",
+                              }}
+                              // gutterBottom
                             >
                               {`${student.firstName} ${student.otherName} ${student.surname}`}
                             </Typography>
@@ -225,6 +232,9 @@ function ManageStudent() {
                               )}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
+                              Age: {calculateAge(student.birthDate) + " year(s)"}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
                               Phone: {student.phone}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
@@ -233,11 +243,15 @@ function ManageStudent() {
                             <Typography variant="body2" color="textSecondary">
                               Emerg. Contact: {student.emergencyContactPhone}
                             </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              NHIS Number: {student.nhis}
+                            </Typography>
                           </Box>
                           <Divider sx={{ margin: "25px 0 0 0" }} />
                           <CardActions
                             sx={{
-                              paddingBottom: 0,
+                              padding: 0,
+                              // paddingBottom: 0,
                               display: "flex",
                               flexDirection: { xs: "row", sm: "column" },
                               // justifyContent: "center",
@@ -322,3 +336,17 @@ function ManageStudent() {
 }
 
 export default ManageStudent;
+
+const calculateAge = (birthDate) => {
+  const today = new Date();
+  const birthDateObj = new Date(birthDate);
+  let age = today.getFullYear() - birthDateObj.getFullYear();
+  const monthDifference = today.getMonth() - birthDateObj.getMonth();
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < birthDateObj.getDate())
+  ) {
+    age--;
+  }
+  return age;
+};
