@@ -215,9 +215,9 @@ function ManageStudent() {
                             <Typography variant="body2" color="textSecondary">
                               ID: {student.user.id}
                             </Typography>
-                            {/* <Typography variant="body2" color="textSecondary">
-                              Class: {student.classId}
-                            </Typography> */}
+                            <Typography variant="body2" color="textSecondary">
+                              Class: {student.classId.className}
+                            </Typography>
                             <Typography variant="body2" color="textSecondary">
                               Date Of Birth:{" "}
                               {moment(student.birthDate).format(
