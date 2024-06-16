@@ -64,7 +64,7 @@ function ManageStudent() {
   const showStudents = async () => {
     const { data } = await getStudents();
     setStudents(data.students);
-    console.log(data);
+    // console.log(data);
   };
 
   const handleEdit = (id) => {

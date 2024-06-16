@@ -37,7 +37,7 @@ function ManageClass() {
   const getAllClasses = async () => {
     const { data } = await getClasses();
     setClasses(data.classes);
-    console.log(data);
+    // console.log(data);
   };
   return (
     <>

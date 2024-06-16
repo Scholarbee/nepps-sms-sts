@@ -74,8 +74,9 @@ function AddStudent() {
   const handleNext = () => {
     if (activeStep === 3) {
       handleSumit();
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleSumit = async () => {
@@ -104,11 +105,12 @@ function AddStudent() {
     formData.append("emergencyContactOccupation", emergencyContactOccupation);
     try {
       await addStudent(formData);
-      console.log(formData);
+      // console.log(formData);
       toast.success("Student added successfully.");
       navigate("/students");
     } catch (error) {
-      console.log(error);
+      // console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 

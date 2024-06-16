@@ -32,18 +32,13 @@ function AddClass() {
     boardingFee: parseFloat(boardingFee).toFixed(2),
   };
   const handleSubmit = async () => {
-    console.log(formDate);
+    // console.log(formDate);
     try {
       await addClass(formDate);
       navigate("/classes");
     } catch (error) {
       // console.log(error.response.data.message);
-      toast.error(
-        error.response.data.message &&
-          error.response.data &&
-          error.response &&
-          error
-      );
+      toast.error(error.response.data.message);
     }
   };
 

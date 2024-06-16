@@ -12,7 +12,7 @@ const Class = require("../models/classModel");
  * This is a function/method that handles the logics to add new student
  */
 exports.addStudent = expressAsyncHandler(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const {
     firstName,
     surname,
@@ -40,26 +40,30 @@ exports.addStudent = expressAsyncHandler(async (req, res, next) => {
   } = req.body;
 
   // Validation of fields
-  // if (!firstName || !surname) {
-  //   res.status(400);
-  //   throw new Error("First name and surname are required");
-  // }
-  // if (!phone) {
-  //   res.status(400);
-  //   throw new Error("Phone is required");
-  // }
-  // if (!gender) {
-  //   res.status(400);
-  //   throw new Error("Gender is required");
-  // }
-  // if (!town) {
-  //   res.status(400);
-  //   throw new Error("Town is required");
-  // }
-  // if (!classId) {
-  //   res.status(400);
-  //   throw new Error("Class is required");
-  // }
+  if (!firstName || !surname) {
+    res.status(400);
+    throw new Error("First name and surname are required");
+  }
+  if (!phone) {
+    res.status(400);
+    throw new Error("Phone is required");
+  }
+  if (!gender) {
+    res.status(400);
+    throw new Error("Gender is required");
+  }
+  if (!address) {
+    res.status(400);
+    throw new Error("Town is required");
+  }
+  if (!classId) {
+    res.status(400);
+    throw new Error("Class is required");
+  }
+  if (!req.file) {
+    res.status(400);
+    throw new Error("Image is required");
+  }
 
   // upload image in cloudinary
   const b64 = Buffer.from(req.file.buffer).toString("base64");
