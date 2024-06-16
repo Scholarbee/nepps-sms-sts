@@ -29,33 +29,13 @@ import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
 import { getStudents } from "../../redux/admin/adminAtion";
 
-// const studentsData = [
-//   {
-//     id: 1,
-//     name: "Isaac Appiatu",
-//     class: "JHS 1",
-//     age: 12,
-//     phone: "+233542852186",
-//     emergencyContact: "Alicia - 0244444444",
-//     address: "D118, Twifo Praso, New Market",
-//     image: "https://via.placeholder.com/150",
-//   },
-//   {
-//     id: 2,
-//     name: "Scholar Bee",
-//     class: "JHS 3",
-//     age: 16,
-//     phone: "233542852186",
-//     emergencyContact: "Alicia - 0244444444",
-//     address: "D118, Twifo Praso, Zongo",
-//     image: "https://via.placeholder.com/150",
-//   },
-//   // Add more students as needed
-// ];
-
 function ManageStudent() {
   const [students, setStudents] = useState([]);
+  const [studentsData, setStudentsData] = useState([]);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  //   const [searchResults, setSearchResults] = useState([]);
+  // const [students, setStudents] = useState(studentsData);
 
   useEffect(() => {
     showStudents();
@@ -64,6 +44,7 @@ function ManageStudent() {
   const showStudents = async () => {
     const { data } = await getStudents();
     setStudents(data.students);
+    setStudentsData(data.students);
     // console.log(data);
   };
 
@@ -89,6 +70,25 @@ function ManageStudent() {
     // Implement archive logic here
     toast.success(`Student with ID ${id} has been archived.`);
     // console.log(`Student with ID ${id} has been archived.`);
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    if (query) {
+      const results = studentsData.filter(
+        (student) =>
+          student.firstName.toLowerCase().includes(query) ||
+          student.surname.toLowerCase().includes(query) ||
+          student.otherName.toLowerCase().includes(query) ||
+          student.user.id.toLowerCase().includes(query) ||
+          student.classId.className.toLowerCase().includes(query)
+      );
+      setStudents(results);
+    } else {
+      setStudents(studentsData);
+    }
   };
 
   return (
@@ -124,6 +124,8 @@ function ManageStudent() {
                   type="search"
                   variant="outlined"
                   placeholder="Search student"
+                  value={searchQuery}
+                  onChange={handleSearch}
                   sx={{ width: { xs: "100%", sm: "300px" } }}
                   InputProps={{
                     startAdornment: (
