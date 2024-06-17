@@ -66,10 +66,7 @@ exports.addStudent = expressAsyncHandler(async (req, res, next) => {
   }
 
   // upload image in cloudinary
-  const b64 = Buffer.from(req.file.buffer).toString("base64");
-  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-  const result = await cloudinary.handleUpload(dataURI);
-
+  const result = await cloudinary.handleFileFormatAndUpload(req);
   if (!result) {
     res.status(400);
     throw new Error(
@@ -147,46 +144,79 @@ exports.addStudent = expressAsyncHandler(async (req, res, next) => {
  * This is a function/method that handles the logics to update student information
  */
 exports.editStudent = expressAsyncHandler(async (req, res, next) => {
-  const { name, gender, town, phone, classId, residency } = req.body;
+  // console.log("working...");
+  const {
+    pid,
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    nhis,
+    classId,
+    residency,
+    phone,
+    address,
+    motherName,
+    motherAddress,
+    motherPhone,
+    motherOccupation,
+    fatherName,
+    fatherAddress,
+    fatherPhone,
+    fatherOccupation,
+    emergencyContactName,
+    emergencyContactAddress,
+    emergencyContactPhone,
+    emergencyContactOccupation,
+  } = req.body;
+
+  const data = {
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    nhis,
+    classId,
+    residency,
+    phone,
+    address,
+    motherName,
+    motherAddress,
+    motherPhone,
+    motherOccupation,
+    fatherName,
+    fatherAddress,
+    fatherPhone,
+    fatherOccupation,
+    emergencyContactName,
+    emergencyContactAddress,
+    emergencyContactPhone,
+    emergencyContactOccupation,
+  };
 
   // Validation of fields
-  if (!name) {
-    res.status(400);
-    throw new Error("Name is required");
-  }
-  if (!phone) {
-    res.status(400);
-    throw new Error("Phone is required");
-  }
-  if (!gender) {
-    res.status(400);
-    throw new Error("Gender is required");
-  }
-  if (!town) {
-    res.status(400);
-    throw new Error("Town is required");
-  }
-  if (!classId) {
-    res.status(400);
-    throw new Error("Class is required");
-  }
-  if (!residency) {
-    res.status(400);
-    throw new Error("Residency is required");
+  if (req.file) {
+    const result = await cloudinary.handleFileFormatAndUpload(req);
+    if (!result) {
+      res.status(400);
+      throw new Error(
+        "Something went wrong whiles saving image. Please try again"
+      );
+    }
+    data.image = {
+      public_id: result.public_id,
+      url: result.secure_url,
+    };
+    const response = await cloudinary.deleteOldImage(pid);
   }
 
-  const student = await Student.findByIdAndUpdate(
-    req.params.id,
-    {
-      name,
-      phone,
-      town,
-      classId,
-      gender,
-      residency,
-    },
-    { new: true }
-  );
+  // console.log(data);
+
+  const student = await Student.findByIdAndUpdate({ _id: req.params.id }, data);
 
   if (student) {
     res.status(201).json({
@@ -198,9 +228,8 @@ exports.editStudent = expressAsyncHandler(async (req, res, next) => {
     res.status(500);
     throw new Error("Something went wrong, please try again.");
   }
-
-  res.send("Student updated");
 });
+
 // Add Student
 exports.deleteStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student deleted");

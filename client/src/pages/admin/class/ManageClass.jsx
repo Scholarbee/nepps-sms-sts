@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../../components/global/Navbar";
 import {
-  Avatar,
   Box,
   Button,
-  Chip,
   Grid,
   IconButton,
   Paper,
@@ -23,7 +21,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { getClasses } from "../../../redux/admin/adminAtion";
 
 function ManageClass() {

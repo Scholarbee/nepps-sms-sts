@@ -4,15 +4,11 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Navbar from "../../components/global/Navbar";
 import Footer from "../../components/global/Footer";
 import {
   Avatar,
-  Checkbox,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -22,16 +18,18 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  addStudent,
   getClasses,
   getStudent,
+  updateStudent,
 } from "../../redux/admin/adminAtion";
 import moment from "moment";
+import { ClipLoader } from "react-spinners";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function UpdateStudent() {
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
@@ -45,6 +43,7 @@ function UpdateStudent() {
   const [classId, setClassId] = useState("");
   const [residency, setResidency] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [pid, setPID] = useState("");
   const [my_file, setMy_file] = useState("");
 
   const [motherName, setMotherName] = useState("");
@@ -85,6 +84,7 @@ function UpdateStudent() {
       setAddress(data.student.address);
       setPhone(data.student.phone);
       setProfilePicture(data.student.image.url);
+      setPID(data.student.image.public_id);
       setGender(data.student.gender);
       setReligion(data.student.religion);
       setBirthDate(moment(data.student.birthDate).format("yyyy-MM-DD"));
@@ -120,7 +120,9 @@ function UpdateStudent() {
   };
 
   const handleSumit = async () => {
+    setLoading(true);
     const formData = new FormData();
+    formData.append("pid", pid);
     formData.append("firstName", firstName);
     formData.append("surname", surname);
     formData.append("otherName", otherName);
@@ -145,17 +147,18 @@ function UpdateStudent() {
     formData.append("emergencyContactAddress", emergencyContactAddress);
     formData.append("emergencyContactPhone", emergencyContactPhone);
     formData.append("emergencyContactOccupation", emergencyContactOccupation);
-    // try {
-    //   await addStudent(formData);
-    //   // console.log(formData);
-    //   toast.success("Student record updated successfully.");
-    //   navigate("/students");
-    // } catch (error) {
-    //   // console.log(error.response.data.message);
-    //   toast.error(error.response.data.message);
-    // }
-    toast.success("Student record updated successfully.");
-    navigate("/students");
+    try {
+      await updateStudent(id, formData);
+      console.log(formData);
+      toast.success("Student record updated successfully.");
+      navigate("/students");
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+    // toast.success("Student record updated successfully.");
+    // navigate("/students");
+    setLoading(false);
   };
 
   const handleBack = () => {
@@ -199,7 +202,7 @@ function UpdateStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Add Student</h1>
+          <h1>Edit Student Record</h1>
         </Box>
         <Box sx={{ width: "100%" }}>
           <Stepper
@@ -735,8 +738,10 @@ function UpdateStudent() {
                     variant="contained"
                     color={activeStep === 3 ? "success" : "primary"}
                     onClick={handleNext}
+                    disabled={loading}
                   >
                     {activeStep === 3 ? "Submit" : "Next >>"}
+                    {loading && <ClipLoader size={20} color="white" />}
                   </Button>
                 </Box>
               </Grid>

@@ -20,7 +20,7 @@ export const getStudents = async () => {
 };
 
 /**
- * Get all students
+ * Get single student
  */
 export const getStudent = async (id) => {
   try {
@@ -48,6 +48,28 @@ export const addStudent = async (formData) => {
     );
     if (response.statusText === "OK") {
       toast.success("Class Created successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Add student
+ */
+export const updateStudent = async (id, formData) => {
+  try {
+    const response = axios.put(
+      `${BACKEND_URL}/api/students/edit-student/${id}`,
+      formData
+    );
+    if (response.statusText === "OK") {
+      toast.success("Student updated successfully.");
     }
     return response;
   } catch (error) {
@@ -122,7 +144,7 @@ export const getClasses = async () => {
 /**
  * Get single class
  */
-export const getClass =  async (id) => {
+export const getClass = async (id) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/api/admin/class/${id}`);
     return response;

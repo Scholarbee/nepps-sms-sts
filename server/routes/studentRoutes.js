@@ -18,7 +18,7 @@ const upload = Multer({
 });
 
 router.post("/add-student", upload.single("my_file"), addStudent);
-router.put("/edit-student/:id", editStudent);
+router.put("/edit-student/:id", upload.single("my_file"), editStudent);
 router.delete("/delete-student/:id", deleteStudent);
 router.put("/suspend-student/:id", suspendStudent);
 router.put("/activate-student/:id", activateStudent);
