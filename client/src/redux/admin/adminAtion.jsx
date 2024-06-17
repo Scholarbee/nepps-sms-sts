@@ -42,7 +42,7 @@ export const getStudent = async (id) => {
  */
 export const addStudent = async (formData) => {
   try {
-    const response = await axios.post(
+    const response = axios.post(
       `${BACKEND_URL}/api/students/add-student`,
       formData
     );

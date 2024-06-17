@@ -183,20 +183,6 @@ function AddClass() {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                autoComplete="className"
-                name="className"
-                required
-                fullWidth
-                value={admissionFee}
-                id="className"
-                label="Class Name"
-                onChange={(e) => {
-                  setClassName(e.target.value);
-                }}
-              />
-            </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 autoComplete="admissionFee"
