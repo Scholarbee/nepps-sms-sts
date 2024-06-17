@@ -115,7 +115,7 @@ function ManageStudent() {
                 alignItems: "center",
                 // gap: "10px",
                 padding: "10px 20px",
-                marginBottom:3,
+                marginBottom: 3,
                 backgroundColor: "royalblue",
                 borderRadius: 5,
               }}
@@ -165,7 +165,11 @@ function ManageStudent() {
                 // padding: "0 20px",
               }}
             >
-              <Grid container spacing={2} sx={{display:"flex", justifyContent:"center"}}>
+              <Grid
+                container
+                spacing={2}
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
                 {students.map((student) => {
                   return (
                     <Grid item xs={12} md={10} key={student._id}>
@@ -232,7 +236,8 @@ function ManageStudent() {
                               )}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                              Age: {calculateAge(student.birthDate) + " year(s)"}
+                              Age:{" "}
+                              {calculateAge(student.birthDate) + " year(s)"}
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
                               Phone: {student.phone}
@@ -307,7 +312,7 @@ function ManageStudent() {
               </Grid>
             </Box>
           </Grid>
-          <Grid item xs={0} md={4}>
+          <Grid item xs={false} md={4}>
             <Box
               sx={{
                 padding: "20px",

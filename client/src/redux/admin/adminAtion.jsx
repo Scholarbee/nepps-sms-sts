@@ -8,7 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
  */
 export const getStudents = async () => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/students`);
+    const response = await axios.get(`${BACKEND_URL}/api/students`);
     return response;
   } catch (error) {
     const message =
@@ -24,7 +24,9 @@ export const getStudents = async () => {
  */
 export const getStudent = async (id) => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/students/student/${id}`);
+    const response = await axios.get(
+      `${BACKEND_URL}/api/students/student/${id}`
+    );
     return response;
   } catch (error) {
     const message =
@@ -40,7 +42,7 @@ export const getStudent = async (id) => {
  */
 export const addStudent = async (formData) => {
   try {
-    const response = axios.post(
+    const response = await axios.post(
       `${BACKEND_URL}/api/students/add-student`,
       formData
     );
@@ -62,7 +64,7 @@ export const addStudent = async (formData) => {
  */
 export const addClass = async (formData) => {
   try {
-    const response = axios.post(
+    const response = await axios.post(
       `${BACKEND_URL}/api/admin/classes/add-class`,
       formData
     );
@@ -80,11 +82,33 @@ export const addClass = async (formData) => {
 };
 
 /**
+ * Edit class
+ */
+export const updateClass = async (id, formData) => {
+  try {
+    const response = await axios.put(
+      `${BACKEND_URL}/api/admin/classes/edit-class/${id}`,
+      formData
+    );
+    if (response.data.success) {
+      toast.success("Class updated successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
  * Get all classes
  */
 export const getClasses = async () => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/admin/classes`);
+    const response = await axios.get(`${BACKEND_URL}/api/admin/classes`);
     return response;
   } catch (error) {
     const message =
@@ -98,9 +122,9 @@ export const getClasses = async () => {
 /**
  * Get single class
  */
-export const getClass = async (id) => {
+export const getClass =  async (id) => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/admin/class/${id}`);
+    const response = await axios.get(`${BACKEND_URL}/api/admin/class/${id}`);
     return response;
   } catch (error) {
     const message =

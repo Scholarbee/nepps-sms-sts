@@ -56,7 +56,7 @@ function ManageClass() {
             variant="h4"
             sx={{ color: "darkblue", fontWeight: "bolder" }}
           >
-            Current Bill
+            Class Management
           </Typography>
         </Box>
         <Grid
@@ -129,7 +129,9 @@ function ManageClass() {
                         <StyledTableCell align="right">
                           <Tooltip title="Edit">
                             <IconButton
-                              onClick={() => navigate(`/classes/edit-class/${c._id}`)}
+                              onClick={() =>
+                                navigate(`/classes/edit-class/${c._id}`)
+                              }
                               color="primary"
                             >
                               <EditIcon />
@@ -168,6 +170,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 }));
 

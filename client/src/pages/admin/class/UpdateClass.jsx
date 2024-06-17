@@ -11,27 +11,27 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { addClass, getClass } from "../../../redux/admin/adminAtion";
+import { addClass, getClass, updateClass } from "../../../redux/admin/adminAtion";
 import { toast } from "react-toastify";
 
 function AddClass() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
-  // const [classRep, setClassRep] = useState("");
-  // const [classHead, setClassHead] = useState("");
-  const [schoolFees, setSchoolFees] = useState();
-  const [boardingFee, setBoardingFee] = useState();
-  const [admissionFee, setAdmissionFee] = useState();
+  const [classRep, setClassRep] = useState("");
+  const [classHead, setClassHead] = useState("");
+  const [schoolFees, setSchoolFees] = useState("");
+  const [boardingFee, setBoardingFee] = useState("");
+  const [admissionFee, setAdmissionFee] = useState("");
 
-  // const formDate = {
-  //   className,
-  //   classRep,
-  //   classHead,
-  //   schoolFees: parseFloat(schoolFees).toFixed(2),
-  //   admissionFee: parseFloat(admissionFee).toFixed(2),
-  //   boardingFee: parseFloat(boardingFee).toFixed(2),
-  // };
+  const formDate = {
+    className,
+    classRep,
+    classHead,
+    schoolFees: parseFloat(schoolFees).toFixed(2),
+    admissionFee: parseFloat(admissionFee).toFixed(2),
+    boardingFee: parseFloat(boardingFee).toFixed(2),
+  };
 
   useEffect(() => {
     // console.log(id);
@@ -41,11 +41,11 @@ function AddClass() {
   const showClass = async () => {
     try {
       let { data } = await getClass(id);
-      console.log(data);
-      setClassName(data.className);
-      setAdmissionFee(data.admissionFee);
-      setBoardingFee(data.boardingFee);
-      setSchoolFees(data.schoolFees);
+      // console.log(data);
+      setClassName(data._class.className);
+      setAdmissionFee(data._class.admissionFee);
+      setBoardingFee(data._class.boardingFee);
+      setSchoolFees(data._class.schoolFees);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -54,16 +54,11 @@ function AddClass() {
   const handleSubmit = async () => {
     console.log(formDate);
     try {
-      await addClass(formDate);
+      await updateClass(id, formDate);
       navigate("/classes");
     } catch (error) {
       // console.log(error.response.data.message);
-      toast.error(
-        error.response.data.message &&
-          error.response.data &&
-          error.response &&
-          error.toString()
-      );
+      toast.error(error.response.data.message);
     }
   };
 
@@ -80,7 +75,7 @@ function AddClass() {
             textAlign: "center",
           }}
         >
-          <h1>Add Class</h1>
+          <h1>Update Class</h1>
         </Box>
         <Grid
           container
@@ -114,7 +109,7 @@ function AddClass() {
                 }}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6}>
               <FormControl required sx={{ width: "100%" }}>
                 <InputLabel id="demo-simple-select-required-label">
                   Class Head
@@ -159,7 +154,7 @@ function AddClass() {
                   <MenuItem value={"Tieku"}>Tieku</MenuItem>
                 </Select>
               </FormControl>
-            </Grid> */}
+            </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 autoComplete="schoolFees"

@@ -19,9 +19,9 @@ function AddClass() {
   const [className, setClassName] = useState("");
   // const [classRep, setClassRep] = useState("");
   // const [classHead, setClassHead] = useState("");
-  const [schoolFees, setSchoolFees] = useState();
-  const [boardingFee, setBoardingFee] = useState();
-  const [admissionFee, setAdmissionFee] = useState();
+  const [schoolFees, setSchoolFees] = useState("");
+  const [boardingFee, setBoardingFee] = useState("");
+  const [admissionFee, setAdmissionFee] = useState("");
 
   const formDate = {
     className,

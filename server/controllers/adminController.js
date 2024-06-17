@@ -55,9 +55,49 @@ exports.addClass = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-// Add Class
+// Edit Class
 exports.editClass = expressAsyncHandler(async (req, res, next) => {
-  res.send("Class updated");
+  const {
+    className,
+    classRep,
+    classHead,
+    schoolFees,
+    admissionFee,
+    boardingFee,
+  } = req.body;
+
+  if (!className) {
+    res.status(400);
+    throw new Error("Class name is required");
+  }
+
+  let classExist = await Class.findOne({
+    className: req.body.className,
+    _id: { $ne: req.params.id },
+  });
+  if (classExist) {
+    res.status(400);
+    throw new Error("Class already exist");
+  }
+
+  let result = await Class.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      className,
+      // classRep,
+      // classHead,
+      schoolFees: parseFloat(schoolFees).toFixed(2),
+      admissionFee: parseFloat(admissionFee).toFixed(2),
+      boardingFee: parseFloat(boardingFee).toFixed(2),
+    }
+  );
+
+  if (result) {
+    res.status(200).json({ success: true, result });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
 // Add Class
 exports.deleteClass = expressAsyncHandler(async (req, res, next) => {
@@ -72,7 +112,7 @@ exports.getClass = expressAsyncHandler(async (req, res, next) => {
   // console.log(req.params);
   const data = await Class.findById({ _id: id });
   if (data) {
-    res.status(200).json(data);
+    res.status(200).json({ success: true, _class: data });
   } else {
     res.status(400);
     throw new Error("Class not found");
@@ -83,7 +123,7 @@ exports.getClass = expressAsyncHandler(async (req, res, next) => {
 exports.getClasses = expressAsyncHandler(async (req, res, next) => {
   const classes = await Class.find({});
   if (classes) {
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       classes,
     });
