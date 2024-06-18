@@ -3,9 +3,16 @@ const bcrypt = require("bcryptjs");
 
 const staffSchema = mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, "Please add a name"],
+      // required: [true, "Please add a name"],
+    },
+    surname: {
+      type: String,
+      // required: [true, "Please add a name"],
+    },
+    otherName: {
+      type: String,
     },
     gender: {
       type: String,
@@ -20,9 +27,13 @@ const staffSchema = mongoose.Schema(
       type: String,
       // required: [true, "Please add a phone number"],
     },
-    town: {
+    address: {
       type: String,
       // required: [true, "Please add a phone number"],
+    },
+    religion: {
+      type: String,
+      // required: [true, "Please add a residency"],
     },
     image: {
       url: String,
@@ -30,6 +41,11 @@ const staffSchema = mongoose.Schema(
     },
     user: {
       isActive: { type: Boolean, default: true },
+      id: {
+        type: String,
+        required: [true, "Please id is required"],
+        unique: true,
+      },
       email: {
         type: String,
         required: [true, "Please add a email"],

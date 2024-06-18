@@ -1,4 +1,4 @@
-// const cloudinary = require("../utils/cloudinary");
+const cloudinary = require("../utils/cloudinary");
 const expressAsyncHandler = require("express-async-handler");
 // const User = require("../models/userModel");
 // const Post = require("../models/postModel");
@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 // const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const Staff = require("../models/Staff");
+const { staffIdGenerator } = require("../utils/staffIdGenerator");
 // const sendEmail = require("../utils/sendEmail");
 
 // Generate Token
@@ -16,20 +17,140 @@ const generateToken = (id) => {
 
 // Add staff
 exports.addStaff = expressAsyncHandler(async (req, res, next) => {
-  const { name, gender, town, email, password, phone } = req.body;
-  const staff = await Staff.create({
-    name,
+  const {
+    firstName,
+    surname,
+    otherName,
     gender,
-    town,
+    birthDate,
+    religion,
     phone,
-    user: { email },
+    address,
+    email,
+  } = req.body;
+
+  // Validation of fields
+  if (!firstName || !surname) {
+    res.status(400);
+    throw new Error("First name and surname are required");
+  }
+  if (!phone) {
+    res.status(400);
+    throw new Error("Phone is required");
+  }
+  if (!gender) {
+    res.status(400);
+    throw new Error("Gender is required");
+  }
+  if (!address) {
+    res.status(400);
+    throw new Error("Town is required");
+  }
+  if (!email) {
+    res.status(400);
+    throw new Error("Email is required");
+  }
+  if (!req.file) {
+    res.status(400);
+    throw new Error("Image is required");
+  }
+
+  // upload image in cloudinary
+  const result = await cloudinary.handleFileFormatAndUpload(req);
+  if (!result) {
+    res.status(400);
+    throw new Error(
+      "Something went wrong whiles saving image. Please try again"
+    );
+  }
+
+  // Generating unique staff ID
+  let staffId = await staffIdGenerator();
+  const staff = await Staff.create({
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    phone,
+    address,
+    image: {
+      public_id: result.public_id,
+      url: result.secure_url,
+    },
+    user: { id: staffId, email: email, password: staffId },
   });
-  res.status(200).json({ success: true, message: "Staff added", staff });
+
+  if (staff) {
+    res.status(201).json({
+      success: true,
+      staff,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
-// Add staff
+
+// Edit staff
 exports.editStaff = expressAsyncHandler(async (req, res, next) => {
-  res.send("Staff updated");
+  const {
+    pid,
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    phone,
+    email,
+    address,
+  } = req.body;
+
+  const data = {
+    firstName,
+    surname,
+    otherName,
+    gender,
+    birthDate,
+    religion,
+    phone,
+    email,
+    address,
+  };
+
+  // Validation of fields
+  if (req.file) {
+    const result = await cloudinary.handleFileFormatAndUpload(req);
+    if (!result) {
+      res.status(400);
+      throw new Error(
+        "Something went wrong whiles saving image. Please try again"
+      );
+    }
+    data.image = {
+      public_id: result.public_id,
+      url: result.secure_url,
+    };
+    const response = await cloudinary.deleteOldImage(pid);
+  }
+
+  // console.log(data);
+
+  const staff = await Staff.findByIdAndUpdate({ _id: req.params.id }, data);
+
+  if (staff) {
+    res.status(200).json({
+      success: true,
+      staff,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
+
 // Add staff
 exports.deleteStaff = expressAsyncHandler(async (req, res, next) => {
   res.send("Staff deleted");
@@ -42,15 +163,41 @@ exports.suspendStaff = expressAsyncHandler(async (req, res, next) => {
 exports.activateStaff = expressAsyncHandler(async (req, res, next) => {
   res.send("Staff activated");
 });
-// Add staff
+
+// Archive staff
 exports.archiveStaff = expressAsyncHandler(async (req, res, next) => {
   res.send("Staff archived");
 });
-// Add staff
+
+// Get staff
 exports.getStaff = expressAsyncHandler(async (req, res, next) => {
-  res.send("Single staff");
+  const staff = await Staff.findById(req.params.id);
+
+  if (staff) {
+    res.status(200).json({
+      success: true,
+      staff,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
-// Add staff
+
+/**
+ * Get all staffs
+ */
 exports.getStaffs = expressAsyncHandler(async (req, res, next) => {
-  res.send("All staff");
+  const staffs = await Staff.find({});
+  // const staffs = await Staff.find({}, "-user.password");
+
+  if (staffs) {
+    res.status(200).json({
+      success: true,
+      staffs,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });

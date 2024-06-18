@@ -230,19 +230,20 @@ exports.editStudent = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-// Add Student
+// Delete Student
 exports.deleteStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student deleted");
 });
-// Add Student
+
+// suspended Student
 exports.suspendStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student suspended");
 });
-// Add Student
+// activated Student
 exports.activateStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student activated");
 });
-// Add Student
+// archived Student
 exports.archiveStudent = expressAsyncHandler(async (req, res, next) => {
   res.send("Student archived");
 });

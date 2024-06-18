@@ -60,12 +60,90 @@ export const addStudent = async (formData) => {
 };
 
 /**
- * Add student
+ * Edit student
  */
 export const updateStudent = async (id, formData) => {
   try {
     const response = axios.put(
       `${BACKEND_URL}/api/students/edit-student/${id}`,
+      formData
+    );
+    if (response.statusText === "OK") {
+      toast.success("Student updated successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Get all staffs
+ */
+export const getStaffs = async () => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/staffs`);
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Get single staff
+ */
+export const getStaff = async (id) => {
+  try {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/staffs/staff/${id}`
+    );
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Add staff
+ */
+export const addStaff = async (formData) => {
+  try {
+    const response = axios.post(
+      `${BACKEND_URL}/api/staffs/add-staff`,
+      formData
+    );
+    if (response.statusText === "OK") {
+      toast.success("Class Created successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Edit staff
+ */
+export const updateStaff = async (id, formData) => {
+  try {
+    const response = axios.put(
+      `${BACKEND_URL}/api/staffs/edit-staff/${id}`,
       formData
     );
     if (response.statusText === "OK") {
