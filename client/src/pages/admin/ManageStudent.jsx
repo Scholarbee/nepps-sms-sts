@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
 import { deleteStudent, getStudents } from "../../redux/admin/adminAtion";
+import { ClipLoader } from "react-spinners";
 
 function ManageStudent() {
   const [students, setStudents] = useState([]);
@@ -35,7 +36,7 @@ function ManageStudent() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   //   const [searchResults, setSearchResults] = useState([]);
-  // const [students, setStudents] = useState(studentsData);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     showStudents();
@@ -53,13 +54,16 @@ function ManageStudent() {
   };
 
   const handleDelete = async (id) => {
+    setLoading(true);
     try {
       await deleteStudent(id);
       showStudents();
       toast.info(`Student has been removed successfully.`);
+      setLoading(false);
     } catch (error) {
       // console.log(error.response.data.message);
       toast.error(error.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -281,10 +285,15 @@ function ManageStudent() {
                             </Tooltip>
                             <Tooltip title="Delete">
                               <IconButton
+                                disabled={loading}
                                 onClick={() => handleDelete(student._id)}
                                 color="secondary"
                               >
-                                <DeleteIcon />
+                                {loading ? (
+                                  <ClipLoader size={20} color="white" />
+                                ) : (
+                                  <DeleteIcon />
+                                )}
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Info">

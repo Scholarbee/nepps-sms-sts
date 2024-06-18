@@ -102,6 +102,7 @@ export const deleteStudent = async (id) => {
   }
 };
 
+
 /**
  * Get all staffs
  */
@@ -167,6 +168,27 @@ export const updateStaff = async (id, formData) => {
     );
     if (response.statusText === "OK") {
       toast.success("Student updated successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Deleted staff
+ */
+export const deleteStaff = async (id) => {
+  try {
+    const response = axios.delete(
+      `${BACKEND_URL}/api/staffs/delete-staff/${id}`
+    );
+    if (response.statusText === "OK") {
+      toast.success("staff updated successfully.");
     }
     return response;
   } catch (error) {

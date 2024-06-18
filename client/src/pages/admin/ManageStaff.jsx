@@ -27,7 +27,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
-import { getStaffs, getStudents } from "../../redux/admin/adminAtion";
+import {
+  deleteStaff,
+  getStaffs,
+  getStudents,
+} from "../../redux/admin/adminAtion";
+import { ClipLoader } from "react-spinners";
 
 function ManageStaff() {
   const [staffs, setStaffs] = useState([]);
@@ -35,7 +40,7 @@ function ManageStaff() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   //   const [searchResults, setSearchResults] = useState([]);
-  // const [students, setStudents] = useState(studentsData);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     showStaffs();
@@ -52,8 +57,18 @@ function ManageStaff() {
     navigate(`/staffs/edit-staff/${id}`);
   };
 
-  const handleDelete = (id) => {
-    toast.info(`This action is under review`);
+  const handleDelete = async (id) => {
+    setLoading(true);
+    try {
+      await deleteStaff(id);
+      showStaffs();
+      toast.info(`Staff has been removed successfully.`);
+      setLoading(false);
+    } catch (error) {
+      // console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
   };
 
   const handleInfo = (id) => {
@@ -265,10 +280,15 @@ function ManageStaff() {
                             </Tooltip>
                             <Tooltip title="Delete">
                               <IconButton
+                                disabled={loading}
                                 onClick={() => handleDelete(staff._id)}
                                 color="secondary"
                               >
-                                <DeleteIcon />
+                                {loading ? (
+                                  <ClipLoader size={20} color="white" />
+                                ) : (
+                                  <DeleteIcon />
+                                )}
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Info">

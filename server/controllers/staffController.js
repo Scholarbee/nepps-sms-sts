@@ -151,15 +151,31 @@ exports.editStaff = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-// Add staff
+// Delete staff
 exports.deleteStaff = expressAsyncHandler(async (req, res, next) => {
-  res.send("Staff deleted");
+  const studentDeleted = await Staff.findByIdAndDelete(req.params.id);
+  // console.log(staffDeleted);
+  if (staffDeleted) {
+    if (staffDeleted.image.public_id) {
+      const imgDeleted = await cloudinary.deleteOldImage(
+        staffDeleted.image.public_id
+      );
+    }
+    res.status(200).json({
+      success: true,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
-// Add staff
+
+// suspended staff
 exports.suspendStaff = expressAsyncHandler(async (req, res, next) => {
   res.send("Staff suspended");
 });
-// Add Student
+
+// activated Student
 exports.activateStaff = expressAsyncHandler(async (req, res, next) => {
   res.send("Staff activated");
 });
@@ -188,7 +204,7 @@ exports.getStaff = expressAsyncHandler(async (req, res, next) => {
  * Get all staffs
  */
 exports.getStaffs = expressAsyncHandler(async (req, res, next) => {
-  const staffs = await Staff.find({}).sort("-createdAt");;
+  const staffs = await Staff.find({}).sort("-createdAt");
   // const staffs = await Staff.find({}, "-user.password");
 
   if (staffs) {
