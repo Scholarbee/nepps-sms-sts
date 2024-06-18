@@ -27,10 +27,10 @@ const feeSchema = mongoose.Schema(
     },
     bills: [
       {
-        // createdBy: {
-        //   type: mongoose.Schema.Types.ObjectId,
-        //   ref: "Staff",
-        // },
+        createdBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Staff",
+        },
         desc: { type: String },
         amount: { type: Number },
         createdAt: { type: Date, default: Date.now },
@@ -46,6 +46,8 @@ const feeSchema = mongoose.Schema(
         amount: { type: Number },
         phone: { type: String },
         email: { type: String },
+        address: { type: String },
+        paymentDate: { type: Date, default: Date.now },
         createdAt: { type: Date, default: Date.now },
       },
     ],

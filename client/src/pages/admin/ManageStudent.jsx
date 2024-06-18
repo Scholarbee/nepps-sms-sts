@@ -27,7 +27,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
-import { getStudents } from "../../redux/admin/adminAtion";
+import { deleteStudent, getStudents } from "../../redux/admin/adminAtion";
 
 function ManageStudent() {
   const [students, setStudents] = useState([]);
@@ -52,9 +52,15 @@ function ManageStudent() {
     navigate(`/students/edit-student/${id}`);
   };
 
-  const handleDelete = (id) => {
-    toast.info(`This action is under review`);
-    // setStudents(students.filter((student) => student.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await deleteStudent(id);
+      showStudents();
+      toast.info(`Student has been removed successfully.`);
+    } catch (error) {
+      // console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+    }
   };
 
   const handleInfo = (id) => {

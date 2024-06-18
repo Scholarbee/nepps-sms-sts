@@ -82,6 +82,27 @@ export const updateStudent = async (id, formData) => {
 };
 
 /**
+ * Deleted student
+ */
+export const deleteStudent = async (id) => {
+  try {
+    const response = axios.delete(
+      `${BACKEND_URL}/api/students/delete-student/${id}`
+    );
+    if (response.statusText === "OK") {
+      toast.success("Student updated successfully.");
+    }
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
  * Get all staffs
  */
 export const getStaffs = async () => {
@@ -102,9 +123,7 @@ export const getStaffs = async () => {
  */
 export const getStaff = async (id) => {
   try {
-    const response = await axios.get(
-      `${BACKEND_URL}/api/staffs/staff/${id}`
-    );
+    const response = await axios.get(`${BACKEND_URL}/api/staffs/staff/${id}`);
     return response;
   } catch (error) {
     const message =

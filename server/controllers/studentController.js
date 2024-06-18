@@ -107,27 +107,24 @@ exports.addStudent = expressAsyncHandler(async (req, res, next) => {
     user: { id: studentId, password: studentId },
   });
 
-  //
-  // const c = await Class.findById(classId);
+  const c = await Class.findById(classId);
 
-  // let fees = 0;
-  // if (student.residency == "Day") {
-  //   fees = c.fees.day;
-  // } else {
-  //   fees = c.fees.boarder;
-  // }
+  let bills = [];
+  if (student.residency == "Day") {
+    bills.push({ desc: "Admission Fees", amount: c.admissionFee });
+  } else {
+    bills.push({ desc: "Admission Fee", amount: c.admissionFee });
+    bills.push({ desc: "Boarding Fee", amount: c.boardingFee });
+  }
 
-  //
-  // const fee = await Fee.create({
-  //   studentId: student._id,
-  //   term: "1",
-  //   year: "2024",
-  //   bills: { desc: "School Fees", amount: fees },
-  // });
+  const fee = await Fee.create({
+    studentId: student._id,
+    term: "1",
+    year: "2024",
+    bills,
+  });
 
-  //
-
-  if (student) {
+  if (student && fee) {
     res.status(201).json({
       success: true,
       student,
@@ -232,7 +229,21 @@ exports.editStudent = expressAsyncHandler(async (req, res, next) => {
 
 // Delete Student
 exports.deleteStudent = expressAsyncHandler(async (req, res, next) => {
-  res.send("Student deleted");
+  const studentDeleted = await Student.findByIdAndDelete(req.params.id);
+  // console.log(studentDeleted);
+  if (studentDeleted) {
+    if (studentDeleted.image.public_id) {
+      const imgDeleted = await cloudinary.deleteOldImage(
+        studentDeleted.image.public_id
+      );
+    }
+    res.status(200).json({
+      success: true,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
 });
 
 // suspended Student
