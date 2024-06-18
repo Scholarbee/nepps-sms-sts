@@ -53,22 +53,24 @@ function ManageStudent() {
   };
 
   const handleDelete = (id) => {
-    setStudents(students.filter((student) => student.id !== id));
+    toast.info(`This action is under review`);
+    // setStudents(students.filter((student) => student.id !== id));
   };
 
   const handleInfo = (id) => {
-    navigate(`/students/get-student-info/${id}`);
+    toast.info(`This action is under review`);
+    // navigate(`/students/get-student-info/${id}`);
   };
 
   const handleSuspend = (id) => {
     // Implement suspend logic here
-    toast.success(`Student with ID ${id} has been suspended.`);
+    toast.info(`This action is under review`);
     // console.log(`Student with ID ${id} has been suspended.`);
   };
 
   const handleArchive = (id) => {
     // Implement archive logic here
-    toast.success(`Student with ID ${id} has been archived.`);
+    toast.info(`This action is under review`);
     // console.log(`Student with ID ${id} has been archived.`);
   };
 
