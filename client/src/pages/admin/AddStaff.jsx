@@ -92,7 +92,7 @@ function AddStaff() {
             textAlign: "center",
           }}
         >
-          <h1>Add Student</h1>
+          <h1>Add Staff</h1>
         </Box>
         <Box sx={{ width: "100%" }}>
           <Box>
