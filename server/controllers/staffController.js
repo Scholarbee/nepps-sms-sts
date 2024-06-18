@@ -188,7 +188,7 @@ exports.getStaff = expressAsyncHandler(async (req, res, next) => {
  * Get all staffs
  */
 exports.getStaffs = expressAsyncHandler(async (req, res, next) => {
-  const staffs = await Staff.find({});
+  const staffs = await Staff.find({}).sort("-createdAt");;
   // const staffs = await Staff.find({}, "-user.password");
 
   if (staffs) {
