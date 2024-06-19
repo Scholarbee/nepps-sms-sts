@@ -31,6 +31,7 @@ function CurrentBill() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [_class, setClass] = useState("");
 
   useEffect(() => {
     showCurrentBill();
@@ -39,10 +40,11 @@ function CurrentBill() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      // console.log(data.currentBill.studentId);
+      console.log(data.currentBill.studentId);
       setCurrentBill(data.currentBill.bills);
       setImage(data.currentBill.studentId.image.url);
       setStudentId(data.currentBill.studentId.user.id);
+      setClass(data.currentBill.studentId.classId.className);
       setName(
         `${data.currentBill.studentId.firstName} ${data.currentBill.studentId.surname}`
       );
@@ -86,6 +88,11 @@ function CurrentBill() {
           <Chip
             // avatar={<Avatar alt="I D" src="/me1.jpg" />}
             label={`ID: ${studentId}`}
+            variant="outlined"
+          />
+          <Chip
+            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
+            label={`Class: ${_class}`}
             variant="outlined"
           />
         </Box>

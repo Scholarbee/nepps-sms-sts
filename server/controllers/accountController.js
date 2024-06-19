@@ -8,14 +8,15 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
   const currentBill = await Fee.findOne({
     studentId: req.params.id,
     isActive: true,
-  }).populate("studentId");
-  // .populate({
-  //   path: "studentId",
-  //   populate: {
-  //     path: "classId",
-  //     model: "Class", // Assuming Class is your Mongoose model
-  //   },
-  // });
+  })
+    .populate("studentId")
+    .populate({
+      path: "studentId",
+      populate: {
+        path: "classId",
+        model: "Class", // Assuming Class is your Mongoose model
+      },
+    });
   if (currentBill) {
     res.status(200).json({
       success: true,
