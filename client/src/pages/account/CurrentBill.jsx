@@ -28,7 +28,9 @@ import { useParams } from "react-router-dom";
 function CurrentBill() {
   const { id } = useParams();
   const [currentBill, setCurrentBill] = useState([]);
-  const [student, setStudent] = useState();
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [studentId, setStudentId] = useState("");
 
   useEffect(() => {
     showCurrentBill();
@@ -37,9 +39,13 @@ function CurrentBill() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      console.log(data.currentBill);
+      // console.log(data.currentBill.studentId);
       setCurrentBill(data.currentBill.bills);
-      setStudent(data.currentBill.studentId);
+      setImage(data.currentBill.studentId.image.url);
+      setStudentId(data.currentBill.studentId.user.id);
+      setName(
+        `${data.currentBill.studentId.firstName} ${data.currentBill.studentId.surname}`
+      );
     } catch (error) {
       console.log(error.response);
     }
@@ -65,7 +71,7 @@ function CurrentBill() {
             Current Bill
           </Typography>
         </Box>
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -73,16 +79,16 @@ function CurrentBill() {
           }}
         >
           <Chip
-            // avatar={<Avatar alt="" src={student.image.url} />}
-            label={`${student.firstName} ${student.surname}`}
+            avatar={<Avatar alt="" src={image} />}
+            label={name}
             variant="outlined"
           />
           <Chip
             // avatar={<Avatar alt="I D" src="/me1.jpg" />}
-            label={`ID: ${student.user.id}`}
+            label={`ID: ${studentId}`}
             variant="outlined"
           />
-        </Box> */}
+        </Box>
         <Grid
           container
           sx={{
