@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import {
   Avatar,
@@ -22,30 +22,29 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.common.white,
-    fontWeight: "bold",
-    fontSize: "18px",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import { getCurrentBill } from "../../redux/account/accountActions";
+import { useParams } from "react-router-dom";
 
 function CurrentBill() {
+  const { id } = useParams();
+  const [currentBill, setCurrentBill] = useState([]);
+  const [student, setStudent] = useState();
+
+  useEffect(() => {
+    showCurrentBill();
+  }, []);
+
+  const showCurrentBill = async () => {
+    try {
+      const { data } = await getCurrentBill(id);
+      console.log(data.currentBill);
+      setCurrentBill(data.currentBill.bills);
+      setStudent(data.currentBill.studentId);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -74,13 +73,13 @@ function CurrentBill() {
           }}
         >
           <Chip
-            avatar={<Avatar alt="" src="/me.jpg" />}
-            label="Scholar Bee"
+            avatar={<Avatar alt="" src={student.image.url} />}
+            label={`${student.firstName} ${student.surname}`}
             variant="outlined"
           />
           <Chip
             // avatar={<Avatar alt="I D" src="/me1.jpg" />}
-            label="ID: NEPPS5051241"
+            label={`ID: ${student.user.id}`}
             variant="outlined"
           />
         </Box>
@@ -130,81 +129,35 @@ function CurrentBill() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <StyledTableRow>
-                    <StyledTableCell>1</StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      School fees
-                    </StyledTableCell>
-                    <StyledTableCell>200</StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Tooltip title="Edit">
-                        <IconButton
-                          //   onClick={() => handleEdit(student.id)}
-                          color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          //   onClick={() => handleDelete(student.id)}
-                          color="secondary"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>2</StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      Books
-                    </StyledTableCell>
-                    <StyledTableCell>650</StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Tooltip title="Edit">
-                        <IconButton
-                          //   onClick={() => handleEdit(student.id)}
-                          color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          //   onClick={() => handleDelete(student.id)}
-                          color="secondary"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell>3</StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      Extra Classes Fees
-                    </StyledTableCell>
-                    <StyledTableCell>150</StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Tooltip title="Edit">
-                        <IconButton
-                          //   onClick={() => handleEdit(student.id)}
-                          color="primary"
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          //   onClick={() => handleDelete(student.id)}
-                          color="secondary"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  {currentBill.map((bill, i) => {
+                    return (
+                      <StyledTableRow key={bill._id}>
+                        <StyledTableCell>{i + 1}</StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          {bill.desc}
+                        </StyledTableCell>
+                        <StyledTableCell>{bill.amount}</StyledTableCell>
+                        <StyledTableCell align="right">
+                          <Tooltip title="Edit">
+                            <IconButton
+                              //   onClick={() => handleEdit(student.id)}
+                              color="primary"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              //   onClick={() => handleDelete(student.id)}
+                              color="secondary"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -216,3 +169,25 @@ function CurrentBill() {
 }
 
 export default CurrentBill;
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.common.white,
+    fontWeight: "bold",
+    fontSize: "18px",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

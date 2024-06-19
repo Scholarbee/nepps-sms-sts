@@ -35,7 +35,6 @@ function ManageStudent() {
   const [studentsData, setStudentsData] = useState([]);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  //   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

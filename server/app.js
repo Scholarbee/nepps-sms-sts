@@ -32,10 +32,12 @@ const userRouter = require("./routes/userRoutes");
 const studentRouter = require("./routes/studentRoutes");
 const staffRouter = require("./routes/staffRoutes");
 const adminRouter = require("./routes/adminRoutes");
+const accountRouter = require("./routes/accountRoutes");
 app.use("/api/users", userRouter);
 app.use("/api/students", studentRouter);
 app.use("/api/staffs", staffRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/account", accountRouter);
 
 // Error display format
 app.use(errorHandler);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   TextField,
@@ -15,48 +15,25 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import Navbar from "../../components/global/Navbar";
 import { useNavigate } from "react-router-dom";
-
-const studentsData = [
-  {
-    id: 1,
-    name: "Alicia Appiatu",
-    studentId: "S12345",
-    class: "Grade 5",
-    amountOwing: "150.00",
-    picture: "/me.jpg",
-  },
-  {
-    id: 2,
-    name: "Majid Mustapher",
-    studentId: "NEPPS12346",
-    class: "JHS 3",
-    amountOwing: "700.00",
-    picture: "",
-  },
-  {
-    id: 3,
-    name: "Isaac Appiatu",
-    studentId: "NEPPS12347",
-    class: "JHS 2",
-    amountOwing: "200.00",
-    picture: "",
-  },
-  {
-    id: 4,
-    name: "Anokye",
-    studentId: "NEPPS12348",
-    class: "JHS 1",
-    amountOwing: "800.00",
-    picture: "",
-  },
-  // Add more student data as needed
-];
+import { getStudents } from "../../redux/admin/adminAtion";
 
 function ManageFees() {
   const navigate = useNavigate();
+  const [students, setStudents] = useState([]);
+  const [studentsData, setStudentsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  //   const [searchResults, setSearchResults] = useState([]);
-  const [students, setStudents] = useState(studentsData);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    showStudents();
+  }, []);
+
+  const showStudents = async () => {
+    const { data } = await getStudents();
+    setStudents(data.students);
+    setStudentsData(data.students);
+    // console.log(data);
+  };
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -65,9 +42,11 @@ function ManageFees() {
     if (query) {
       const results = studentsData.filter(
         (student) =>
-          student.name.toLowerCase().includes(query) ||
-          student.studentId.toLowerCase().includes(query) ||
-          student.class.toLowerCase().includes(query)
+          student.firstName.toLowerCase().includes(query) ||
+          student.surname.toLowerCase().includes(query) ||
+          student.otherName.toLowerCase().includes(query) ||
+          student.user.id.toLowerCase().includes(query) ||
+          student.classId.className.toLowerCase().includes(query)
       );
       setStudents(results);
     } else {
@@ -124,24 +103,24 @@ function ManageFees() {
           }}
         >
           {students.map((student) => (
-            <Card key={student.id} sx={{ maxWidth: 650, width: "100%" }}>
+            <Card key={student._id} sx={{ maxWidth: 650, width: "100%" }}>
               <CardContent>
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "20px" }}
                 >
-                  <Avatar alt={student.name} src={student.picture} />
+                  <Avatar alt={student.name} src={student.image.url} sx={{ height: 100, width: 100 }} />
                   <Box sx={{ gap: "15px" }}>
                     <Typography variant="h6" sx={{ color: "darkblue" }}>
-                      {student.name}
+                      {`${student.firstName} ${student.otherName} ${student.surname}`}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Student ID: {student.studentId}
+                      Student ID: {student.user.id}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Class: {student.class}
+                      Class: {student.classId.className}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Amount Owing: {student.amountOwing}
+                      Amount Owing: {200}
                     </Typography>
                   </Box>
                 </Box>
@@ -159,7 +138,7 @@ function ManageFees() {
                     variant="outlined"
                     color="success"
                     onClick={() => {
-                      navigate(`/accounts/payment/${student.id}`);
+                      navigate(`/accounts/payment/${student._id}`);
                     }}
                     startIcon={<PaymentIcon />}
                   >
@@ -169,7 +148,7 @@ function ManageFees() {
                     variant="outlined"
                     color="primary"
                     onClick={() => {
-                      navigate(`/accounts/bills/${student.id}`);
+                      navigate(`/accounts/bills/${student._id}`);
                     }}
                     startIcon={<ReceiptIcon />}
                   >

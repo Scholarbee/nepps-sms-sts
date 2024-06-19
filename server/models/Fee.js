@@ -25,6 +25,11 @@ const feeSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
     bills: [
       {
         createdBy: {
