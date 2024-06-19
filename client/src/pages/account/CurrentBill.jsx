@@ -65,7 +65,7 @@ function CurrentBill() {
             Current Bill
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -73,7 +73,7 @@ function CurrentBill() {
           }}
         >
           <Chip
-            avatar={<Avatar alt="" src={student.image.url} />}
+            // avatar={<Avatar alt="" src={student.image.url} />}
             label={`${student.firstName} ${student.surname}`}
             variant="outlined"
           />
@@ -82,7 +82,7 @@ function CurrentBill() {
             label={`ID: ${student.user.id}`}
             variant="outlined"
           />
-        </Box>
+        </Box> */}
         <Grid
           container
           sx={{
