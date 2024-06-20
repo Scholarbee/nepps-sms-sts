@@ -1,5 +1,171 @@
 const expressAsyncHandler = require("express-async-handler");
 const Fee = require("../models/Fee");
+const Student = require("../models/Student");
+
+/**
+ *
+ */
+exports.GetFeeDetails = expressAsyncHandler(async (req, res, next) => {
+  //   const feeDetails = await Student.aggregate([
+  //     {
+  //       $lookup: {
+  //         from: "fees",
+  //         let: { studentId: "$_id" },
+  //         pipeline: [
+  //           {
+  //             $match: {
+  //               $expr: { $eq: ["$studentId", "$$studentId"] },
+  //               isActive: true, // Filter active fees
+  //             },
+  //           },
+  //           {
+  //             $unwind: "$bills", // Unwind the bills array
+  //           },
+  //         //   {
+  //         //     $unwind: "$paymentList", // Unwind the bills array
+  //         //   },
+  //           {
+  //             $group: {
+  //               _id: "$studentId",
+  //               totalPaid: { $sum: "$paymentList.amount" },
+  //               totalBills: { $sum: "$bills.amount" },
+  //               arrears: { $max: "$arrears" },
+  //               balance: { $max: "$balance" },
+  //               latestFee: { $last: "$$ROOT" }, // Optional: Get the latest fee document
+  //             },
+  //           },
+  //         ],
+  //         as: "feeDetails",
+  //       },
+  //     },
+  //     { $unwind: { path: "$feeDetails", preserveNullAndEmptyArrays: true } },
+  //     {
+  //       $lookup: {
+  //         from: "classes",
+  //         localField: "classId",
+  //         foreignField: "_id",
+  //         as: "classInfo",
+  //       },
+  //     },
+  //     { $unwind: { path: "$classInfo", preserveNullAndEmptyArrays: true } },
+  //     {
+  //       $project: {
+  //         _id: 1,
+  //         studentId: "$user.id",
+  //         name: { $concat: ["$firstName", " ", "$otherName", " ", "$surname"] },
+  //         image: "$image.url",
+  //         className: "$classInfo.className",
+  //         term: "$feeDetails.term",
+  //         year: "$feeDetails.year",
+  //         arrears: "$feeDetails.arrears",
+  //         balance: "$feeDetails.balance",
+  //         amountOwing: {
+  //           $subtract: ["$feeDetails.arrears", "$feeDetails.balance"],
+  //         },
+  //         totalPaid: "$feeDetails.totalPaid",
+  //         currentFees: "$feeDetails.totalBills",
+  //         amountToBePaid: {
+  //           $subtract: [
+  //             { $add: ["$feeDetails.totalBills", "$feeDetails.arrears"] },
+  //             "$feeDetails.balance",
+  //           ],
+  //         },
+  //         createdAt: 1,
+  //       },
+  //     },
+  //     { $sort: { createdAt: -1 } }, // Sort by createdAt field in descending order
+  //   ]);
+
+  const feeDetails = await Student.aggregate([
+    {
+      $lookup: {
+        from: "fees",
+        let: { studentId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$studentId", "$$studentId"] },
+              isActive: true, // Filter active fees
+            },
+          },
+          {
+            $project: {
+              term: 1,
+              year: 1,
+              arrears: 1,
+              balance: 1,
+              totalBills: { $sum: "$bills.amount" },
+              totalPaid: { $sum: "$paymentList.amount" },
+            },
+          },
+        ],
+        as: "feeDetails",
+      },
+    },
+    { $unwind: { path: "$feeDetails", preserveNullAndEmptyArrays: true } },
+    {
+      $lookup: {
+        from: "classes",
+        localField: "classId",
+        foreignField: "_id",
+        as: "classInfo",
+      },
+    },
+    { $unwind: { path: "$classInfo", preserveNullAndEmptyArrays: true } },
+    {
+      $project: {
+        _id: 1,
+        studentId: "$user.id",
+        name: {
+          $concat: [
+            "$firstName",
+            " ",
+            { $ifNull: ["$otherName", ""] },
+            " ",
+            "$surname",
+          ],
+        },
+        image: "$image.url",
+        className: "$classInfo.className",
+        term: "$feeDetails.term",
+        year: "$feeDetails.year",
+        arrears: "$feeDetails.arrears",
+        balance: "$feeDetails.balance",
+        totalPaid: "$feeDetails.totalPaid",
+        currentFees: "$feeDetails.totalBills",
+        amountOwing: {
+          $subtract: [
+            {
+              $subtract: [
+                { $add: ["$feeDetails.totalBills", "$feeDetails.arrears"] },
+                "$feeDetails.balance",
+              ],
+            },
+            "$feeDetails.totalPaid",
+          ],
+        },
+        amountToBePaid: {
+          $subtract: [
+            { $add: ["$feeDetails.totalBills", "$feeDetails.arrears"] },
+            "$feeDetails.balance",
+          ],
+        },
+        paymentList: "$feeDetails.paymentList",
+        createdAt: "$createdAt",
+      },
+    },
+  ]);
+
+  if (feeDetails) {
+    res.status(200).json({
+      success: true,
+      feeDetails,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
+});
 
 /**
  *
@@ -25,5 +191,32 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
   } else {
     res.status(500);
     throw new Error("Something went wrong, please try again.");
+  }
+});
+
+/**
+ *
+ */
+exports.addPayment = expressAsyncHandler(async (req, res, next) => {
+  const { email, address, amount, paidBy, paymentDate, phone } = req.body;
+  // console.log(req.body);
+  const fee = await Fee.findOneAndUpdate(
+    { studentId: req.params.id },
+    {
+      $push: {
+        paymentList: { email, address, amount, paidBy, paymentDate, phone },
+      },
+    },
+    { new: true }
+  );
+
+  if (fee) {
+    res.status(200).json({
+      success: true,
+      fee,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
   }
 });

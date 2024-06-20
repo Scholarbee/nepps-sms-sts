@@ -102,7 +102,6 @@ export const deleteStudent = async (id) => {
   }
 };
 
-
 /**
  * Get all staffs
  */

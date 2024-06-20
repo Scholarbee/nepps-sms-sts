@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   TextField,
@@ -15,24 +15,25 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import Navbar from "../../components/global/Navbar";
 import { useNavigate } from "react-router-dom";
-import { getStudents } from "../../redux/admin/adminAtion";
+import { GetFeeDetails } from "../../redux/account/accountActions";
 
 function ManageFees() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [studentsData, setStudentsData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     showStudents();
   }, []);
 
   const showStudents = async () => {
-    const { data } = await getStudents();
-    setStudents(data.students);
-    setStudentsData(data.students);
-    // console.log(data);
+    const { data } = await GetFeeDetails();
+    // const { data } = await getStudents();
+    setStudents(data.feeDetails);
+    setStudentsData(data.feeDetails);
+    console.log(data);
   };
 
   const handleSearch = (e) => {
@@ -42,11 +43,9 @@ function ManageFees() {
     if (query) {
       const results = studentsData.filter(
         (student) =>
-          student.firstName.toLowerCase().includes(query) ||
-          student.surname.toLowerCase().includes(query) ||
-          student.otherName.toLowerCase().includes(query) ||
-          student.user.id.toLowerCase().includes(query) ||
-          student.classId.className.toLowerCase().includes(query)
+          student.name.toLowerCase().includes(query) ||
+          student.studentId.toLowerCase().includes(query) ||
+          student.className.toLowerCase().includes(query)
       );
       setStudents(results);
     } else {
@@ -108,20 +107,57 @@ function ManageFees() {
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "20px" }}
                 >
-                  <Avatar alt={student.name} src={student.image.url} sx={{ height: 100, width: 100 }} />
+                  <Avatar
+                    alt={student.name}
+                    src={student.image}
+                    sx={{ height: 100, width: 100 }}
+                  />
                   <Box sx={{ gap: "15px" }}>
                     <Typography variant="h6" sx={{ color: "darkblue" }}>
-                      {`${student.firstName} ${student.otherName} ${student.surname}`}
+                      {student.name}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Student ID: {student.user.id}
+                      Student ID: {student.studentId}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Class: {student.classId.className}
+                      Class: {student.className}
+                    </Typography>
+                    {student.arrears > 0 && (
+                      <Typography variant="body2" color="textSecondary">
+                        Arrears: {student.arrears}
+                      </Typography>
+                    )}
+                    {student.balance > 0 && (
+                      <Typography variant="body2" color="textSecondary">
+                        Prev. Balance:{" "}
+                        {"¢ " + parseFloat(student.balance).toFixed(2)}
+                      </Typography>
+                    )}
+                    <Typography variant="body2" color="textSecondary">
+                      Term Fee:{" "}
+                      {"¢ " + parseFloat(student.currentFees).toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Amount Owing: {200}
+                      Amount To Be Paid:{" "}
+                      {"¢" + parseFloat(student.amountToBePaid).toFixed(2)}
                     </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Amount Paid:{" "}
+                      {"¢ " + parseFloat(student.totalPaid).toFixed(2)}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Amount owing:{" "}
+                      {student.amountOwing > 0
+                        ? "¢ " + parseFloat(student.amountOwing).toFixed(2)
+                        : "0.00"}
+                    </Typography>
+                    {student.amountOwing < 0 && (
+                      <Typography variant="body2" color="textSecondary">
+                        Balance:{" "}
+                        {student.amountOwing < 0 &&
+                          "¢ " + parseFloat(-student.amountOwing).toFixed(2)}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
                 <Divider sx={{ marginY: "15px" }} />

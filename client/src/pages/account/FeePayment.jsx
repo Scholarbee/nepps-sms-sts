@@ -15,13 +15,17 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import InfoIcon from "@mui/icons-material/Money";
 import { toast } from "react-toastify";
+import { addPayment } from "../../redux/account/accountActions";
+import { useNavigate, useParams } from "react-router-dom";
 
 function FeePayment() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [amount, setAmount] = useState();
-  // const [date, setDate] = useState("")
+  const [amount, setAmount] = useState("");
+  const [paymentDate, setPaymentDate] = useState("");
   const [phone, setPhone] = useState("");
   const [active, setActive] = useState(true);
 
@@ -37,10 +41,25 @@ function FeePayment() {
     }
   };
 
-  const handlePayment = () => {
-    toast.success(
-      `An amount of $${amount} has been paid successfully by ${name}`
-    );
+  const formData = {
+    paidBy: name,
+    email,
+    address,
+    amount,
+    paymentDate,
+    phone,
+  };
+
+  const handlePayment = async () => {
+    try {
+      await addPayment(id, formData);
+      toast.success(
+        `An amount of ¢${amount} has been paid successfully by ${name}`
+      );
+      navigate("/accounts");
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   const handleBill = () => {
     toast.success("Hey there, Here is your bill");
@@ -102,7 +121,6 @@ function FeePayment() {
             xs={12}
             md={8}
             sx={{
-             
               padding: 2,
             }}
           >
@@ -183,6 +201,10 @@ function FeePayment() {
               <Box
                 component="input"
                 type="date"
+                value={paymentDate}
+                onChange={(e) => {
+                  setPaymentDate(e.target.value);
+                }}
                 // label="Date"
                 sx={{
                   padding: "10px 10px",

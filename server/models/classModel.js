@@ -28,39 +28,7 @@ const classSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    // boardingBills: [
-    //   {
-    //     createdBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "Staff",
-    //     },
-    //     desc: { type: String },
-    //     amount: { type: Number },
-    //     createdAt: { type: Date, default: Date.now },
-    //   },
-    // ],
-    // dayBills: [
-    //   {
-    //     createdBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "Staff",
-    //     },
-    //     desc: { type: String },
-    //     amount: { type: Number },
-    //     createdAt: { type: Date, default: Date.now },
-    //   },
-    // ],
-    // generalBills: [
-    //   {
-    //     createdBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: "Staff",
-    //     },
-    //     desc: { type: String },
-    //     amount: { type: Number },
-    //     createdAt: { type: Date, default: Date.now },
-    //   },
-    // ],
+
     classRep: {
       type: mongoose.Schema.Types.ObjectId,
       // required: true,
