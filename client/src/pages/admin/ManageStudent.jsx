@@ -55,7 +55,7 @@ function ManageStudent() {
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-      await deleteStudent(id);
+      // await deleteStudent(id);
       showStudents();
       toast.info(`Student has been removed successfully.`);
       setLoading(false);
