@@ -52,13 +52,16 @@ function FeePayment() {
 
   const handlePayment = async () => {
     try {
-      await addPayment(id, formData);
-      toast.success(
-        `An amount of ¢${amount} has been paid successfully by ${name}`
-      );
-      navigate("/accounts");
+      let isConfirm = window.confirm("Please confirm payment.");
+      if (isConfirm) {
+        await addPayment(id, formData);
+        toast.success(
+          `An amount of ¢${amount} has been paid successfully by ${name}`
+        );
+        navigate("/accounts");
+      }
     } catch (error) {
-      console.log(error.response);
+      console.log(error.responsedata.message);
     }
   };
   const handleBill = () => {
