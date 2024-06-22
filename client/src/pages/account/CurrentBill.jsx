@@ -50,7 +50,7 @@ function CurrentBill() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      console.log(data.currentBill.studentId);
+      // console.log(data.currentBill.studentId);
       setCurrentBill(data.currentBill.bills);
       setImage(data.currentBill.studentId.image.url);
       setStudentId(data.currentBill.studentId.user.id);
@@ -59,7 +59,9 @@ function CurrentBill() {
         `${data.currentBill.studentId.firstName} ${data.currentBill.studentId.surname}`
       );
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
+      toast.error(error.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -73,9 +75,10 @@ function CurrentBill() {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      toast.error(error.response.data.message);
       setLoading(false);
-      setOpen(false);
+      // setOpen(false);
     }
   };
 

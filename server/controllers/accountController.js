@@ -226,6 +226,10 @@ exports.addPayment = expressAsyncHandler(async (req, res, next) => {
  */
 exports.addBill = expressAsyncHandler(async (req, res, next) => {
   const { desc, amount } = req.body;
+    if (!desc || !amount) {
+      res.status(404);
+      throw new Error("All fields are required.");
+  }
   // console.log(req.body);
   const fee = await Fee.findOneAndUpdate(
     { studentId: req.params.id, isActive: true },
