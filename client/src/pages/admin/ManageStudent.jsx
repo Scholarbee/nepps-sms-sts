@@ -370,7 +370,7 @@ function ManageStudent() {
                   // display: "flex",
                   border: "1px solid",
                   // borderRadius: 5,
-                  margin: 1,
+                  margin: "20px 0px",
                   minHeight: 600,
                   // flexDirection: "column",
                   // justifyContent: "center",
