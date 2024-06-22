@@ -148,10 +148,13 @@ function UpdateStudent() {
     formData.append("emergencyContactPhone", emergencyContactPhone);
     formData.append("emergencyContactOccupation", emergencyContactOccupation);
     try {
-      await updateStudent(id, formData);
-      console.log(formData);
-      toast.success("Student record updated successfully.");
-      navigate("/students");
+      let isConfirm = window.confirm("Please confirm Action.");
+      if (isConfirm) {
+        await updateStudent(id, formData);
+        console.log(formData);
+        toast.success("Student record updated successfully.");
+        navigate("/students");
+      }
     } catch (error) {
       toast.error(error.response.data.message);
       setLoading(false);

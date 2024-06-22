@@ -109,10 +109,13 @@ function AddStudent() {
     formData.append("emergencyContactPhone", emergencyContactPhone);
     formData.append("emergencyContactOccupation", emergencyContactOccupation);
     try {
-      await addStudent(formData);
-      // console.log(formData);
-      toast.success("Student added successfully.");
-      navigate("/students");
+      let isConfirm = window.confirm("Please confirm action.");
+      if (isConfirm) {
+        await addStudent(formData);
+        // console.log(formData);
+        toast.success("Student added successfully.");
+        navigate("/students");
+      }
     } catch (error) {
       // console.log(error.response.data.message);
       toast.error(error.response.data.message);

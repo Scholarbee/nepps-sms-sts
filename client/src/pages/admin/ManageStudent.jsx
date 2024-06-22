@@ -29,6 +29,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
 import { deleteStudent, getStudents } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
+import Loader from "../../components/global/Loader";
 
 function ManageStudent() {
   const [students, setStudents] = useState([]);
@@ -36,16 +37,25 @@ function ManageStudent() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     showStudents();
   }, []);
 
   const showStudents = async () => {
-    const { data } = await getStudents();
-    setStudents(data.students);
-    setStudentsData(data.students);
-    // console.log(data);
+    try {
+      setPageLoading(true);
+      const { data } = await getStudents();
+      setStudents(data.students);
+      setStudentsData(data.students);
+      console.log(data);
+      setPageLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setLoading(false);
+      setPageLoading(false);
+    }
   };
 
   const handleEdit = (id) => {
@@ -105,6 +115,9 @@ function ManageStudent() {
   return (
     <>
       <Navbar />
+      {pageLoading ? (
+        <Loader />
+      ) : (
       <section>
         <Box
           sx={{
@@ -352,6 +365,7 @@ function ManageStudent() {
           </Grid>
         </Grid>
       </section>
+      )}
     </>
   );
 }

@@ -47,10 +47,13 @@ function AddStaff() {
     formData.append("address", address);
     formData.append("religion", religion);
     try {
-      await addStaff(formData);
-      // console.log(formData);
-      toast.success("Staff added successfully.");
-      navigate("/staffs");
+      let con = window.confirm("Please confirm action.");
+      if (con) {
+        await addStaff(formData);
+        // console.log(formData);
+        toast.success("Staff added successfully.");
+        navigate("/staffs");
+      }
     } catch (error) {
       // console.log(error.response.data.message);
       toast.error(error.response.data.message);
