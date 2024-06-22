@@ -25,6 +25,7 @@ import {
   tableCellClasses,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import PrintIcon from "@mui/icons-material/Print";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -33,12 +34,15 @@ import {
   editBill,
   getCurrentBill,
 } from "../../redux/account/accountActions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import moment from "moment";
+import Receipt from "../../components/global/Receipt";
 
-function CurrentBill() {
+function FeePaymentList() {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [currentBill, setCurrentBill] = useState([]);
+  const [paymnets, setPayments] = useState([]);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -58,8 +62,8 @@ function CurrentBill() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      console.log(data);
-      setCurrentBill(data.currentBill.bills);
+      // console.log(data.currentBill);
+      setPayments(data.currentBill.paymentList);
       setImage(data.currentBill.studentId.image.url);
       setFeeId(data.currentBill._id);
       setStudentId(data.currentBill.studentId.user.id);
@@ -74,23 +78,8 @@ function CurrentBill() {
     }
   };
 
-  const handleAddBill = async () => {
-    setLoading(true);
-    try {
-      let con = window.confirm("Please confirm action.");
-      if (con) {
-        await addBill(id, { desc, amount });
-        await showCurrentBill();
-        toast.info("Bill added successfully");
-      }
-      setOpen(false);
-      setEdit(false);
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
+  const handleAddPayment = async () => {
+    navigate("/accounts/payment/"+id);
   };
   const handleEditBill = async () => {
     setLoading(true);
@@ -111,12 +100,12 @@ function CurrentBill() {
     }
   };
 
-  const handleDeleteBill = async (billId) => {
+  const handleDeletePayment = async (billId) => {
     setLoading(true);
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await delBill(feeId, billId);
+        // await delBill(feeId, billId);
         await showCurrentBill();
         toast.info("Bill deleted successfully");
       }
@@ -145,7 +134,7 @@ function CurrentBill() {
             variant="h4"
             sx={{ color: "darkblue", fontWeight: "bolder" }}
           >
-            Current Bill
+            Payment List
           </Typography>
         </Box>
         <Box
@@ -200,158 +189,99 @@ function CurrentBill() {
                 startIcon={<AddIcon />}
                 // sx={{ width: { xs: "100%", sm: "auto" } }}
                 onClick={() => {
-                  setEdit(false);
-                  setDesc("");
-                  setAmount("");
-                  setOpen(true);
+                  handleAddPayment();
                 }}
               >
                 New
               </Button>
             </Box>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Sn</StyledTableCell>
-                    <StyledTableCell>Description</StyledTableCell>
-                    <StyledTableCell>Amount</StyledTableCell>
-                    <StyledTableCell align="right">Actions</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentBill.map((bill, i) => {
-                    return (
-                      <StyledTableRow key={bill._id}>
-                        <StyledTableCell>{i + 1}</StyledTableCell>
-                        <StyledTableCell component="th" scope="row">
-                          {bill.desc}
-                        </StyledTableCell>
-                        <StyledTableCell>{bill.amount}</StyledTableCell>
-                        <StyledTableCell align="right">
-                          <Tooltip title="Edit">
-                            <IconButton
-                              onClick={() => {
-                                setEdit(true);
-                                setOpen(true);
-                                setAmount(bill.amount);
-                                setDesc(bill.desc);
-                                setEditId(bill._id);
-                              }}
-                              color="primary"
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Delete">
+            {paymnets.length > 0 ? (
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Sn</StyledTableCell>
+                      <StyledTableCell>Paid By</StyledTableCell>
+                      <StyledTableCell>Amount</StyledTableCell>
+                      <StyledTableCell>Date</StyledTableCell>
+                      <StyledTableCell>Received By</StyledTableCell>
+                      <StyledTableCell align="right">Actions</StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {paymnets.map((payment, i) => {
+                      return (
+                        <StyledTableRow key={payment._id}>
+                          <StyledTableCell>{i + 1}</StyledTableCell>
+                          <StyledTableCell component="th" scope="row">
+                            {payment.paidBy}
+                          </StyledTableCell>
+                          <StyledTableCell>{payment.amount}</StyledTableCell>
+                          <StyledTableCell>
+                            {moment(payment.paymentDate).format(
+                              "MMMM DD, yyyy"
+                            )}
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            {payment.receivedBy}
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            <Tooltip title="Print">
+                              <IconButton
+                                //   onClick={() => {
+                                //     setEdit(true);
+                                //     setOpen(true);
+                                //     setAmount(payment.amount);
+                                //     setDesc(payment.desc);
+                                //     setEditId(payment._id);
+                                //   }}
+                                color="primary"
+                              >
+                                <PrintIcon />
+                              </IconButton>
+                            </Tooltip>
+                            {/* <Tooltip title="Delete">
                             <IconButton
                               disabled={loading}
-                              onClick={() => handleDeleteBill(bill._id)}
+                              onClick={() => handleDeletePayment(payment._id)}
                               color="secondary"
                             >
                               <DeleteIcon />
                             </IconButton>
-                          </Tooltip>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                          </Tooltip> */}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <h1 style={{ textAlign: "center" }}>No payment made.</h1>
+            )}
           </Grid>
         </Grid>
       </section>
-      <Box>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={open}
-          onClose={() => setOpen(false)}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
-          }}
-        >
-          <Fade in={open}>
-            <Box sx={style}>
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  borderBottom: "4px solid darkblue",
-                  fontSize: 25,
-                  fontWeight: "bolder",
-                  color: "darkblue",
-                }}
-                id="transition-modal-title"
-                variant="h5"
-                component="h2"
-              >
-                {edit ? "Edit Bill" : "Add Bill"}
-              </Typography>
-
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                onChange={(e) => setDesc(e.target.value)}
-                id="desc"
-                label="Description"
-                value={desc}
-                name="desc"
-                autoComplete="desc"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                id="amount"
-                label="Amount"
-                name="amount"
-                autoComplete="amount"
-              />
-              <Stack sx={{ margin: "20px 0 0 0" }}>
-                <Button
-                  variant="contained"
-                  disabled={loading}
-                  onClick={() => {
-                    edit ? handleEditBill() : handleAddBill();
-                  }}
-                >
-                  {loading
-                    ? "Processing..."
-                    : edit
-                    ? "Save Changes"
-                    : "Add Bill"}
-                </Button>
-              </Stack>
-            </Box>
-          </Fade>
-        </Modal>
-      </Box>
+      {/* <div>
+        <Receipt receiptData={receiptData} />
+      </div> */}
     </>
   );
 }
 
-export default CurrentBill;
+export default FeePaymentList;
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  padding: 4,
-};
+// const receiptData = {
+//   studentId: "12345",
+//   name: "John Doe",
+//   className: "Class A",
+//   term: "1",
+//   year: "2024",
+//   amountOwing: 1000,
+//   totalPaid: 500,
+//   currentFees: 1500,
+//   amountToBePaid: 2000,
+// };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

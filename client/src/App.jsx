@@ -24,6 +24,7 @@ import ManageClass from "./pages/admin/class/ManageClass";
 import AddClass from "./pages/admin/class/AddClass";
 import UpdateClass from "./pages/admin/class/UpdateClass";
 import GetClass from "./pages/admin/class/GetClass";
+import FeePaymentList from "./pages/account/FeePaymentList";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           {/* Account */}
           <Route path="/accounts" Component={ManageFees}></Route>
           <Route path="/accounts/payment/:id" Component={FeePayment}></Route>
+          <Route path="/accounts/payment-list/:id" Component={FeePaymentList}></Route>
           <Route path="/accounts/bills/:id" Component={CurrentBill}></Route>
 
           {/* Examination */}

@@ -34,7 +34,7 @@ function FeePayment() {
   });
 
   const handleValidation = () => {
-    if (!name || !phone || !address || !amount) {
+    if (!name || !phone || !address || !amount || !paymentDate) {
       setActive(true);
     } else {
       setActive(false);
@@ -68,7 +68,7 @@ function FeePayment() {
     toast.success("Hey there, Here is your bill");
   };
   const handleHistory = () => {
-    toast.success("Hey there, Here is your payment history");
+    navigate("/accounts/payment-list/" + id);
   };
 
   return (
