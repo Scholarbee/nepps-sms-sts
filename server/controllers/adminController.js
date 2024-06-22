@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 // const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const Class = require("../models/classModel");
+const Student = require("../models/Student");
 // const Class = require("../models/CLass");
 // const sendEmail = require("../utils/sendEmail");
 
@@ -126,6 +127,67 @@ exports.getClasses = expressAsyncHandler(async (req, res, next) => {
     res.status(200).json({
       success: true,
       classes,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
+});
+
+//
+exports.getStudentCounts = expressAsyncHandler(async (req, res, next) => {
+  const studentCounts = await Student.aggregate([
+    {
+      $group: {
+        _id: "$classId", // Group by classId
+        studentCount: { $sum: 1 }, // Count the number of students in each class
+      },
+    },
+    {
+      $lookup: {
+        from: "classes",
+        localField: "_id",
+        foreignField: "_id",
+        as: "classInfo",
+      },
+    },
+    { $unwind: "$classInfo" },
+    {
+      $project: {
+        _id: 0,
+        classId: "$_id",
+        className: "$classInfo.className",
+        studentCount: 1,
+      },
+    },
+    {
+      $facet: {
+        classCounts: [
+          // First facet for individual class counts
+          { $project: { classId: 1, className: 1, studentCount: 1 } },
+          { $sort: { className: 1 } }, // Sort by className in ascending order
+        ],
+        totalCount: [
+          // Second facet for total student count
+          {
+            $group: {
+              _id: null,
+              totalStudents: { $sum: "$studentCount" },
+            },
+          },
+          {
+            $project: { _id: 0, totalStudents: 1 },
+          },
+        ],
+      },
+    },
+  ]);
+
+  if (studentCounts) {
+    res.status(200).json({
+      success: true,
+      classCounts: studentCounts[0].classCounts,
+      totalCount: studentCounts[0].totalCount[0]?.totalStudents || 0, // Handle case where no students exist
     });
   } else {
     res.status(500);

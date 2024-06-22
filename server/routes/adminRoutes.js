@@ -4,6 +4,7 @@ const {
   deleteClass,
   getClass,
   getClasses,
+  getStudentCounts,
 } = require("../controllers/adminController");
 
 
@@ -18,5 +19,6 @@ router.delete("/classes/delete-class/:id", deleteClass);
 // router.put("/archive-class/:id", archiveclass);
 router.get("/class/:id", getClass);
 router.get("/classes", getClasses);
+router.get("/classes/students", getStudentCounts);
 
 module.exports = router;

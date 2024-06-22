@@ -258,6 +258,15 @@ export const getClasses = async () => {
     toast.error(message);
   }
 };
+/**
+ * Get all classes
+ */
+export const getStudentCounts = async () => {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/admin//classes/students`
+    );
+    return response;
+  };
 
 /**
  * Get single class
