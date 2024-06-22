@@ -202,8 +202,7 @@ function ManageStudent() {
                   // border: "3px solid darkblue",
                   // borderRadius: 5,
                   margin: 1,
-                  height: "80vh",
-                  overflow: "scroll",
+                  minHeight: 450,
                   flexDirection: "column",
                   // justifyContent: "center",
                   // alignItems: "center",
@@ -214,7 +213,12 @@ function ManageStudent() {
                 <Grid
                   container
                   spacing={2}
-                  sx={{ display: "flex", justifyContent: "center" }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    height: "80vh",
+                    overflow: "scroll",
+                  }}
                 >
                   {students.map((student) => {
                     return (
@@ -370,7 +374,7 @@ function ManageStudent() {
                   // display: "flex",
                   border: "1px solid",
                   // borderRadius: 5,
-                  margin: "20px 0px",
+                  margin: 1,
                   minHeight: 600,
                   // flexDirection: "column",
                   // justifyContent: "center",
@@ -378,7 +382,7 @@ function ManageStudent() {
                   // gap: "10px",
                 }}
               >
-                <h1>Class Stats</h1>
+                <h1>Student Count</h1>
                 <Grid
                   container
                   // item
@@ -386,40 +390,6 @@ function ManageStudent() {
                   spacing={2}
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Grid item xs={12}>
-                    <Card
-                      sx={{
-                        display: "flex",
-                        flexDirection: { xs: "column", sm: "row" },
-                        alignItems: "center",
-                        boxShadow: "2 8px 20px -12px rgba(0,0,0,0.3)",
-                        "&:hover": {
-                          boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
-                          transform: "scale(1.05)", // Increase size on hover
-                        },
-                        marginTop: 2,
-                      }}
-                    >
-                      <CardContent
-                        sx={{
-                          flex: 1,
-                          display: "flex",
-                          flexDirection: { xs: "column", sm: "row" },
-                          justifyContent: "space-between",
-                          // "&:last-child": {
-                          //   paddingBottom: "0px",
-                          // },
-                        }}
-                      >
-                        <Box>
-                          <Typography variant="h6">Total Students</Typography>
-                          <Typography variant="body2">
-                            Total: {totalCount}
-                          </Typography>
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  </Grid>
                   {classCounts.map((classCount, i) => (
                     <Grid item key={i} xs={12}>
                       <Card
@@ -431,7 +401,6 @@ function ManageStudent() {
                           boxShadow: "2 8px 20px -12px rgba(0,0,0,0.3)",
                           "&:hover": {
                             boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
-                            transform: "scale(1.05)", // Increase size on hover
                           },
                           marginBottom: 1,
                           backgroundColor: "darkblue", // Set background color to dark blue
@@ -461,6 +430,40 @@ function ManageStudent() {
                       </Card>
                     </Grid>
                   ))}
+                  <Grid item xs={12}>
+                    <Card
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: "center",
+                        boxShadow: "2 8px 20px -12px rgba(0,0,0,0.3)",
+                        "&:hover": {
+                          boxShadow: "0 16px 70px 1.125px rgba(0,0,0,0.3)",
+                          flexGrow: 1,
+                        },
+                        marginTop: 2,
+                      }}
+                    >
+                      <CardContent
+                        sx={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: { xs: "column", sm: "row" },
+                          justifyContent: "space-between",
+                          // "&:last-child": {
+                          //   paddingBottom: "0px",
+                          // },
+                        }}
+                      >
+                        <Box>
+                          <Typography variant="h6">Total Students</Typography>
+                          <Typography variant="body2">
+                            Total: {totalCount}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 </Grid>
               </Box>
             </Grid>
