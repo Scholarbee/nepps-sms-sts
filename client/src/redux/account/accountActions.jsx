@@ -55,3 +55,51 @@ export const addPayment = async (id, formData) => {
     toast.error(message);
   }
 };
+
+/**
+ * Delete payment
+ */
+export const delPayment = async (id) => {
+  try {
+    const response = axios.put(
+      `${BACKEND_URL}/api/account/fees/add-payment/${id}`
+    );
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Add bill
+ */
+export const addBill = async (id, formData) => {
+  const response = axios.put(
+    `${BACKEND_URL}/api/account/bills/add-bill/${id}`,
+    formData
+  );
+  return response;
+};
+
+/**
+ * Delete bill
+ */
+export const delBill = async (id, formData) => {
+  try {
+    const response = axios.put(
+      `${BACKEND_URL}/api/account/fees/add-payment/${id}`,
+      formData
+    );
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};

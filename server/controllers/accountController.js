@@ -220,3 +220,57 @@ exports.addPayment = expressAsyncHandler(async (req, res, next) => {
     throw new Error("Error");
   }
 });
+
+/**
+ * Add bill
+ */
+exports.addBill = expressAsyncHandler(async (req, res, next) => {
+  const { desc, amount } = req.body;
+  // console.log(req.body);
+  const fee = await Fee.findOneAndUpdate(
+    { studentId: req.params.id, isActive: true },
+    {
+      $push: {
+        bills: { desc, amount },
+      },
+    },
+    { new: true }
+  );
+
+  if (fee) {
+    res.status(200).json({
+      success: true,
+      fee,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});
+
+/**
+ * Remove bill
+ */
+exports.removeBill = expressAsyncHandler(async (req, res, next) => {
+  const { desc, amount } = req.body;
+  // console.log(req.body);
+  const fee = await Fee.findOneAndUpdate(
+    { studentId: req.params.id, isActive: true },
+    {
+      $push: {
+        bills: { desc, amount },
+      },
+    },
+    { new: true }
+  );
+
+  if (fee) {
+    res.status(200).json({
+      success: true,
+      fee,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});

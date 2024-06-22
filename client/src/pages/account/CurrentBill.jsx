@@ -2,18 +2,23 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import {
   Avatar,
+  Backdrop,
   Box,
   Button,
   Chip,
+  Fade,
   Grid,
   IconButton,
+  Modal,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Tooltip,
   Typography,
   styled,
@@ -22,8 +27,9 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { getCurrentBill } from "../../redux/account/accountActions";
+import { addBill, getCurrentBill } from "../../redux/account/accountActions";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function CurrentBill() {
   const { id } = useParams();
@@ -32,6 +38,10 @@ function CurrentBill() {
   const [image, setImage] = useState("");
   const [studentId, setStudentId] = useState("");
   const [_class, setClass] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [desc, setDesc] = useState("");
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     showCurrentBill();
@@ -50,6 +60,22 @@ function CurrentBill() {
       );
     } catch (error) {
       console.log(error.response);
+    }
+  };
+
+  const handleAddBill = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    try {
+      await addBill(id, { desc, amount });
+      showCurrentBill();
+      toast.info("Bill added successfully");
+      setOpen(false);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setOpen(false);
     }
   };
 
@@ -124,9 +150,9 @@ function CurrentBill() {
                 color="primary"
                 startIcon={<AddIcon />}
                 // sx={{ width: { xs: "100%", sm: "auto" } }}
-                // onClick={() => {
-                //   navigate("/students/add-student");
-                // }}
+                onClick={() => {
+                  setOpen(true);
+                }}
               >
                 New
               </Button>
@@ -177,11 +203,89 @@ function CurrentBill() {
           </Grid>
         </Grid>
       </section>
+      <Box>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={open}
+          onClose={() => setOpen(false)}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+            },
+          }}
+        >
+          <Fade in={open}>
+            <Box sx={style}>
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  borderBottom: "4px solid darkblue",
+                  fontSize: 25,
+                  fontWeight: "bolder",
+                  color: "darkblue",
+                }}
+                id="transition-modal-title"
+                variant="h5"
+                component="h2"
+              >
+                Add Bill
+              </Typography>
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) => setDesc(e.target.value)}
+                id="desc"
+                label="Description"
+                name="desc"
+                autoComplete="desc"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) => setAmount(e.target.value)}
+                id="amount"
+                label="Amount"
+                name="amount"
+                autoComplete="amount"
+                autoFocus
+              />
+              <Stack sx={{ margin: "20px 0 0 0" }}>
+                <Button
+                  variant="contained"
+                  disabled={loading}
+                  onClick={handleAddBill}
+                >
+                  {loading ? "Processing..." : "Add Bill"}
+                </Button>
+              </Stack>
+            </Box>
+          </Fade>
+        </Modal>
+      </Box>
     </>
   );
 }
 
 export default CurrentBill;
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
