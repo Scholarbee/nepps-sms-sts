@@ -27,7 +27,12 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { addBill, getCurrentBill } from "../../redux/account/accountActions";
+import {
+  addBill,
+  delBill,
+  editBill,
+  getCurrentBill,
+} from "../../redux/account/accountActions";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -42,6 +47,9 @@ function CurrentBill() {
   const [open, setOpen] = useState(false);
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState("");
+  const [feeId, setFeeId] = useState("");
+  const [edit, setEdit] = useState(false);
+  const [editId, setEditId] = useState("");
 
   useEffect(() => {
     showCurrentBill();
@@ -50,9 +58,10 @@ function CurrentBill() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      // console.log(data.currentBill.studentId);
+      // console.log(data.currentBill);
       setCurrentBill(data.currentBill.bills);
       setImage(data.currentBill.studentId.image.url);
+      setFeeId(data.currentBill._id);
       setStudentId(data.currentBill.studentId.user.id);
       setClass(data.currentBill.studentId.classId.className);
       setName(
@@ -65,20 +74,57 @@ function CurrentBill() {
     }
   };
 
-  const handleAddBill = async (e) => {
+  const handleAddBill = async () => {
     setLoading(true);
-    e.preventDefault();
     try {
-      await addBill(id, { desc, amount });
-      showCurrentBill();
-      toast.info("Bill added successfully");
+      let con = window.confirm("Please confirm action.");
+      if (con) {
+        await addBill(id, { desc, amount });
+        await showCurrentBill();
+        toast.info("Bill added successfully");
+      }
       setOpen(false);
+      setEdit(false);
       setLoading(false);
     } catch (error) {
       // console.log(error);
       toast.error(error.response.data.message);
       setLoading(false);
-      // setOpen(false);
+    }
+  };
+  const handleEditBill = async () => {
+    setLoading(true);
+    try {
+      let con = window.confirm("Please confirm action.");
+      if (con) {
+        await editBill(feeId, editId, { desc, amount });
+        await showCurrentBill();
+        toast.info("Bill updated successfully");
+      }
+      setOpen(false);
+      setEdit(false);
+      setLoading(false);
+    } catch (error) {
+      // console.log(error);
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteBill = async (billId) => {
+    setLoading(true);
+    try {
+      let con = window.confirm("Please confirm action.");
+      if (con) {
+        await delBill(feeId, billId);
+        await showCurrentBill();
+        toast.info("Bill deleted successfully");
+      }
+      setLoading(false);
+    } catch (error) {
+      // console.log(error);
+      toast.error(error.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -154,6 +200,9 @@ function CurrentBill() {
                 startIcon={<AddIcon />}
                 // sx={{ width: { xs: "100%", sm: "auto" } }}
                 onClick={() => {
+                  setEdit(false);
+                  setDesc("");
+                  setAmount("");
                   setOpen(true);
                 }}
               >
@@ -182,7 +231,13 @@ function CurrentBill() {
                         <StyledTableCell align="right">
                           <Tooltip title="Edit">
                             <IconButton
-                              //   onClick={() => handleEdit(student.id)}
+                              onClick={() => {
+                                setEdit(true);
+                                setOpen(true);
+                                setAmount(bill.amount);
+                                setDesc(bill.desc);
+                                setEditId(bill._id);
+                              }}
                               color="primary"
                             >
                               <EditIcon />
@@ -190,7 +245,8 @@ function CurrentBill() {
                           </Tooltip>
                           <Tooltip title="Delete">
                             <IconButton
-                              //   onClick={() => handleDelete(student.id)}
+                              disabled={loading}
+                              onClick={() => handleDeleteBill(bill._id)}
                               color="secondary"
                             >
                               <DeleteIcon />
@@ -234,7 +290,7 @@ function CurrentBill() {
                 variant="h5"
                 component="h2"
               >
-                Add Bill
+                {edit ? "Edit Bill" : "Add Bill"}
               </Typography>
 
               <TextField
@@ -244,6 +300,7 @@ function CurrentBill() {
                 onChange={(e) => setDesc(e.target.value)}
                 id="desc"
                 label="Description"
+                value={desc}
                 name="desc"
                 autoComplete="desc"
                 autoFocus
@@ -252,20 +309,26 @@ function CurrentBill() {
                 margin="normal"
                 required
                 fullWidth
+                value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 id="amount"
                 label="Amount"
                 name="amount"
                 autoComplete="amount"
-                autoFocus
               />
               <Stack sx={{ margin: "20px 0 0 0" }}>
                 <Button
                   variant="contained"
                   disabled={loading}
-                  onClick={handleAddBill}
+                  onClick={() => {
+                    edit ? handleEditBill() : handleAddBill();
+                  }}
                 >
-                  {loading ? "Processing..." : "Add Bill"}
+                  {loading
+                    ? "Processing..."
+                    : edit
+                    ? "Save Changes"
+                    : "Add Bill"}
                 </Button>
               </Stack>
             </Box>
@@ -287,7 +350,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  padding: 4,
 };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

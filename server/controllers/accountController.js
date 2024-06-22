@@ -226,9 +226,9 @@ exports.addPayment = expressAsyncHandler(async (req, res, next) => {
  */
 exports.addBill = expressAsyncHandler(async (req, res, next) => {
   const { desc, amount } = req.body;
-    if (!desc || !amount) {
-      res.status(404);
-      throw new Error("All fields are required.");
+  if (!desc || !amount) {
+    res.status(404);
+    throw new Error("All fields are required.");
   }
   // console.log(req.body);
   const fee = await Fee.findOneAndUpdate(
@@ -256,22 +256,42 @@ exports.addBill = expressAsyncHandler(async (req, res, next) => {
  * Remove bill
  */
 exports.removeBill = expressAsyncHandler(async (req, res, next) => {
-  const { desc, amount } = req.body;
-  // console.log(req.body);
-  const fee = await Fee.findOneAndUpdate(
-    { studentId: req.params.id, isActive: true },
-    {
-      $push: {
-        bills: { desc, amount },
-      },
-    },
+  const { feeId, billId } = req.params;
+
+  // Find the Fee document and pull the specific bill
+  const fee = await Fee.findByIdAndUpdate(
+    feeId,
+    { $pull: { bills: { _id: billId } } },
     { new: true }
   );
 
   if (fee) {
     res.status(200).json({
       success: true,
-      fee,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});
+
+/**
+ * Update bill
+ */
+exports.editBill = expressAsyncHandler(async (req, res, next) => {
+    const { feeId, billId } = req.params;
+    const { desc, amount } = req.body;
+
+  // Find the Fee document and update the specific bill
+  const fee = await Fee.findOneAndUpdate(
+    { _id: feeId, "bills._id": billId },
+    { $set: { "bills.$.desc": desc, "bills.$.amount": amount } },
+    { new: true }
+  );
+
+  if (fee) {
+    res.status(200).json({
+      success: true,
     });
   } else {
     res.status(500);

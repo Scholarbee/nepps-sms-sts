@@ -86,20 +86,22 @@ export const addBill = async (id, formData) => {
 };
 
 /**
+ * Add bill
+ */
+export const editBill = async (feeId, billId, formData) => {
+  const response = axios.put(
+    `${BACKEND_URL}/api/account/bills/edit-bill/${feeId}/${billId}`,
+    formData
+  );
+  return response;
+};
+
+/**
  * Delete bill
  */
-export const delBill = async (id, formData) => {
-  try {
-    const response = axios.put(
-      `${BACKEND_URL}/api/account/fees/add-payment/${id}`,
-      formData
-    );
-    return response;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
+export const delBill = async (feeId, billId) => {
+  const response = axios.put(
+    `${BACKEND_URL}/api/account/bills/remove-bill/${feeId}/${billId}`
+  );
+  return response;
 };
