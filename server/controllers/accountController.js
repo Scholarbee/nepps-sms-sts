@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const Fee = require("../models/Fee");
 const Student = require("../models/Student");
+const { receiptNumberGenerator } = require("../utils/receiptNumberGenerator");
 
 /**
  *
@@ -204,7 +205,15 @@ exports.addPayment = expressAsyncHandler(async (req, res, next) => {
     { studentId: req.params.id },
     {
       $push: {
-        paymentList: { email, address, amount, paidBy, paymentDate, phone },
+        paymentList: {
+          email,
+          address,
+          amount,
+          paidBy,
+          paymentDate,
+          phone,
+          receiptNumber: await receiptNumberGenerator(),
+        },
       },
     },
     { new: true }

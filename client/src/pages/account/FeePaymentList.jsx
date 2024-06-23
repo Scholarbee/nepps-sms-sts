@@ -37,7 +37,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Receipt from "../../components/global/Receipt";
+import Receipt from "../../components/fees/Receipt";
 
 function FeePaymentList() {
   const navigate = useNavigate();
@@ -79,43 +79,29 @@ function FeePaymentList() {
   };
 
   const handleAddPayment = async () => {
-    navigate("/accounts/payment/"+id);
-  };
-  const handleEditBill = async () => {
-    setLoading(true);
-    try {
-      let con = window.confirm("Please confirm action.");
-      if (con) {
-        await editBill(feeId, editId, { desc, amount });
-        await showCurrentBill();
-        toast.info("Bill updated successfully");
-      }
-      setOpen(false);
-      setEdit(false);
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
+    navigate("/accounts/payment/" + id);
   };
 
-  const handleDeletePayment = async (billId) => {
-    setLoading(true);
-    try {
-      let con = window.confirm("Please confirm action.");
-      if (con) {
-        // await delBill(feeId, billId);
-        await showCurrentBill();
-        toast.info("Bill deleted successfully");
-      }
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
+  const handlePrintReceipt = async () => {
+    navigate("/accounts/print-receipt/" + id);
   };
+
+  //   const handleDeletePayment = async (billId) => {
+  //     setLoading(true);
+  //     try {
+  //       let con = window.confirm("Please confirm action.");
+  //       if (con) {
+  //         // await delBill(feeId, billId);
+  //         await showCurrentBill();
+  //         toast.info("Bill deleted successfully");
+  //       }
+  //       setLoading(false);
+  //     } catch (error) {
+  //       // console.log(error);
+  //       toast.error(error.response.data.message);
+  //       setLoading(false);
+  //     }
+  //   };
 
   return (
     <>
@@ -228,13 +214,7 @@ function FeePaymentList() {
                           <StyledTableCell align="right">
                             <Tooltip title="Print">
                               <IconButton
-                                //   onClick={() => {
-                                //     setEdit(true);
-                                //     setOpen(true);
-                                //     setAmount(payment.amount);
-                                //     setDesc(payment.desc);
-                                //     setEditId(payment._id);
-                                //   }}
+                                onClick={handlePrintReceipt}
                                 color="primary"
                               >
                                 <PrintIcon />

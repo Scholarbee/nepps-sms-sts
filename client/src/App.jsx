@@ -25,6 +25,7 @@ import AddClass from "./pages/admin/class/AddClass";
 import UpdateClass from "./pages/admin/class/UpdateClass";
 import GetClass from "./pages/admin/class/GetClass";
 import FeePaymentList from "./pages/account/FeePaymentList";
+import PrintReceipt from "./pages/account/PrintReceipt";
 
 function App() {
   return (
@@ -45,10 +46,7 @@ function App() {
             path="/students/edit-student/:id"
             Component={UpdateStudent}
           ></Route>
-          <Route
-            path="/students/get-student-info/:id"
-            Component={GetStudent}
-          ></Route>
+          <Route path="/students/get-student-info/:id" Component={GetStudent} />
 
           <Route path="/classes" Component={ManageClass}></Route>
           <Route path="/classes/add-class" Component={AddClass}></Route>
@@ -58,8 +56,15 @@ function App() {
           {/* Account */}
           <Route path="/accounts" Component={ManageFees}></Route>
           <Route path="/accounts/payment/:id" Component={FeePayment}></Route>
-          <Route path="/accounts/payment-list/:id" Component={FeePaymentList}></Route>
+          <Route
+            path="/accounts/payment-list/:id"
+            Component={FeePaymentList}
+          ></Route>
           <Route path="/accounts/bills/:id" Component={CurrentBill}></Route>
+          <Route
+            path="/accounts/print-receipt/:id"
+            Component={PrintReceipt}
+          ></Route>
 
           {/* Examination */}
           <Route path="/exams" Component={ManageExam}></Route>
