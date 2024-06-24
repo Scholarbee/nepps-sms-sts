@@ -105,3 +105,13 @@ export const delBill = async (feeId, billId) => {
   );
   return response;
 };
+
+/**
+ * get Payment Details
+ */
+export const getPaymentDetails = async (paymentId) => {
+  const response = axios.get(
+    `${BACKEND_URL}/api/account//fees/payment-details/${paymentId}`
+  );
+  return response;
+};

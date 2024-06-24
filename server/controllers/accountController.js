@@ -288,8 +288,8 @@ exports.removeBill = expressAsyncHandler(async (req, res, next) => {
  * Update bill
  */
 exports.editBill = expressAsyncHandler(async (req, res, next) => {
-    const { feeId, billId } = req.params;
-    const { desc, amount } = req.body;
+  const { feeId, billId } = req.params;
+  const { desc, amount } = req.body;
 
   // Find the Fee document and update the specific bill
   const fee = await Fee.findOneAndUpdate(
@@ -301,6 +301,35 @@ exports.editBill = expressAsyncHandler(async (req, res, next) => {
   if (fee) {
     res.status(200).json({
       success: true,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});
+
+/**
+ * Get a given payment by Id
+ */
+exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
+  const { paymentId } = req.params;
+  //   const { desc, amount } = req.body;
+
+  const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
+    .populate({
+      path: "studentId",
+      select: "firstName surname user.id otherName classId", // Fields from Student to select
+      populate: {
+        path: "classId",
+        select: "className", // Field from Class to select
+      },
+    })
+    .select("studentId term year paymentList.$");
+
+  if (paymentDetails) {
+    res.status(200).json({
+      success: true,
+      paymentDetails: paymentDetails, // Send the first (and only) element in the array
     });
   } else {
     res.status(500);

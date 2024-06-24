@@ -82,8 +82,8 @@ function FeePaymentList() {
     navigate("/accounts/payment/" + id);
   };
 
-  const handlePrintReceipt = async () => {
-    navigate("/accounts/print-receipt/" + id);
+  const handlePrintReceipt = async (pid) => {
+    navigate("/accounts/print-receipt/" + pid);
   };
 
   //   const handleDeletePayment = async (billId) => {
@@ -214,7 +214,9 @@ function FeePaymentList() {
                           <StyledTableCell align="right">
                             <Tooltip title="Print">
                               <IconButton
-                                onClick={handlePrintReceipt}
+                                onClick={() => {
+                                  handlePrintReceipt(payment._id);
+                                }}
                                 color="primary"
                               >
                                 <PrintIcon />

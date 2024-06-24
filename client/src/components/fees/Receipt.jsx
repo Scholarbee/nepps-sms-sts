@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
+import moment from "moment";
 
-const Receipt = ({ receiptData }) => {
+const Receipt = ({ receiptData, data }) => {
   const receiptRef = useRef();
 
   const handlePrint = useReactToPrint({
@@ -48,15 +49,18 @@ const Receipt = ({ receiptData }) => {
         >
           <Box>
             <Typography variant="body2">
-              Payment Date: {receiptData.studentId}
+              Payment Date:{" "}
+              {moment(receiptData.paymentDate).format("MMMM DD, yyyy")}
             </Typography>
             <Typography variant="body2">
-              Receipt No.: {"4816SDG81D5S4815846N"}
+              Receipt No.: {receiptData.receiptNumber}
             </Typography>
           </Box>
           <Box>
             <Typography variant="body2">Payment Mode: Cash</Typography>
-            <Typography variant="body2">Tranz. ID: 156HS89AF415455</Typography>
+            <Typography variant="body2">
+              Tranz. ID: {receiptData._id}
+            </Typography>
           </Box>
           {/* <Box></Box> */}
         </Box>
@@ -66,8 +70,8 @@ const Receipt = ({ receiptData }) => {
             justifyContent: "center",
             // flexDirection: "column",
             alignItems: "center",
-            gap: 2,
-            margin: 1,
+            gap: 5,
+            margin: 2,
           }}
         >
           <Box
@@ -77,22 +81,22 @@ const Receipt = ({ receiptData }) => {
               gap: 2,
             }}
           >
-            <Typography >Student ID :</Typography>
-            <Typography >Student Name :</Typography>
-            <Typography >Student Class :</Typography>
-            <Typography >Term :</Typography>
-            <Typography >Year :</Typography>
+            <Typography>Student ID :</Typography>
+            <Typography>Student Name :</Typography>
+            <Typography>Student Class :</Typography>
+            <Typography>Term :</Typography>
+            <Typography>Year :</Typography>
           </Box>
           <Box
             sx={{
-              fontWeight:"bolder"
+              fontWeight: "bolder",
             }}
           >
-            <Typography >NEPPS50500125</Typography>
-            <Typography >Alicia Ama Appiatu</Typography>
-            <Typography >Grade 6</Typography>
-            <Typography >1</Typography>
-            <Typography >2024</Typography>
+            <Typography>{data.studentId}</Typography>
+            <Typography>{data.name}</Typography>
+            <Typography>{data.className || "not set"}</Typography>
+            <Typography>{data.term}</Typography>
+            <Typography>{data.year}</Typography>
           </Box>
           {/* <Box></Box> */}
         </Box>
@@ -124,8 +128,10 @@ const Receipt = ({ receiptData }) => {
                 // gap: 2,
               }}
             >
-              <Typography variant="body2">1000</Typography>
-              <Typography variant="body2">Scholar Bee</Typography>
+              <Typography variant="body2">
+                {`GH¢ ${parseFloat(receiptData.amount).toFixed(2)}`}
+              </Typography>
+              <Typography variant="body2">{receiptData.paidBy}</Typography>
             </Box>
           </Box>
           <Box
