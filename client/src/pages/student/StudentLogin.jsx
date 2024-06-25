@@ -14,9 +14,10 @@ function StudentLogin() {
   const loginHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    toast.success("You have successfully logged in as a student");
+    toast.success("Wrong user name or password.");
     setLoading(false);
-    navigate("/student/dashboard");
+    // navigate("/student/dashboard");
+    // navigate("/");
   };
   return (
     <section className="login">

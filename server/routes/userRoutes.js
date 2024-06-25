@@ -8,6 +8,7 @@ const {
   resetPassword,
   unblockUser,
   blockUser,
+  getUser,
 } = require("../controllers/userController");
 const { userInfo } = require("../middlewares/authMiddleware");
 
@@ -18,6 +19,7 @@ router.put("/unblock-user/:id", userInfo, unblockUser);
 router.post("/login", login);
 router.get("/logout", logout);
 router.get("/login-status", loginStatus);
+router.get("/user-info", userInfo, getUser);
 
 router.post("/change-password", userInfo, changePassword);
 router.post("/forgot-password", forgotPassword);

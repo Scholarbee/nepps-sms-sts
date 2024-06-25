@@ -255,7 +255,7 @@ function ManageStaff() {
                                 ID: {staff.user.id}
                               </Typography>
                               <Typography variant="body2" color="textSecondary">
-                                Class: {staff.user.email}
+                                Email: {staff.user.email}
                               </Typography>
                               <Typography variant="body2" color="textSecondary">
                                 Date Of Birth:{" "}

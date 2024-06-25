@@ -47,20 +47,64 @@ exports.login = asyncHandler(async (req, res) => {
     });
   }
   if (user && verified) {
-    const { _id, name, email, photo, city, phone, bio, dob, userType, gender } =
-      user;
+    const {
+      _id,
+      firstName,
+      surname,
+      otherName,
+      image,
+      address,
+      phone,
+      gender,
+      role,
+    } = user;
     res.status(200).json({
       _id,
-      name,
-      dob,
+      firstName,
+      surname,
+      otherName,
+      email: user.user.email,
+      id: user.user.id,
       gender,
       phone,
-      city,
-      bio,
-      userType,
-      email,
-      photo,
+      address,
+      role: user.user.role,
+      photo: image.url,
       token,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid email or password");
+  }
+});
+
+// Get user info
+exports.getUser = asyncHandler(async (req, res) => {
+
+  const user = await Staff.findById(req.user._id);
+  if (user) {
+    const {
+      _id,
+      firstName,
+      surname,
+      otherName,
+      image,
+      address,
+      phone,
+      gender,
+    } = user;
+    res.status(200).json({
+      _id,
+      firstName,
+      surname,
+      otherName,
+      email: user.user.email,
+      id: user.user.id,
+      gender,
+      phone,
+      address,
+      role: user.user.role,
+      photo: image.url,
     });
   } else {
     res.status(400);
@@ -82,7 +126,7 @@ exports.logout = asyncHandler(async (req, res) => {
 
 // Get Login Status
 exports.loginStatus = asyncHandler(async (req, res) => {
-  const token = req.cookies.artikonToken;
+  const token = req.cookies.Token;
   if (!token) {
     return res.json(false);
   }

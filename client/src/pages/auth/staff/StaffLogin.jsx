@@ -1,22 +1,40 @@
-import axios from "axios";
 import "./staffLogin.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import { SET_LOGIN, SET_NAME, SET_USER } from "../../../redux/auth/authSlice";
+import { loginUser } from "../../../redux/auth/authActions";
+import { useDispatch } from "react-redux";
 
 function StaffLogin() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    toast.success("You have successfully logged in as a Staff");
-    setLoading(false);
-    navigate("/dashboard");
+    const userData = {
+      email,
+      password,
+    };
+    setIsLoading(true);
+    try {
+      const data = await loginUser(userData);
+      console.log(data);
+      dispatch(SET_LOGIN(true));
+      dispatch(SET_NAME(data.firstName + " " + data.surname));
+      dispatch(SET_USER(data));
+      console.log(data);
+
+      navigate("/dashboard");
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
   return (
     <section className="login">
@@ -47,7 +65,7 @@ function StaffLogin() {
         </div>
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading}
           // onClick={()=>{}}
           style={{
             display: "flex",
@@ -56,7 +74,7 @@ function StaffLogin() {
             gap: "15px",
           }}
         >
-          {loading && <ClipLoader size={20} color="white" />}
+          {isLoading && <ClipLoader size={20} color="white" />}
           Login
         </button>
         <Link to={"/"}>Return Home</Link>

@@ -1,23 +1,27 @@
-// import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import * as React from "react";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 
-// const pages = ["Home", "Dashboard", "Fees", "Exams", "Attendance"];
 const settings = ["Profile", "Change password", "Logout ( Isaac )"];
 
-function Navbar() {
+const Navbar = () => {
+  const userInfo = useSelector(selectUser);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -37,48 +41,19 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handleDashboard = (e) => {
+  const handleNavigation = (path) => (e) => {
     e.preventDefault();
-    navigate("/dashboard");
-    // alert("Welcome to your dashboard");
+    navigate(path);
     handleCloseNavMenu();
   };
-  const handleFees = (e) => {
-    e.preventDefault();
-    navigate("/accounts");
-    handleCloseNavMenu();
-  };
-  const handleStudent = (e) => {
-    e.preventDefault();
-    navigate("/students");
-    handleCloseNavMenu();
-  };
-  const handleStaff = (e) => {
-    e.preventDefault();
-    navigate("/staffs");
-    handleCloseNavMenu();
-  };
-  const handleExam = (e) => {
-    e.preventDefault();
-    navigate("/exams");
-    handleCloseNavMenu();
-  };
-  const handleClass = (e) => {
-    e.preventDefault();
-    navigate("/classes");
-    handleCloseNavMenu();
-  };
-  const handleAttendance = (e) => {
-    e.preventDefault();
-    navigate("/attendance");
-    handleCloseNavMenu();
-  };
+
+  
 
   return (
     <AppBar sx={{ backgroundColor: "darkblue" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -103,34 +78,31 @@ function Navbar() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
-              <MenuItem onClick={handleDashboard}>
-                <Typography textAlign="center">{"Dashboard"}</Typography>
+              <MenuItem onClick={handleNavigation("/dashboard")}>
+                <Typography textAlign="center">Dashboard</Typography>
               </MenuItem>
-              <MenuItem onClick={handleStudent}>
-                <Typography textAlign="center">{"Manage Student"}</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleStaff}>
-                <Typography textAlign="center">{"Manage Staff"}</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleFees}>
-                <Typography textAlign="center">{"Manage Fees"}</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleExam}>
-                <Typography textAlign="center">{"Examination"}</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleClass}>
-                <Typography textAlign="center">{"Manage Class"}</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleAttendance}>
-                <Typography textAlign="center">{"Attendance"}</Typography>
-              </MenuItem>
+              {userInfo.role === "admin" &&
+                adminItems.map((item) => (
+                  <MenuItem
+                    key={item.text}
+                    onClick={handleNavigation(item.path)}
+                  >
+                    <Typography textAlign="center">{item.text}</Typography>
+                  </MenuItem>
+                ))}
+              {userInfo.role === "teacher" &&
+                teacherItems.map((item) => (
+                  <MenuItem
+                    key={item.text}
+                    onClick={handleNavigation(item.path)}
+                  >
+                    <Typography textAlign="center">{item.text}</Typography>
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -142,7 +114,6 @@ function Navbar() {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              // letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -150,55 +121,35 @@ function Navbar() {
             NEPPSOCA
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              onClick={() => {
-                navigate("/");
-              }}
-            >
+            <Button onClick={() => navigate("/")}>
               <Avatar alt="logo" src="/sts-logo2.png" />
             </Button>
             <Button
-              onClick={handleDashboard}
+              onClick={handleNavigation("/dashboard")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              {"Dashboard"}
+              Dashboard
             </Button>
-            <Button
-              onClick={handleStudent}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Manage Students"}
-            </Button>
-            <Button
-              onClick={handleStaff}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Manage Staffs"}
-            </Button>
-            <Button
-              onClick={handleFees}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Manage Fees"}
-            </Button>
-            <Button
-              onClick={handleClass}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Manage Class"}
-            </Button>
-            <Button
-              onClick={handleExam}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Examination"}
-            </Button>
-            <Button
-              onClick={handleAttendance}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {"Attendance"}
-            </Button>
+            {userInfo.role === "admin" &&
+              adminItems.map((item) => (
+                <Button
+                  key={item.text}
+                  onClick={handleNavigation(item.path)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            {userInfo.role === "teacher" &&
+              teacherItems.map((item) => (
+                <Button
+                  key={item.text}
+                  onClick={handleNavigation(item.path)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {item.text}
+                </Button>
+              ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -220,18 +171,18 @@ function Navbar() {
                   }}
                   textAlign="center"
                 >
-                  Isaac Appiatu
+                  {`${userInfo.firstName} ${userInfo.surname}`}
                 </Typography>
                 <Typography
                   sx={{ padding: 0, margin: 0, fontSize: 8 }}
                   textAlign="center"
                 >
-                  (Admin)
+                  ({userInfo.role})
                 </Typography>
               </Box>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="sts" src="/me.jpg" />
+                  <Avatar alt="sts" src={userInfo.photo} />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -262,5 +213,19 @@ function Navbar() {
       </Container>
     </AppBar>
   );
-}
+};
+
 export default Navbar;
+
+
+const adminItems = [
+  { text: "Manage Students", path: "/students" },
+  { text: "Manage Staffs", path: "/staffs" },
+  { text: "Manage Fees", path: "/accounts" },
+  { text: "Manage Class", path: "/classes" },
+];
+
+const teacherItems = [
+  { text: "Examination", path: "/exams" },
+  { text: "Attendance", path: "/attendance" },
+];
