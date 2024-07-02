@@ -10,20 +10,19 @@ import { createSlice } from "@reduxjs/toolkit";
 // const storedName = localStorage.getItem("name");
 // const initialName = storedName ? JSON.parse(storedName) : "";
 
+// const storedName = localStorage.getItem("name");
+// let initialName = "";
 
-const storedName = localStorage.getItem("name");
-let initialName = "";
-
-try {
-  initialName = storedName ? JSON.parse(storedName) : "";
-} catch (error) {
-  console.error("Error parsing localStorage name:", error);
-  initialName = "";
-}
+// try {
+//   initialName = storedName ? JSON.parse(storedName) : "";
+// } catch (error) {
+//   console.error("Error parsing localStorage name:", error);
+//   initialName = "";
+// }
 
 const initialState = {
   isLoggedIn: false,
-  name: initialName,
+  // name: "auth",
   user: {
     _id: "",
     id: "",
@@ -68,7 +67,7 @@ const authSlice = createSlice({
 export const { SET_LOGIN, SET_NAME, SET_USER } = authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
-export const selectName = (state) => state.auth.name;
-export const selectUser = (state) => state.auth.user;
+// export const selectName = (state) => state.auth.name;
+export const selectUser = (state) => state.user;
 
 export default authSlice.reducer;

@@ -26,7 +26,8 @@
     "react-router-dom": "^6.23.1",
     "react-spinners": "^0.13.8",
     "react-to-print": "^2.15.1",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
