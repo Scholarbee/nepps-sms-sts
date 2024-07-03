@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Typography } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
 import moment from "moment";
 
-const Receipt = ({ receiptData, data }) => {
+const Receipt = ({ receiptData, data, receivedBy }) => {
   const receiptRef = useRef();
 
   const handlePrint = useReactToPrint({
@@ -35,7 +35,18 @@ const Receipt = ({ receiptData, data }) => {
             sx={{ height: 100, width: 100, padding: 0, margin: 0 }}
           />
           <Typography variant="h6">New Paradise Preparatory School</Typography>
-          <Typography variant="body1">Official Receipt</Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              // backgroundColor: "darkblue",
+              // color: "white",
+              padding: "5px 15px",
+              borderRadius: 2,
+              border: "2px solid",
+            }}
+          >
+            Official Receipt
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -155,7 +166,7 @@ const Receipt = ({ receiptData, data }) => {
               <Typography variant="body2">
                 .......................................
               </Typography>
-              <Typography variant="body2">Isaac Appiatu</Typography>
+              <Typography variant="body2">{`${receivedBy.firstName} ${receivedBy.surname}`}</Typography>
             </Box>
           </Box>
         </Box>

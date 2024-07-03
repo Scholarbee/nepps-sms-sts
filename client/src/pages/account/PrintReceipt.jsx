@@ -16,6 +16,7 @@ function PrintReceipt() {
   const [className, setClassName] = useState("");
   const [name, setName] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [receivedBy, setReceivedBy] = useState({});
 
   useEffect(() => {
     showPaymentDetails();
@@ -24,15 +25,16 @@ function PrintReceipt() {
   const showPaymentDetails = async () => {
     try {
       const { data } = await getPaymentDetails(id);
-      // setPaymentDetail(data.paymentDetails.paymentList[0]);
-      // setTerm(data.paymentDetails.term);
-      // setYear(data.paymentDetails.year);
-      // setClassName(data.paymentDetails.studentId.classId.className);
-      // setStudentId(data.paymentDetails.studentId.user.id);
-      // setName(
-      //   `${data.paymentDetails.studentId.firstName} ${data.paymentDetails.studentId.otherName} ${data.paymentDetails.studentId.surname}`
-      // );
-      console.log(data);
+      setPaymentDetail(data.paymentDetails.paymentList[0]);
+      setTerm(data.paymentDetails.term);
+      setYear(data.paymentDetails.year);
+      setClassName(data.paymentDetails.studentId.classId.className);
+      setStudentId(data.paymentDetails.studentId.user.id);
+      setReceivedBy(data.paymentDetails.paymentList[0].receivedBy);
+      setName(
+        `${data.paymentDetails.studentId.firstName} ${data.paymentDetails.studentId.otherName} ${data.paymentDetails.studentId.surname}`
+      );
+      console.log(data.paymentDetails.paymentList[0].receivedBy);
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -51,7 +53,11 @@ function PrintReceipt() {
       <Grid container sx={{ display: "flex", justifyContent: "center" }}>
         <Grid item xs={12} md={8}>
           <Box sx={{ padding: 1 }}>
-            <Receipt receiptData={paymentDetail} data={data} />
+            <Receipt
+              receiptData={paymentDetail}
+              data={data}
+              receivedBy={receivedBy}
+            />
           </Box>
         </Grid>
       </Grid>

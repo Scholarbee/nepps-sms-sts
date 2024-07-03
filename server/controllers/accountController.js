@@ -312,34 +312,6 @@ exports.editBill = expressAsyncHandler(async (req, res, next) => {
 /**
  * Get a given payment by Id
  */
-exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
-  const { paymentId } = req.params;
-  //   const { desc, amount } = req.body;
-
-  const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
-    .populate({
-      path: "studentId",
-      model: "Student",
-      populate: {
-        path: "classId",
-        model: "Class",
-        select: "className", // Only select the className field from the Class model
-      },
-    })
-    .populate("paymentList.receivedBy", "firstName surname otherName")
-    .select("studentId term year paymentList.$")
-    .exec();
-
-  if (paymentDetails) {
-    res.status(200).json({
-      success: true,
-      paymentDetails: paymentDetails, // Send the first (and only) element in the array
-    });
-  } else {
-    res.status(500);
-    throw new Error("Error");
-  }
-});
 // exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
 //   const { paymentId } = req.params;
 //   //   const { desc, amount } = req.body;
@@ -347,14 +319,16 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
 //   const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
 //     .populate({
 //       path: "studentId",
-//       select: "firstName surname user.id otherName classId", // Fields from Student to select
+//       model: "Student",
 //       populate: {
 //         path: "classId",
-//         select: "className", // Field from Class to select
+//         model: "Class",
+//         select: "className", // Only select the className field from the Class model
 //       },
 //     })
-//     .populate("paymentList.$.receivedBy", "firstName surname otherName")
-//     .select("studentId term year paymentList.$");
+//     .populate("paymentList.receivedBy", "firstName surname otherName")
+//     .select("studentId term year paymentList.$")
+//     .exec();
 
 //   if (paymentDetails) {
 //     res.status(200).json({
@@ -366,3 +340,30 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
 //     throw new Error("Error");
 //   }
 // });
+
+exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
+  const { paymentId } = req.params;
+  //   const { desc, amount } = req.body;
+
+  const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
+    .populate({
+      path: "studentId",
+      select: "firstName surname user.id otherName classId", // Fields from Student to select
+      populate: {
+        path: "classId",
+        select: "className", // Field from Class to select
+      },
+    })
+    .populate("paymentList.receivedBy", "firstName surname otherName user.id")
+    .select("studentId term year paymentList.$");
+
+  if (paymentDetails) {
+    res.status(200).json({
+      success: true,
+      paymentDetails: paymentDetails, // Send the first (and only) element in the array
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});

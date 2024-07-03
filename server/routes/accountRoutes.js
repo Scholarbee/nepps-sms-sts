@@ -13,7 +13,7 @@ const router = require("express").Router();
 
 router.get("/bills/current/:id", userInfo, getCurrentBill);
 router.get("/fees", userInfo, GetFeeDetails);
-router.put("/fees/add-payment/:id", addPayment);
+router.put("/fees/add-payment/:id", userInfo, addPayment);
 router.put("/bills/add-bill/:id", userInfo, addBill);
 router.put("/bills/remove-bill/:feeId/:billId", userInfo, removeBill);
 router.put("/bills/edit-bill/:feeId/:billId", userInfo, editBill);
