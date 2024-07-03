@@ -1,4 +1,4 @@
-import * as React from "react";
+// import * as React from "react";
 import {
   AppBar,
   Box,
@@ -15,14 +15,16 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_LOGIN, selectUser } from "../../redux/auth/authSlice";
+import { logoutUser } from "../../redux/auth/authActions";
 
 const settings = ["Profile", "Change password", "Logout ( Isaac )"];
 
 const Navbar = () => {
   const userInfo = useSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -47,7 +49,20 @@ const Navbar = () => {
     handleCloseNavMenu();
   };
 
-  
+  const handleLogOutUser = async () => {
+    await logoutUser();
+    dispatch(SET_LOGIN(false));
+    setTimeout(() => {
+      navigate("/");
+    }, 300);
+    handleCloseNavMenu();
+  };
+
+  const settings = [
+    { title: "Profile", action: handleCloseNavMenu },
+    { title: "Change password", action: handleCloseNavMenu },
+    { title: "Logout ( Isaac )", action: handleLogOutUser },
+  ];
 
   return (
     <AppBar sx={{ backgroundColor: "darkblue" }} position="static">
@@ -203,8 +218,8 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.title} onClick={setting.action}>
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -216,7 +231,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 
 const adminItems = [
   { text: "Manage Students", path: "/students" },

@@ -1,8 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
+import { selectIsLoggedIn } from "../../redux/auth/authSlice";
 
 const Hero = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const userLoggedIn = useSelector(selectIsLoggedIn);
   return (
     <section className="hero">
       <div className="content">
@@ -17,8 +20,20 @@ const Hero = () => {
         </div>
         <div className="buttons">
           <button>Apply Now</button>
-          <button onClick={()=>{navigate("/student/login");}}>Student Portal</button>
-          <button onClick={()=>{navigate("/staff/login");}}>Staff Portal</button>
+          <button
+            onClick={() => {
+              navigate("/student/login");
+            }}
+          >
+            Student Portal
+          </button>
+          <button
+            onClick={() => {
+              userLoggedIn ? navigate("/dashboard") : navigate("/staff/login");
+            }}
+          >
+           {userLoggedIn ?"Staff Dashboard": "Staff Portal"}
+          </button>
         </div>
       </div>
     </section>
