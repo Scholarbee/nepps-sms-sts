@@ -200,7 +200,8 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
  */
 exports.addPayment = expressAsyncHandler(async (req, res, next) => {
   const { email, address, amount, paidBy, paymentDate, phone } = req.body;
-  // console.log(req.body);
+  console.log(req.user);
+
   const fee = await Fee.findOneAndUpdate(
     { studentId: req.params.id },
     {
@@ -240,7 +241,6 @@ exports.addBill = expressAsyncHandler(async (req, res, next) => {
     res.status(404);
     throw new Error("All fields are required.");
   }
-  // console.log(req.body);
   const fee = await Fee.findOneAndUpdate(
     { studentId: req.params.id, isActive: true },
     {
@@ -319,13 +319,16 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
   const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
     .populate({
       path: "studentId",
-      select: "firstName surname user.id otherName classId", // Fields from Student to select
+      model: "Student",
       populate: {
         path: "classId",
-        select: "className", // Field from Class to select
+        model: "Class",
+        select: "className", // Only select the className field from the Class model
       },
     })
-    .select("studentId term year paymentList.$");
+    .populate("paymentList.receivedBy", "firstName surname otherName")
+    .select("studentId term year paymentList.$")
+    .exec();
 
   if (paymentDetails) {
     res.status(200).json({
@@ -337,3 +340,29 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
     throw new Error("Error");
   }
 });
+// exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
+//   const { paymentId } = req.params;
+//   //   const { desc, amount } = req.body;
+
+//   const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
+//     .populate({
+//       path: "studentId",
+//       select: "firstName surname user.id otherName classId", // Fields from Student to select
+//       populate: {
+//         path: "classId",
+//         select: "className", // Field from Class to select
+//       },
+//     })
+//     .populate("paymentList.$.receivedBy", "firstName surname otherName")
+//     .select("studentId term year paymentList.$");
+
+//   if (paymentDetails) {
+//     res.status(200).json({
+//       success: true,
+//       paymentDetails: paymentDetails, // Send the first (and only) element in the array
+//     });
+//   } else {
+//     res.status(500);
+//     throw new Error("Error");
+//   }
+// });

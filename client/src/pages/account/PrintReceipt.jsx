@@ -2,12 +2,12 @@
 import { Box, Grid } from "@mui/material";
 import Receipt from "../../components/fees/Receipt";
 import Navbar from "../../components/global/Navbar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getPaymentDetails } from "../../redux/account/accountActions";
 import { useEffect, useState } from "react";
 
 function PrintReceipt() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { id } = useParams();
 
   const [paymentDetail, setPaymentDetail] = useState({});
@@ -24,27 +24,27 @@ function PrintReceipt() {
   const showPaymentDetails = async () => {
     try {
       const { data } = await getPaymentDetails(id);
-      setPaymentDetail(data.paymentDetails.paymentList[0]);
-      setTerm(data.paymentDetails.term);
-      setYear(data.paymentDetails.year);
-      setClassName(data.paymentDetails.studentId.classId.className);
-      setStudentId(data.paymentDetails.studentId.user.id);
-      setName(
-        `${data.paymentDetails.studentId.firstName} ${data.paymentDetails.studentId.otherName} ${data.paymentDetails.studentId.surname}`
-      );
-      console.log(data.paymentDetails);
+      // setPaymentDetail(data.paymentDetails.paymentList[0]);
+      // setTerm(data.paymentDetails.term);
+      // setYear(data.paymentDetails.year);
+      // setClassName(data.paymentDetails.studentId.classId.className);
+      // setStudentId(data.paymentDetails.studentId.user.id);
+      // setName(
+      //   `${data.paymentDetails.studentId.firstName} ${data.paymentDetails.studentId.otherName} ${data.paymentDetails.studentId.surname}`
+      // );
+      console.log(data);
     } catch (error) {
       console.log(error.response.data.message);
     }
-    };
-    
-    const data = {
-      name,
-      className,
-      year,
-      term,
-      studentId,
-    };
+  };
+
+  const data = {
+    name,
+    className,
+    year,
+    term,
+    studentId,
+  };
   return (
     <>
       <Navbar />
