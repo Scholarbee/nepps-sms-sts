@@ -13,9 +13,11 @@ import {
   Stack,
 } from "@mui/material";
 import Footer from "../../components/global/Footer";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 
 function StaffDashboard() {
-  // Mock data
+  const userInfo = useSelector(selectUser);
 
   const announcements = [
     { id: 1, text: "School will be closed on July 4th." },
@@ -70,18 +72,16 @@ function StaffDashboard() {
                   }}
                 >
                   <Avatar
-                    src={profile.photo}
+                    src={userInfo.photo}
                     sx={{ width: 100, height: 100 }}
                   />
                   <Typography variant="h6" sx={{ mt: 2 }}>
-                    {profile.name}
+                    {`${userInfo.firstName} ${userInfo.surname} ${userInfo.otherName}`}
                   </Typography>
-                  <Typography variant="subtitle1">
-                    {profile.designation}
-                  </Typography>
-                  <Typography variant="body2">{profile.email}</Typography>
+                  <Typography variant="subtitle1">{userInfo.id}</Typography>
+                  <Typography variant="body2">{userInfo.email}</Typography>
                   <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Edit Profile
+                    Apply For Profile Edit
                   </Button>
                 </Paper>
               </Grid>

@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGIN, selectUser } from "../../redux/auth/authSlice";
 import { logoutUser } from "../../redux/auth/authActions";
 
-const settings = ["Profile", "Change password", "Logout ( Isaac )"];
+// const settings = ["Profile", "Change password", "Logout ( Isaac )"];
 
 const Navbar = () => {
   const userInfo = useSelector(selectUser);
@@ -61,7 +61,7 @@ const Navbar = () => {
   const settings = [
     { title: "Profile", action: handleCloseNavMenu },
     { title: "Change password", action: handleCloseNavMenu },
-    { title: "Logout ( Isaac )", action: handleLogOutUser },
+    { title: "Logout", action: handleLogOutUser },
   ];
 
   return (
