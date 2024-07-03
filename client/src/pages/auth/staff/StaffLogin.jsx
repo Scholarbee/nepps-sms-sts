@@ -24,10 +24,10 @@ function StaffLogin() {
     setIsLoading(true);
     try {
       const data = await loginUser(userData);
-      console.log(data);
-      // dispatch(SET_LOGIN(true));
-      // dispatch(SET_NAME(data.firstName + " " + data.surname));
-      // dispatch(SET_USER(data));
+      // console.log(data);
+      dispatch(SET_LOGIN(true));
+      dispatch(SET_NAME(data.firstName + " " + data.surname));
+      dispatch(SET_USER(data));
       console.log(data);
 
       navigate("/dashboard");
