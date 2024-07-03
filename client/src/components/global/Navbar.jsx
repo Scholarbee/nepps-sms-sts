@@ -23,7 +23,7 @@ import useRedirectLoggedOutUser from "../../services/useRedirectLoggedOutUser";
 // const settings = ["Profile", "Change password", "Logout ( Isaac )"];
 
 const Navbar = () => {
-  useRedirectLoggedOutUser("/");
+  // useRedirectLoggedOutUser("/");
 
   const userInfo = useSelector(selectUser);
   const navigate = useNavigate();
