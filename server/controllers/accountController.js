@@ -210,6 +210,7 @@ exports.addPayment = expressAsyncHandler(async (req, res, next) => {
           address,
           amount,
           paidBy,
+          receivedBy: req.user._id,
           paymentDate,
           phone,
           receiptNumber: await receiptNumberGenerator(),

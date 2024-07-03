@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const userInfo = asyncHandler(async (req, res, next) => {
   try {
-    const token = req.cookies.SMSToken;
+    const token = req.cookies.smsToken;
+    // const token = req.params.userToken;
     if (!token) {
       res.status(401);
       throw new Error("Not authorized, please login");
