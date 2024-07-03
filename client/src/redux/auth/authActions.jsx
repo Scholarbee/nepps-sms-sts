@@ -80,8 +80,10 @@ export const resetPassword = async (userData, resetToken) => {
 };
 
 // Get Login Status
-export const getLoginStatus = async () => {
-  const response = axios.get(`${BACKEND_URL}/api/users/login-status`);
+export const getLoginStatus = async (userToken) => {
+  const response = axios.get(
+    `${BACKEND_URL}/api/users/login-status/${userToken}`
+  );
   return response;
 };
 

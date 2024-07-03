@@ -3,7 +3,12 @@ import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { SET_LOGIN, SET_NAME, SET_USER } from "../../../redux/auth/authSlice";
+import {
+  SET_LOGIN,
+  SET_NAME,
+  SET_USER,
+  SET_TOKEN,
+} from "../../../redux/auth/authSlice";
 import { loginUser } from "../../../redux/auth/authActions";
 import { useDispatch } from "react-redux";
 
@@ -26,6 +31,7 @@ function StaffLogin() {
       const data = await loginUser(userData);
       // console.log(data);
       dispatch(SET_LOGIN(true));
+      dispatch(SET_TOKEN(data.token));
       dispatch(SET_NAME(data.firstName + " " + data.surname));
       dispatch(SET_USER(data));
 

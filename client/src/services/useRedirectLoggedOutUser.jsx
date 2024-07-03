@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { SET_LOGIN } from "../redux/auth/authSlice";
+import { SET_LOGIN, selectToken } from "../redux/auth/authSlice";
 import { getLoginStatus } from "../redux/auth/authActions";
 import axios from "axios";
 
@@ -10,13 +10,14 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const useRedirectLoggedOutUser = (path) => {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const redirectLoggedOutUser = async () => {
       try {
-        const isLoggedIn = await getLoginStatus();
+        const isLoggedIn = await getLoginStatus(userToken);
         dispatch(SET_LOGIN(isLoggedIn.data));
 
         if (!isLoggedIn.data) {

@@ -125,7 +125,8 @@ exports.logout = asyncHandler(async (req, res) => {
 
 // Get Login Status
 exports.loginStatus = asyncHandler(async (req, res) => {
-  const token = req.cookies.smsToken;
+  // const token = req.cookies.smsToken;
+  const token = req.params.userToken;
   // console.log(token);
   if (!token) {
     return res.json(false);

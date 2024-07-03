@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoggedIn: false,
   name: "",
+  token: "",
   user: {
     _id: "",
     id: "",
@@ -24,8 +25,10 @@ const authSlice = createSlice({
     SET_LOGIN(state, action) {
       state.isLoggedIn = action.payload;
     },
+    SET_TOKEN(state, action) {
+      state.token = action.payload;
+    },
     SET_NAME(state, action) {
-      localStorage.setItem("name", JSON.stringify(action.payload));
       state.name = action.payload;
     },
     SET_USER(state, action) {
@@ -44,9 +47,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { SET_LOGIN, SET_NAME, SET_USER } = authSlice.actions;
+export const { SET_LOGIN, SET_TOKEN, SET_NAME, SET_USER } = authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.isLoggedIn;
+export const selectToken = (state) => state.token;
 export const selectName = (state) => state.name;
 export const selectUser = (state) => state.user;
 
