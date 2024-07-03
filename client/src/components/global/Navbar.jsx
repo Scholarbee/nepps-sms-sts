@@ -18,10 +18,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGIN, selectUser } from "../../redux/auth/authSlice";
 import { logoutUser } from "../../redux/auth/authActions";
+import useRedirectLoggedOutUser from "../../services/useRedirectLoggedOutUser";
 
 // const settings = ["Profile", "Change password", "Logout ( Isaac )"];
 
 const Navbar = () => {
+  useRedirectLoggedOutUser("/");
+
   const userInfo = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -38,12 +38,12 @@ exports.login = asyncHandler(async (req, res) => {
 
   if (verified) {
     // Send HTTP-only cookie
-    res.cookie("Token", token, {
+    res.cookie("smsToken", token, {
       path: "/",
       httpOnly: true,
       expires: new Date(Date.now() + 1000 * 86400), // 1 day
-      sameSite: "none",
-      secure: true,
+      sameSite: "none", // Needed for cross-site requests
+      secure: true, // Only secure in production
     });
   }
   if (user && verified) {
@@ -80,7 +80,6 @@ exports.login = asyncHandler(async (req, res) => {
 
 // Get user info
 exports.getUser = asyncHandler(async (req, res) => {
-
   const user = await Staff.findById(req.user._id);
   if (user) {
     const {
@@ -114,7 +113,7 @@ exports.getUser = asyncHandler(async (req, res) => {
 
 // Logout User
 exports.logout = asyncHandler(async (req, res) => {
-  res.cookie("artikonToken", "", {
+  res.cookie("smsToken", "", {
     path: "/",
     httpOnly: true,
     expires: new Date(0),
@@ -126,7 +125,8 @@ exports.logout = asyncHandler(async (req, res) => {
 
 // Get Login Status
 exports.loginStatus = asyncHandler(async (req, res) => {
-  const token = req.cookies.Token;
+  const token = req.cookies.smsToken;
+  // console.log(token);
   if (!token) {
     return res.json(false);
   }
@@ -134,8 +134,9 @@ exports.loginStatus = asyncHandler(async (req, res) => {
   const verified = jwt.verify(token, process.env.JWT_SECRET);
   if (verified) {
     return res.json(true);
+  } else {
+    return res.json(false);
   }
-  return res.json(false);
 });
 
 // Change password

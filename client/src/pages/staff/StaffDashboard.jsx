@@ -15,6 +15,7 @@ import {
 import Footer from "../../components/global/Footer";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
+// import useRedirectLoggedOutUser from "../../services/useRedirectLoggedOutUser";
 
 function StaffDashboard() {
   const userInfo = useSelector(selectUser);
@@ -38,13 +39,6 @@ function StaffDashboard() {
     { name: "Alicia", attendance: "Present" },
     { name: "Peter", attendance: "Absent" },
   ];
-
-  const profile = {
-    name: "Scholar Bee",
-    designation: "Mathematics Teacher",
-    email: "scholars@sts.com",
-    photo:"/me.jpg"
-  };
 
   return (
     <>

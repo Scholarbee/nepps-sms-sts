@@ -26,32 +26,11 @@ import UpdateClass from "./pages/admin/class/UpdateClass";
 import GetClass from "./pages/admin/class/GetClass";
 import FeePaymentList from "./pages/account/FeePaymentList";
 import PrintReceipt from "./pages/account/PrintReceipt";
-// import { useDispatch } from "react-redux";
-// import { useEffect } from "react";
-// import { getLoginStatus, getUser } from "./redux/auth/authActions";
-// import { SET_LOGIN, SET_USER } from "./redux/auth/authSlice";
-// import axios from "axios";
+import axios from "axios";
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 function App() {
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   async function loginStatus() {
-  //     const status = await getLoginStatus();
-  //     // console.log(status);
-  //     dispatch(SET_LOGIN(status));
-  //     if (status) {
-  //       console.log("getting user");
-  //       const user = await getUser();
-  //       // console.log(user);
-  //       dispatch(SET_USER(user));
-  //     }
-  //   }
-  //   loginStatus();
-  // }, [dispatch]);
-
   return (
     <>
       <HashRouter>
