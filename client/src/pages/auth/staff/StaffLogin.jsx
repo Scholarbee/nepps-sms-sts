@@ -28,7 +28,6 @@ function StaffLogin() {
       dispatch(SET_LOGIN(true));
       dispatch(SET_NAME(data.firstName + " " + data.surname));
       dispatch(SET_USER(data));
-      console.log(data);
 
       navigate("/dashboard");
       setIsLoading(false);
