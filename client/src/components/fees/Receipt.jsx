@@ -167,6 +167,7 @@ const Receipt = ({ receiptData, data, receivedBy }) => {
                 .......................................
               </Typography>
               <Typography variant="body2">{`${receivedBy.firstName} ${receivedBy.surname}`}</Typography>
+              <Typography variant="body2">{`( ${receivedBy.user.id} )`}</Typography>
             </Box>
           </Box>
         </Box>

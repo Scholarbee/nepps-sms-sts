@@ -161,12 +161,10 @@ function CurrentBill() {
             variant="outlined"
           />
           <Chip
-            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
             label={`ID: ${studentId}`}
             variant="outlined"
           />
           <Chip
-            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
             label={`Class: ${_class}`}
             variant="outlined"
           />
@@ -198,7 +196,6 @@ function CurrentBill() {
                 variant="outlined"
                 color="primary"
                 startIcon={<AddIcon />}
-                // sx={{ width: { xs: "100%", sm: "auto" } }}
                 onClick={() => {
                   setEdit(false);
                   setDesc("");

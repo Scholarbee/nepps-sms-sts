@@ -2,42 +2,29 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import {
   Avatar,
-  Backdrop,
   Box,
   Button,
   Chip,
-  Fade,
   Grid,
   IconButton,
-  Modal,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Tooltip,
   Typography,
   styled,
   tableCellClasses,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import PrintIcon from "@mui/icons-material/Print";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import {
-  addBill,
-  delBill,
-  editBill,
-  getCurrentBill,
-} from "../../redux/account/accountActions";
+import { getCurrentBill } from "../../redux/account/accountActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
-import Receipt from "../../components/fees/Receipt";
 
 function FeePaymentList() {
   const navigate = useNavigate();
@@ -47,13 +34,7 @@ function FeePaymentList() {
   const [image, setImage] = useState("");
   const [studentId, setStudentId] = useState("");
   const [_class, setClass] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [desc, setDesc] = useState("");
-  const [amount, setAmount] = useState("");
-  const [feeId, setFeeId] = useState("");
-  const [edit, setEdit] = useState(false);
-  const [editId, setEditId] = useState("");
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     showCurrentBill();
@@ -62,10 +43,9 @@ function FeePaymentList() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      console.log(data.currentBill);
+      // console.log(data.currentBill);
       setPayments(data.currentBill.paymentList);
       setImage(data.currentBill.studentId.image.url);
-      setFeeId(data.currentBill._id);
       setStudentId(data.currentBill.studentId.user.id);
       setClass(data.currentBill.studentId.classId.className);
       setName(
@@ -85,23 +65,6 @@ function FeePaymentList() {
   const handlePrintReceipt = async (pid) => {
     navigate("/accounts/print-receipt/" + pid);
   };
-
-  //   const handleDeletePayment = async (billId) => {
-  //     setLoading(true);
-  //     try {
-  //       let con = window.confirm("Please confirm action.");
-  //       if (con) {
-  //         // await delBill(feeId, billId);
-  //         await showCurrentBill();
-  //         toast.info("Bill deleted successfully");
-  //       }
-  //       setLoading(false);
-  //     } catch (error) {
-  //       // console.log(error);
-  //       toast.error(error.response.data.message);
-  //       setLoading(false);
-  //     }
-  //   };
 
   return (
     <>
@@ -135,16 +98,8 @@ function FeePaymentList() {
             label={name}
             variant="outlined"
           />
-          <Chip
-            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
-            label={`ID: ${studentId}`}
-            variant="outlined"
-          />
-          <Chip
-            // avatar={<Avatar alt="I D" src="/me1.jpg" />}
-            label={`Class: ${_class}`}
-            variant="outlined"
-          />
+          <Chip label={`ID: ${studentId}`} variant="outlined" />
+          <Chip label={`Class: ${_class}`} variant="outlined" />
         </Box>
         <Grid
           container
@@ -173,7 +128,6 @@ function FeePaymentList() {
                 variant="outlined"
                 color="primary"
                 startIcon={<AddIcon />}
-                // sx={{ width: { xs: "100%", sm: "auto" } }}
                 onClick={() => {
                   handleAddPayment();
                 }}
@@ -222,15 +176,6 @@ function FeePaymentList() {
                                 <PrintIcon />
                               </IconButton>
                             </Tooltip>
-                            {/* <Tooltip title="Delete">
-                            <IconButton
-                              disabled={loading}
-                              onClick={() => handleDeletePayment(payment._id)}
-                              color="secondary"
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip> */}
                           </StyledTableCell>
                         </StyledTableRow>
                       );
@@ -244,26 +189,11 @@ function FeePaymentList() {
           </Grid>
         </Grid>
       </section>
-      {/* <div>
-        <Receipt receiptData={receiptData} />
-      </div> */}
     </>
   );
 }
 
 export default FeePaymentList;
-
-// const receiptData = {
-//   studentId: "12345",
-//   name: "John Doe",
-//   className: "Class A",
-//   term: "1",
-//   year: "2024",
-//   amountOwing: 1000,
-//   totalPaid: 500,
-//   currentFees: 1500,
-//   amountToBePaid: 2000,
-// };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

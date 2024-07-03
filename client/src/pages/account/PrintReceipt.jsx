@@ -1,4 +1,3 @@
-// import React from "react";
 import { Box, Grid } from "@mui/material";
 import Receipt from "../../components/fees/Receipt";
 import Navbar from "../../components/global/Navbar";
@@ -7,7 +6,6 @@ import { getPaymentDetails } from "../../redux/account/accountActions";
 import { useEffect, useState } from "react";
 
 function PrintReceipt() {
-  // const navigate = useNavigate();
   const { id } = useParams();
 
   const [paymentDetail, setPaymentDetail] = useState({});
@@ -66,15 +64,3 @@ function PrintReceipt() {
 }
 
 export default PrintReceipt;
-
-// const receiptData = {
-//   studentId: "12345",
-//   name: "John Doe",
-//   className: "Class A",
-//   term: "1",
-//   year: "2024",
-//   amountOwing: 1000,
-//   totalPaid: 500,
-//   currentFees: 1500,
-//   amountToBePaid: 2000,
-// };

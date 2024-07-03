@@ -99,7 +99,7 @@ exports.GetFeeDetails = expressAsyncHandler(async (req, res, next) => {
 });
 
 /**
- *
+ * Get current fees details
  */
 exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
   const currentBill = await Fee.findOne({
@@ -112,7 +112,7 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
       path: "studentId",
       populate: {
         path: "classId",
-        model: "Class", // Assuming Class is your Mongoose model
+        model: "Class", 
       },
     });
   if (currentBill) {
@@ -261,7 +261,7 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
   if (paymentDetails) {
     res.status(200).json({
       success: true,
-      paymentDetails: paymentDetails, // Send the first (and only) element in the array
+      paymentDetails: paymentDetails, 
     });
   } else {
     res.status(500);
