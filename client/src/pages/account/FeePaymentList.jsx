@@ -62,7 +62,7 @@ function FeePaymentList() {
   const showCurrentBill = async () => {
     try {
       const { data } = await getCurrentBill(id);
-      // console.log(data.currentBill);
+      console.log(data.currentBill);
       setPayments(data.currentBill.paymentList);
       setImage(data.currentBill.studentId.image.url);
       setFeeId(data.currentBill._id);
@@ -209,7 +209,7 @@ function FeePaymentList() {
                             )}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {payment.receivedBy}
+                            {`${payment.receivedBy.firstName} ${payment.receivedBy.surname}`}
                           </StyledTableCell>
                           <StyledTableCell align="right">
                             <Tooltip title="Print">

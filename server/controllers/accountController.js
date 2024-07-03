@@ -7,76 +7,6 @@ const { receiptNumberGenerator } = require("../utils/receiptNumberGenerator");
  *
  */
 exports.GetFeeDetails = expressAsyncHandler(async (req, res, next) => {
-  //   const feeDetails = await Student.aggregate([
-  //     {
-  //       $lookup: {
-  //         from: "fees",
-  //         let: { studentId: "$_id" },
-  //         pipeline: [
-  //           {
-  //             $match: {
-  //               $expr: { $eq: ["$studentId", "$$studentId"] },
-  //               isActive: true, // Filter active fees
-  //             },
-  //           },
-  //           {
-  //             $unwind: "$bills", // Unwind the bills array
-  //           },
-  //         //   {
-  //         //     $unwind: "$paymentList", // Unwind the bills array
-  //         //   },
-  //           {
-  //             $group: {
-  //               _id: "$studentId",
-  //               totalPaid: { $sum: "$paymentList.amount" },
-  //               totalBills: { $sum: "$bills.amount" },
-  //               arrears: { $max: "$arrears" },
-  //               balance: { $max: "$balance" },
-  //               latestFee: { $last: "$$ROOT" }, // Optional: Get the latest fee document
-  //             },
-  //           },
-  //         ],
-  //         as: "feeDetails",
-  //       },
-  //     },
-  //     { $unwind: { path: "$feeDetails", preserveNullAndEmptyArrays: true } },
-  //     {
-  //       $lookup: {
-  //         from: "classes",
-  //         localField: "classId",
-  //         foreignField: "_id",
-  //         as: "classInfo",
-  //       },
-  //     },
-  //     { $unwind: { path: "$classInfo", preserveNullAndEmptyArrays: true } },
-  //     {
-  //       $project: {
-  //         _id: 1,
-  //         studentId: "$user.id",
-  //         name: { $concat: ["$firstName", " ", "$otherName", " ", "$surname"] },
-  //         image: "$image.url",
-  //         className: "$classInfo.className",
-  //         term: "$feeDetails.term",
-  //         year: "$feeDetails.year",
-  //         arrears: "$feeDetails.arrears",
-  //         balance: "$feeDetails.balance",
-  //         amountOwing: {
-  //           $subtract: ["$feeDetails.arrears", "$feeDetails.balance"],
-  //         },
-  //         totalPaid: "$feeDetails.totalPaid",
-  //         currentFees: "$feeDetails.totalBills",
-  //         amountToBePaid: {
-  //           $subtract: [
-  //             { $add: ["$feeDetails.totalBills", "$feeDetails.arrears"] },
-  //             "$feeDetails.balance",
-  //           ],
-  //         },
-  //         createdAt: 1,
-  //       },
-  //     },
-  //     { $sort: { createdAt: -1 } }, // Sort by createdAt field in descending order
-  //   ]);
-
   const feeDetails = await Student.aggregate([
     {
       $lookup: {
@@ -177,6 +107,7 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
     isActive: true,
   })
     .populate("studentId")
+    .populate("paymentList.receivedBy", "firstName surname otherName")
     .populate({
       path: "studentId",
       populate: {
@@ -196,7 +127,7 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
 });
 
 /**
- *
+ * Add new payment
  */
 exports.addPayment = expressAsyncHandler(async (req, res, next) => {
   const { email, address, amount, paidBy, paymentDate, phone } = req.body;
@@ -312,38 +243,8 @@ exports.editBill = expressAsyncHandler(async (req, res, next) => {
 /**
  * Get a given payment by Id
  */
-// exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
-//   const { paymentId } = req.params;
-//   //   const { desc, amount } = req.body;
-
-//   const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
-//     .populate({
-//       path: "studentId",
-//       model: "Student",
-//       populate: {
-//         path: "classId",
-//         model: "Class",
-//         select: "className", // Only select the className field from the Class model
-//       },
-//     })
-//     .populate("paymentList.receivedBy", "firstName surname otherName")
-//     .select("studentId term year paymentList.$")
-//     .exec();
-
-//   if (paymentDetails) {
-//     res.status(200).json({
-//       success: true,
-//       paymentDetails: paymentDetails, // Send the first (and only) element in the array
-//     });
-//   } else {
-//     res.status(500);
-//     throw new Error("Error");
-//   }
-// });
-
 exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
   const { paymentId } = req.params;
-  //   const { desc, amount } = req.body;
 
   const paymentDetails = await Fee.findOne({ "paymentList._id": paymentId })
     .populate({
