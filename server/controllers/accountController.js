@@ -1,5 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const Fee = require("../models/Fee");
+const Class = require("../models/classModel");
 const Student = require("../models/Student");
 const { receiptNumberGenerator } = require("../utils/receiptNumberGenerator");
 
@@ -310,8 +311,8 @@ exports.closeTermAccount = expressAsyncHandler(async (req, res, next) => {
       studentId: student._id,
       arrears: 0,
       balance: 0,
-      term: activeFee.term,
-      year: activeFee.year,
+      term: req.body.term,
+      year: req.body.year,
       isActive: true,
       bills: [],
       paymentList: [],
@@ -346,14 +347,10 @@ exports.closeTermAccount = expressAsyncHandler(async (req, res, next) => {
     const newFee = new Fee(newFeeData);
     await newFee.save();
   }
-
-  if (paymentDetails) {
-    res.status(200).json({
-      success: true,
-      paymentDetails: paymentDetails,
-    });
+  if (students) {
+    res.status(200).json({success:true})
   } else {
-    res.status(500);
-    throw new Error("Error");
+    res.status(500)
+    throw new error("Operation failed")
   }
 });

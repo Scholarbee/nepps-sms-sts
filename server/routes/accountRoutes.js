@@ -6,6 +6,7 @@ const {
   removeBill,
   editBill,
   paymentDetails,
+  closeTermAccount,
 } = require("../controllers/accountController");
 const { userInfo } = require("../middlewares/authMiddleware");
 
@@ -18,7 +19,7 @@ router.put("/bills/add-bill/:id", userInfo, addBill);
 router.put("/bills/remove-bill/:feeId/:billId", userInfo, removeBill);
 router.put("/bills/edit-bill/:feeId/:billId", userInfo, editBill);
 router.get("/fees/payment-details/:paymentId", userInfo, paymentDetails);
-router.patch("/fees/close-term-account", userInfo, paymentDetails);
+router.patch("/fees/close-term-account", userInfo, closeTermAccount);
 // router.get("/", getStudents);
 
 module.exports = router;
