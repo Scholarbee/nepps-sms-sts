@@ -27,6 +27,7 @@ const useRedirectLoggedOutUser = (path) => {
       } catch (error) {
         console.error("Error checking login status:", error);
         toast.error("An error occurred. Please try logging in again.");
+        dispatch(SET_LOGIN(false));
         navigate(path);
       }
     };

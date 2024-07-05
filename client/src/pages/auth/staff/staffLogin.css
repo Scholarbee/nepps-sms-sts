@@ -1,72 +1,72 @@
 .login {
-    min-height: 100vh;
-    background: url(/login.jpg) rgba(0, 0, 0, 0.75);
-    background-blend-mode: darken;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 7rem;
+  min-height: 100vh;
+  background: url(/login.jpg) rgba(0, 0, 0, 0.75);
+  background-blend-mode: darken;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 7rem;
 }
 
 .login form {
-    background: whitesmoke;
-    width: 550px;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    gap: 15px;
-    font-size: 20px;
+  background: whitesmoke;
+  width: 550px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  gap: 15px;
+  font-size: 20px;
 }
 
 .login form div {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .login form div label {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .login form div input {
-    font-size: 20px;
-    padding: 7px 3px;
-    border: none;
-    border-bottom: 1px solid gray;
-    background: transparent;
+  font-size: 20px;
+  padding: 7px 3px;
+  border: none;
+  border-bottom: 1px solid gray;
+  background: transparent;
 }
 
 .login form div input:focus {
-    outline: none;
+  outline: none;
 }
 
 .login form button {
-    border: none;
-    color: whitesmoke;
-    background: #0095ff;
-    padding: 10px;
-    font-size: 20px;
-    transition: 0.3s;
+  border: none;
+  color: whitesmoke;
+  background: #0095ff;
+  padding: 10px;
+  font-size: 20px;
+  transition: 0.3s;
 }
 
 .login form button:hover {
-    transition: 0.3s;
-    background: #0267af;
-    cursor: pointer;
+  transition: 0.3s;
+  background: #0267af;
+  cursor: pointer;
 }
 
 @media (max-width: 1160px) {
-    .login {
-        justify-content: center;
-        padding: 50px 15px;
-        background-position: left;
-    }
+  .login {
+    justify-content: center;
+    padding: 50px 15px;
+    background-position: left;
+  }
 
-    .login form{
-        padding: 40px 20px;
-    }
+  .login form {
+    padding: 40px 20px;
+  }
 }

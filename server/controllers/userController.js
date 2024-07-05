@@ -155,6 +155,11 @@ exports.changePassword = asyncHandler(async (req, res) => {
     throw new Error("Please all field are required");
   }
 
+  if (password.length < 6) {
+    res.status(400);
+    throw new Error("Please Password should be 6 or more characters.");
+  }
+
   // check if old password matches password in DB
   const passwordIsCorrect = await bcrypt.compare(
     oldPassword,

@@ -27,6 +27,9 @@ import GetClass from "./pages/admin/class/GetClass";
 import FeePaymentList from "./pages/account/FeePaymentList";
 import PrintReceipt from "./pages/account/PrintReceipt";
 import axios from "axios";
+import ChangePassword from "./pages/auth/staff/ChangePassword";
+import ForgotPassword from "./pages/auth/staff/ForgotPassword";
+import ResetPassword from "./pages/auth/staff/ResetPassword";
 
 axios.defaults.withCredentials = true;
 
@@ -74,6 +77,15 @@ function App() {
 
           {/* Staff routes */}
           <Route path="/staff/login" Component={StaffLogin}></Route>
+          <Route
+            path="/staff/change-password"
+            Component={ChangePassword}
+          ></Route>
+          <Route
+            path="/staff/forgot-password"
+            Component={ForgotPassword}
+          ></Route>
+          <Route path="/staff/reset-password" Component={ResetPassword}></Route>
           <Route path="/dashboard" Component={StaffDashboard}></Route>
           <Route path="/attendance" Component={Attendance}></Route>
 

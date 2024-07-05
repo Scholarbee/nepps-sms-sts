@@ -20,8 +20,6 @@ import { SET_LOGIN, selectUser } from "../../redux/auth/authSlice";
 import { logoutUser } from "../../redux/auth/authActions";
 import useRedirectLoggedOutUser from "../../services/useRedirectLoggedOutUser";
 
-// const settings = ["Profile", "Change password", "Logout ( Isaac )"];
-
 const Navbar = () => {
   useRedirectLoggedOutUser("/");
 
@@ -60,10 +58,24 @@ const Navbar = () => {
     }, 300);
     handleCloseNavMenu();
   };
+  const handleChangePassword = async () => {
+    handleCloseNavMenu();
+    setTimeout(() => {
+      navigate("/staff/change-password");
+    }, 300);
+  };
+  const handleProfile = async () => {
+    await logoutUser();
+    dispatch(SET_LOGIN(false));
+    setTimeout(() => {
+      navigate("/");
+    }, 300);
+    handleCloseNavMenu();
+  };
 
   const settings = [
     { title: "Profile", action: handleCloseNavMenu },
-    { title: "Change password", action: handleCloseNavMenu },
+    { title: "Change password", action: handleChangePassword },
     { title: "Logout", action: handleLogOutUser },
   ];
 
