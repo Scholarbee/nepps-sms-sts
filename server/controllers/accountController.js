@@ -112,7 +112,7 @@ exports.getCurrentBill = expressAsyncHandler(async (req, res, next) => {
       path: "studentId",
       populate: {
         path: "classId",
-        model: "Class", 
+        model: "Class",
       },
     });
   if (currentBill) {
@@ -261,7 +261,96 @@ exports.paymentDetails = expressAsyncHandler(async (req, res, next) => {
   if (paymentDetails) {
     res.status(200).json({
       success: true,
-      paymentDetails: paymentDetails, 
+      paymentDetails: paymentDetails,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Error");
+  }
+});
+
+/**
+ * Close term account
+ */
+exports.closeTermAccount = expressAsyncHandler(async (req, res, next) => {
+  // Get all students
+  const students = await Student.find();
+
+  for (const student of students) {
+    // Find the active fee for the student
+    const activeFee = await Fee.findOne({
+      studentId: student._id,
+      isActive: true,
+    });
+
+    if (!activeFee) {
+      console.log(`No active fee found for student ${student._id}`);
+      continue;
+    }
+
+    // Calculate total bills and total payments
+    const totalBills = activeFee.bills.reduce(
+      (sum, bill) => sum + bill.amount,
+      0
+    );
+    const totalPayments = activeFee.paymentList.reduce(
+      (sum, payment) => sum + payment.amount,
+      0
+    );
+
+    // Calculate new arrears or balance
+    const totalBillAmount = totalBills + activeFee.arrears;
+    const newBalance = totalBillAmount - totalPayments;
+
+    // Find the current class of the student
+    const studentClass = await Class.findById(student.classId);
+
+    // Create new fee document
+    const newFeeData = {
+      studentId: student._id,
+      arrears: 0,
+      balance: 0,
+      term: activeFee.term,
+      year: activeFee.year,
+      isActive: true,
+      bills: [],
+      paymentList: [],
+    };
+
+    if (newBalance >= 0) {
+      newFeeData.arrears = newBalance;
+    } else {
+      newFeeData.balance = Math.abs(newBalance);
+    }
+
+    // Add billing information based on the current class
+    newFeeData.bills.push({
+      createdBy: req.user._id,
+      desc: "School fees",
+      amount: studentClass.schoolFees,
+    });
+
+    if (student.residency === "Boarder") {
+      newFeeData.bills.push({
+        createdBy: req.user._id,
+        desc: "Boarding fee",
+        amount: studentClass.boardingFee,
+      });
+    }
+
+    // Deactivate the old fee
+    activeFee.isActive = false;
+    await activeFee.save();
+
+    // Create the new fee document
+    const newFee = new Fee(newFeeData);
+    await newFee.save();
+  }
+
+  if (paymentDetails) {
+    res.status(200).json({
+      success: true,
+      paymentDetails: paymentDetails,
     });
   } else {
     res.status(500);

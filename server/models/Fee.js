@@ -48,7 +48,7 @@ const feeSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Staff",
         },
-        
+
         paidBy: { type: String },
         amount: { type: Number },
         phone: { type: String },

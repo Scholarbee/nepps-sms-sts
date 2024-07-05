@@ -23,6 +23,7 @@ function PrintReceipt() {
   const showPaymentDetails = async () => {
     try {
       const { data } = await getPaymentDetails(id);
+      
       setPaymentDetail(data.paymentDetails.paymentList[0]);
       setTerm(data.paymentDetails.term);
       setYear(data.paymentDetails.year);
