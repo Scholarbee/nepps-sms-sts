@@ -85,7 +85,7 @@ function App() {
             path="/staff/forgot-password"
             Component={ForgotPassword}
           ></Route>
-          <Route path="/staff/reset-password" Component={ResetPassword}></Route>
+          <Route path="/staff/reset-password/:resetToken" Component={ResetPassword}></Route>
           <Route path="/dashboard" Component={StaffDashboard}></Route>
           <Route path="/attendance" Component={Attendance}></Route>
 

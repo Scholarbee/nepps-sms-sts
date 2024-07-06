@@ -82,7 +82,17 @@ function StaffLogin() {
           {isLoading && <ClipLoader size={20} color="white" />}
           Login
         </button>
-        <Link to={"/"}>Return Home</Link>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 5,
+          }}
+        >
+          <Link to={"/"}>Return Home</Link>
+          <Link to={"/staff/forgot-password"}>Forgot Password</Link>
+        </div>
       </form>
     </section>
   );

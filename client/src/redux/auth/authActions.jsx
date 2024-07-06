@@ -44,20 +44,11 @@ export const logoutUser = async () => {
 
 // Forgot Password
 export const forgotPassword = async (userData) => {
-  try {
-    console.log(userData);
-    const response = await axios.post(
-      `${BACKEND_URL}/api/users/forgot-password`,
-      userData
-    );
-    toast.success(response.data.message);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
+  const response = axios.post(
+    `${BACKEND_URL}/api/users/forgot-password`,
+    userData
+  );
+  return response;
 };
 
 // Reset Password

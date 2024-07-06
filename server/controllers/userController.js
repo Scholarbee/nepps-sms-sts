@@ -198,7 +198,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
     await token.deleteOne();
   }
 
-  // Create Reste Token
+  // Create Reset Token
   let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
   console.log(resetToken);
 
@@ -217,26 +217,26 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
   }).save();
 
   // Construct Reset Url
-  const resetUrl = `${process.env.FRONTEND_URL}/#/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL}/#/staff/reset-password/${resetToken}`;
 
   // Reset Email
   const message = `
-      <h2>Hello, ${user.name}</h2>
+      <h2>Hello, ${user.firstName}</h2>
       <p>Please use the url below to reset your password</p>  
       <p>This reset link is valid for only 30minutes.</p>
 
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
 
       <p>Regards...</p>
-      <p>Artikon Team</p>
+      <p>Scholars Tech Solution</p>
     `;
   const subject = "Password Reset Request";
-  const send_to = user.email;
+  const send_to = user.user.email;
   const sent_from = process.env.EMAIL_USER;
 
   try {
     await sendEmail(subject, message, send_to, sent_from);
-    res.status(200).json({ success: true, message: "Reset Email Sent" });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500);
     throw new Error("Email not sent, please try again");
@@ -269,7 +269,7 @@ exports.resetPassword = asyncHandler(async (req, res) => {
 
   // Find user
   const user = await Staff.findOne({ _id: userToken.userId });
-  user.password = password;
+  user.user.password = password;
   await user.save();
   res.status(200).json({
     message: "Password Reset Successful, Please Login",

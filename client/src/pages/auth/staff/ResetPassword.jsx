@@ -12,55 +12,49 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from "../../../redux/auth/authActions";
+import { ClipLoader } from "react-spinners";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const { tk } = useParams();
+  const [loading, setLoading] = useState(false);
+  const { resetToken } = useParams();
   const navigate = useNavigate();
 
   const changePassword = async (e) => {
     e.preventDefault();
 
     if (!password || !password2) {
-      toast.error("Please all fields are required.");
+      return toast.error("Please all fields are required.");
     }
     if (password !== password2) {
-      toast.error("Password mismatch");
+      return toast.error("Password mismatch");
     }
 
     const data = { password, password2 };
 
     try {
-      const result = await resetPassword(data, tk);
-      navigate("/login");
-      toast(result.message);
+      await resetPassword(data, resetToken);
+      navigate("/staff/login");
       toast("Password reset successfully");
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
   return (
     <>
       <div
         style={{
-          // backgroundColor: "teal",
           height: "100vh",
-          // marginTop:"5vh",
-          // margin: "",
-          // display: "flex",
           justifyContent: "center",
           alignItems: "center",
           padding: "10px",
-          // margin:"auto"
         }}
       >
         <Card
           sx={{
             maxWidth: 500,
-            // height: 350,
             margin: "auto",
-            // backgroundColor: "GrayText",
             marginTop: "15vh",
           }}
         >
@@ -74,7 +68,7 @@ function ResetPassword() {
               p: 5,
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "teal" }}>
+            <Avatar sx={{ m: 1, bgcolor: "darkblue" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography
@@ -83,6 +77,7 @@ function ResetPassword() {
               alignContent={"center"}
               variant="h6"
               component="div"
+              color={"darkblue"}
             >
               Reset Password
             </Typography>
@@ -108,11 +103,12 @@ function ResetPassword() {
                 variant="standard"
               />
               <Button
-                href="/login"
+                // href="/login"
                 variant="contained"
+                disabled={loading}
                 onClick={changePassword}
-                // endIcon={<SendIcon />}
               >
+                {loading && <ClipLoader size={20} color="white" />}
                 Submit
               </Button>
             </Stack>
