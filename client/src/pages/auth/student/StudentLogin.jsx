@@ -1,23 +1,53 @@
-import axios from "axios";
 // import "./stdLogin.scss";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import { loginUser } from "../../../redux/auth/authActions";
+import {
+  SET_LOGIN,
+  SET_NAME,
+  SET_TOKEN,
+  SET_USER,
+} from "../../../redux/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 function StudentLogin() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [userId, setUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    toast.success("Wrong user name or password.");
-    setLoading(false);
-    // navigate("/student/dashboard");
-    // navigate("/");
+    const userData = {
+      id,
+      password,
+      isStudent: true,
+    };
+    setIsLoading(true);
+    try {
+      const {data} = await loginUser(userData);
+      console.log(data);
+      dispatch(SET_LOGIN(true));
+      dispatch(SET_TOKEN(data.token));
+      dispatch(SET_NAME(data.firstName + " " + data.surname));
+      dispatch(SET_USER(data));
+
+      navigate("/dashboard");
+      setIsLoading(false);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+      setIsLoading(false);
+    }
   };
   return (
     <section className="login">
@@ -27,11 +57,11 @@ function StudentLogin() {
           <label>Student ID</label>
           <input
             type="text"
-            value={userId}
+            value={id}
             name="userid"
             autoComplete="userid"
             placeholder="e.g NEPPS5010010"
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={(e) => setId(e.target.value)}
           />
         </div>
         <div>
@@ -48,7 +78,7 @@ function StudentLogin() {
         </div>
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoading}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -56,7 +86,7 @@ function StudentLogin() {
             gap: "15px",
           }}
         >
-          {loading && <ClipLoader size={20} color="white" />}
+          {isLoading && <ClipLoader size={20} color="white" />}
           Login
         </button>
         <Link to={"/"}>Return Home</Link>

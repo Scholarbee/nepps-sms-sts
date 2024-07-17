@@ -28,7 +28,7 @@ function StaffLogin() {
     };
     setIsLoading(true);
     try {
-      const data = await loginUser(userData);
+      const {data} = await loginUser(userData);
       // console.log(data);
       dispatch(SET_LOGIN(true));
       dispatch(SET_TOKEN(data.token));

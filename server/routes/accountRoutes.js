@@ -7,12 +7,14 @@ const {
   editBill,
   paymentDetails,
   closeTermAccount,
+  GetFeeDetail,
 } = require("../controllers/accountController");
 const { userInfo } = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 
 router.get("/bills/current/:id", userInfo, getCurrentBill);
+router.get("/fee", userInfo, GetFeeDetail);
 router.get("/fees", userInfo, GetFeeDetails);
 router.put("/fees/add-payment/:id", userInfo, addPayment);
 router.put("/bills/add-bill/:id", userInfo, addBill);

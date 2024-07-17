@@ -20,6 +20,22 @@ export const GetFeeDetails = async () => {
 };
 
 /**
+ * Get fee detail
+ */
+export const GetFeeDetail = async () => {
+  try {
+    const response = axios.get(`${BACKEND_URL}/api/account/fee`);
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
  * Get current Bills
  */
 export const getCurrentBill = async (id) => {

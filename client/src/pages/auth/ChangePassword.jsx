@@ -11,12 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import Navbar from "../../../components/global/Navbar";
-import { changePassword } from "../../../redux/auth/authActions";
+import Navbar from "../../components/global/Navbar";
+import { changePassword } from "../../redux/auth/authActions";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 
 function ChangePassword() {
+  const userInfo = useSelector(selectUser);
   const [oldPassword, setOldpassword] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
@@ -26,7 +29,12 @@ function ChangePassword() {
     event.preventDefault();
     setLoading(true);
     try {
-      await changePassword({ oldPassword, password, password2 });
+      await changePassword({
+        oldPassword,
+        password,
+        password2,
+        role: userInfo.role,
+      });
       toast.success("Password changed successfully.");
       setLoading(false);
     } catch (error) {

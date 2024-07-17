@@ -16,7 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_LOGIN, selectUser } from "../../redux/auth/authSlice";
+import { SET_LOGIN, SET_TOKEN, selectUser } from "../../redux/auth/authSlice";
 import { logoutUser } from "../../redux/auth/authActions";
 import useRedirectLoggedOutUser from "../../services/useRedirectLoggedOutUser";
 
@@ -53,6 +53,7 @@ const Navbar = () => {
   const handleLogOutUser = async () => {
     await logoutUser();
     dispatch(SET_LOGIN(false));
+    dispatch(SET_TOKEN(""));
     setTimeout(() => {
       navigate("/");
     }, 300);
@@ -61,7 +62,7 @@ const Navbar = () => {
   const handleChangePassword = async () => {
     handleCloseNavMenu();
     setTimeout(() => {
-      navigate("/staff/change-password");
+      navigate("/change-password");
     }, 300);
   };
   const handleProfile = async () => {
@@ -180,6 +181,16 @@ const Navbar = () => {
                   {item.text}
                 </Button>
               ))}
+            {userInfo.role === "student" &&
+              studentItems.map((item) => (
+                <Button
+                  key={item.text}
+                  onClick={handleNavigation(item.path)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {item.text}
+                </Button>
+              ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -255,6 +266,11 @@ const adminItems = [
 ];
 
 const teacherItems = [
+  { text: "Examination", path: "/exams" },
+  { text: "Attendance", path: "/attendance" },
+];
+const studentItems = [
+  { text: "Fees", path: "/student/fees" },
   { text: "Examination", path: "/exams" },
   { text: "Attendance", path: "/attendance" },
 ];

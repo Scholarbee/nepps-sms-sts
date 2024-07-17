@@ -14,8 +14,12 @@ const userInfo = asyncHandler(async (req, res, next) => {
 
     // Verify Token
     const verified = jwt.verify(token, process.env.JWT_SECRET);
+
     // Get user id from token
-    const user = await Staff.findById(verified.id);
+    let user = await Staff.findById(verified.id);
+    if (!user) {
+      user = await Student.findById(verified.id);
+    }
 
     if (!user) {
       res.status(401);

@@ -2,7 +2,7 @@ import { Routes, Route, HashRouter } from "react-router-dom";
 import LandingPage from "./pages/global/LandingPage";
 import "./App.css";
 import StaffLogin from "./pages/auth/staff/StaffLogin";
-import StudentLogin from "./pages/student/StudentLogin";
+// import StudentLogin from "./pages/student/StudentLogin";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import StaffDashboard from "./pages/staff/StaffDashboard";
 import AddStaff from "./pages/admin/AddStaff";
@@ -27,9 +27,11 @@ import GetClass from "./pages/admin/class/GetClass";
 import FeePaymentList from "./pages/account/FeePaymentList";
 import PrintReceipt from "./pages/account/PrintReceipt";
 import axios from "axios";
-import ChangePassword from "./pages/auth/staff/ChangePassword";
+import ChangePassword from "./pages/auth/ChangePassword";
 import ForgotPassword from "./pages/auth/staff/ForgotPassword";
 import ResetPassword from "./pages/auth/staff/ResetPassword";
+import StudentLogin from "./pages/auth/student/StudentLogin";
+import CurrentFees from "./pages/student/CurrentFees";
 
 axios.defaults.withCredentials = true;
 
@@ -78,20 +80,23 @@ function App() {
           {/* Staff routes */}
           <Route path="/staff/login" Component={StaffLogin}></Route>
           <Route
-            path="/staff/change-password"
+            path="/change-password"
             Component={ChangePassword}
           ></Route>
           <Route
             path="/staff/forgot-password"
             Component={ForgotPassword}
           ></Route>
-          <Route path="/staff/reset-password/:resetToken" Component={ResetPassword}></Route>
+          <Route
+            path="/staff/reset-password/:resetToken"
+            Component={ResetPassword}
+          ></Route>
           <Route path="/dashboard" Component={StaffDashboard}></Route>
           <Route path="/attendance" Component={Attendance}></Route>
 
           {/* Student routs */}
           <Route path="/student/login" Component={StudentLogin}></Route>
-          <Route path="/student/dashboard" Component={StudentDashboard}></Route>
+          <Route path="/student/fees" Component={CurrentFees}></Route>
         </Routes>
         <ToastContainer theme="dark" position="top-center" />
       </HashRouter>

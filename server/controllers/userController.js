@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const Student = require("../models/Student");
 
 // Generate Token
 const generateToken = (id) => {
@@ -13,17 +14,27 @@ const generateToken = (id) => {
 
 // Login user
 exports.login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { id, email, password, isStudent } = req.body;
+
+  if (!isStudent && (!email || !password)) {
     res.status(400);
     throw new Error("Email and password are required.");
   }
 
-  // Email auth
-  const user = await Staff.findOne({ "user.email": email });
-  if (!user) {
-    res.status(400);
-    throw new Error("User not found");
+  // User auth
+  var user;
+  if (isStudent) {
+    user = await Student.findOne({ "user.id": id });
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found");
+    }
+  } else {
+    user = await Staff.findOne({ "user.email": email });
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found");
+    }
   }
 
   // Password auth
@@ -142,8 +153,14 @@ exports.loginStatus = asyncHandler(async (req, res) => {
 
 // Change password
 exports.changePassword = asyncHandler(async (req, res) => {
-  const user = await Staff.findById(req.user._id);
-  const { oldPassword, password, password2 } = req.body;
+  const { oldPassword, password, password2, role } = req.body;
+
+  var user;
+  if (role === "student") {
+    user = await Student.findById(req.user._id);
+  } else {
+    user = await Staff.findById(req.user._id);
+  }
 
   if (!user) {
     res.status(400);
@@ -248,8 +265,8 @@ exports.resetPassword = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const { resetToken } = req.params;
 
-  console.log(password);
-  console.log(resetToken);
+  // console.log(password);
+  // console.log(resetToken);
   // Hash token, then compare to Token in DB
   const hashedToken = crypto
     .createHash("sha256")
@@ -261,7 +278,7 @@ exports.resetPassword = asyncHandler(async (req, res) => {
     token: hashedToken,
     expiresAt: { $gt: Date.now() },
   });
-  console.log(userToken);
+  // console.log(userToken);
   if (!userToken) {
     res.status(404);
     throw new Error("Invalid or Expired Token");
