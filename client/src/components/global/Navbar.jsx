@@ -132,6 +132,15 @@ const Navbar = () => {
                     <Typography textAlign="center">{item.text}</Typography>
                   </MenuItem>
                 ))}
+              {userInfo.role === "student" &&
+                studentItems.map((item) => (
+                  <MenuItem
+                    key={item.text}
+                    onClick={handleNavigation(item.path)}
+                  >
+                    <Typography textAlign="center">{item.text}</Typography>
+                  </MenuItem>
+                ))}
             </Menu>
           </Box>
           <Typography
