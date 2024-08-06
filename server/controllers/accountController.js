@@ -449,3 +449,70 @@ exports.closeTermAccount = expressAsyncHandler(async (req, res, next) => {
     throw new error("Operation failed");
   }
 });
+
+//
+exports.groundTotal = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const fees = await Fee.find();
+    const activeFees = await Fee.find({ isActive: true });
+
+    const totalBills = fees.reduce((total, fee) => {
+      return (
+        total +
+        fee.bills.reduce((billTotal, bill) => billTotal + bill.amount, 0)
+      );
+    }, 0);
+
+    const totalPayments = fees.reduce((total, fee) => {
+      return (
+        total +
+        fee.paymentList.reduce(
+          (paymentTotal, payment) => paymentTotal + payment.amount,
+          0
+        )
+      );
+    }, 0);
+
+    const totalBalance = activeFees.reduce(
+      (total, fee) => total + fee.balance,
+      0
+    );
+
+    const totalDept = totalBills + totalBalance - totalPayments;
+
+    res.json({
+      totalBills,
+      totalPayments,
+      totalBalance,
+      totalDept,
+    });
+  } catch (err) {
+    console.error("Error fetching Fees:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// console.log(this.groundTotal());
+exports.sumYearlyPayments = expressAsyncHandler(async (req, res, next) => {
+  try {
+    // Aggregation pipeline to sum payments by term and year
+    const result = await Fee.aggregate([
+      { $unwind: "$paymentList" }, // Unwind paymentList array
+      {
+        $group: {
+          _id: {
+            term: "$term", // Group by term
+            year: { $year: "$paymentList.paymentDate" }, // Group by year extracted from paymentDate
+          },
+          totalPayments: { $sum: "$paymentList.amount" }, // Sum payments
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.term": 1 } }, // Sort by year and term
+    ]);
+
+    res.json(result);
+  } catch (err) {
+    console.error("Error fetching payments by term and year:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});

@@ -32,6 +32,7 @@ import ForgotPassword from "./pages/auth/staff/ForgotPassword";
 import ResetPassword from "./pages/auth/staff/ResetPassword";
 import StudentLogin from "./pages/auth/student/StudentLogin";
 import CurrentFees from "./pages/student/CurrentFees";
+import FeesReport from "./pages/ceo/FeesReport";
 
 axios.defaults.withCredentials = true;
 
@@ -41,6 +42,9 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" Component={LandingPage}></Route>
+
+          {/* CEO routes */}
+          <Route path="/fees-report" Component={FeesReport}></Route>
 
           {/* Admin routes */}
           <Route path="/staffs" Component={ManageStaff}></Route>
@@ -79,10 +83,7 @@ function App() {
 
           {/* Staff routes */}
           <Route path="/staff/login" Component={StaffLogin}></Route>
-          <Route
-            path="/change-password"
-            Component={ChangePassword}
-          ></Route>
+          <Route path="/change-password" Component={ChangePassword}></Route>
           <Route
             path="/staff/forgot-password"
             Component={ForgotPassword}

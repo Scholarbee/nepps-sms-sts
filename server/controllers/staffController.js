@@ -26,6 +26,7 @@ exports.addStaff = expressAsyncHandler(async (req, res, next) => {
     religion,
     phone,
     address,
+    role,
     email,
   } = req.body;
 
@@ -79,7 +80,7 @@ exports.addStaff = expressAsyncHandler(async (req, res, next) => {
       public_id: result.public_id,
       url: result.secure_url,
     },
-    user: { id: staffId, email: email, password: staffId },
+    user: { id: staffId, email: email, password: staffId, role: role },
   });
 
   if (staff) {
@@ -101,6 +102,7 @@ exports.editStaff = expressAsyncHandler(async (req, res, next) => {
     surname,
     otherName,
     gender,
+    role,
     birthDate,
     religion,
     phone,
@@ -118,6 +120,7 @@ exports.editStaff = expressAsyncHandler(async (req, res, next) => {
     phone,
     email,
     address,
+    "user.role": role,
   };
 
   // Validation of fields

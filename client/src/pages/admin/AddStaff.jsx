@@ -28,6 +28,7 @@ function AddStaff() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [role, setRole] = useState("");
   const [religion, setReligion] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [my_file, setMy_file] = useState("");
@@ -45,6 +46,7 @@ function AddStaff() {
     formData.append("phone", phone);
     formData.append("email", email);
     formData.append("address", address);
+    formData.append("role", role);
     formData.append("religion", religion);
     try {
       let con = window.confirm("Please confirm action.");
@@ -241,7 +243,7 @@ function AddStaff() {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       required
                       fullWidth
@@ -254,6 +256,29 @@ function AddStaff() {
                         setAddress(e.target.value);
                       }}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl required sx={{ width: "100%" }}>
+                      <InputLabel id="demo-simple-select-required-label">
+                        Role
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-required-label"
+                        id="demo-simple-select-required"
+                        value={role}
+                        label="Role *"
+                        onChange={(e) => {
+                          setRole(e.target.value);
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>select role</em>
+                        </MenuItem>
+                        <MenuItem value={"admin"}>Admin</MenuItem>
+                        <MenuItem value={"teacher"}>Teacher</MenuItem>
+                        {/* <MenuItem value={"student"}>Others</MenuItem> */}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField

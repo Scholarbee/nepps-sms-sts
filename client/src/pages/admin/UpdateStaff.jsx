@@ -30,6 +30,7 @@ function UpdateStaff() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [role, setRole] = useState("");
   const [religion, setReligion] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [my_file, setMy_file] = useState("");
@@ -51,6 +52,7 @@ function UpdateStaff() {
       setProfilePicture(data.staff.image.url);
       setPID(data.staff.image.public_id);
       setGender(data.staff.gender);
+      setRole(data.staff.user.role);
       setEmail(data.staff.user.email);
       setReligion(data.staff.religion);
       setBirthDate(moment(data.staff.birthDate).format("yyyy-MM-DD"));
@@ -67,6 +69,7 @@ function UpdateStaff() {
     formData.append("surname", surname);
     formData.append("otherName", otherName);
     formData.append("gender", gender);
+    formData.append("role", role);
     formData.append("birthDate", birthDate);
     formData.append("my_file", my_file);
     formData.append("phone", phone);
@@ -268,7 +271,7 @@ function UpdateStaff() {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12}>
+                  <Grid item xs={12} sm={6}>
                     <TextField
                       required
                       fullWidth
@@ -281,6 +284,29 @@ function UpdateStaff() {
                         setAddress(e.target.value);
                       }}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl required sx={{ width: "100%" }}>
+                      <InputLabel id="demo-simple-select-required-label">
+                        Role
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-required-label"
+                        id="demo-simple-select-required"
+                        value={role}
+                        label="Role *"
+                        onChange={(e) => {
+                          setRole(e.target.value);
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>select role</em>
+                        </MenuItem>
+                        <MenuItem value={"admin"}>Admin</MenuItem>
+                        <MenuItem value={"teacher"}>Teacher</MenuItem>
+                        {/* <MenuItem value={"student"}>Others</MenuItem> */}
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField

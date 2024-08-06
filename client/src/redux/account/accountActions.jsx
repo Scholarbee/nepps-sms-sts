@@ -127,7 +127,25 @@ export const delBill = async (feeId, billId) => {
  */
 export const getPaymentDetails = async (paymentId) => {
   const response = axios.get(
-    `${BACKEND_URL}/api/account//fees/payment-details/${paymentId}`
+    `${BACKEND_URL}/api/account/fees/payment-details/${paymentId}`
   );
+  return response;
+};
+
+/**
+ * get grandtotal
+ */
+export const grandtotal = async () => {
+  const response = axios.get(
+    `${BACKEND_URL}/api/account/grandtotal/`
+  );
+  return response;
+};
+
+/**
+ * get Yearly Payments
+ */
+export const getYearlyPayments = async () => {
+  const response = axios.get(`${BACKEND_URL}/api/account/yearly-payment/`);
   return response;
 };

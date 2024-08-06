@@ -170,7 +170,17 @@ const Navbar = () => {
             >
               Dashboard
             </Button>
-            {userInfo.role === "admin" &&
+            {(userInfo.role === "ceo" || userInfo.role === "ceo") &&
+              ceoItems.map((item) => (
+                <Button
+                  key={item.text}
+                  onClick={handleNavigation(item.path)}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            {(userInfo.role === "admin" || userInfo.role === "ceo") &&
               adminItems.map((item) => (
                 <Button
                   key={item.text}
@@ -272,6 +282,14 @@ const adminItems = [
   { text: "Manage Staffs", path: "/staffs" },
   { text: "Manage Fees", path: "/accounts" },
   { text: "Manage Class", path: "/classes" },
+  // { text: "Manage Users", path: "/classes" },
+];
+const ceoItems = [
+  { text: "Fees Report", path: "/fees-report" },
+  // { text: "Manage Staffs", path: "/staffs" },
+  // { text: "Manage Fees", path: "/accounts" },
+  // { text: "Manage Class", path: "/classes" },
+  // { text: "Manage Users", path: "/classes" },
 ];
 
 const teacherItems = [

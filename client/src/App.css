@@ -40,7 +40,7 @@
 .hero {
   min-height: 100vh;
   position: relative;
-  background: url(/hero.jpg) rgba(0, 0, 0, 0.75);
+  background: url(/hero.jpeg) rgba(0, 0, 0, 0.75);
   background-blend-mode: darken;
   background-size: cover;
   background-repeat: no-repeat;

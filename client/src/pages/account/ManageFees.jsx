@@ -186,7 +186,7 @@ function ManageFees() {
                       variant="outlined"
                       color="success"
                       onClick={() => {
-                        navigate(`/accounts/payment/${student._id}`);
+                        navigate(`/accounts/payment-list/${student._id}`);
                       }}
                       startIcon={<PaymentIcon />}
                     >

@@ -25,6 +25,7 @@ import { getCurrentBill } from "../../redux/account/accountActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Loader from "../../components/global/Loader";
 
 function FeePaymentList() {
   const navigate = useNavigate();
@@ -34,13 +35,14 @@ function FeePaymentList() {
   const [image, setImage] = useState("");
   const [studentId, setStudentId] = useState("");
   const [_class, setClass] = useState("");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     showCurrentBill();
   }, []);
 
   const showCurrentBill = async () => {
+    setLoading(true);
     try {
       const { data } = await getCurrentBill(id);
       // console.log(data.currentBill);
@@ -51,6 +53,7 @@ function FeePaymentList() {
       setName(
         `${data.currentBill.studentId.firstName} ${data.currentBill.studentId.surname}`
       );
+      setLoading(false);
     } catch (error) {
       // console.log(error.response);
       toast.error(error.response.data.message);
@@ -132,10 +135,10 @@ function FeePaymentList() {
                   handleAddPayment();
                 }}
               >
-                New
+                New Payment
               </Button>
             </Box>
-            {paymnets.length > 0 ? (
+            {loading ? <Loader/> : paymnets.length > 0 ? (
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
