@@ -114,7 +114,16 @@ const Navbar = () => {
               <MenuItem onClick={handleNavigation("/dashboard")}>
                 <Typography textAlign="center">Dashboard</Typography>
               </MenuItem>
-              {userInfo.role === "admin" &&
+              {userInfo.role === "ceo" &&
+                ceoItems.map((item) => (
+                  <MenuItem
+                    key={item.text}
+                    onClick={handleNavigation(item.path)}
+                  >
+                    <Typography textAlign="center">{item.text}</Typography>
+                  </MenuItem>
+                ))}
+              {(userInfo.role === "admin" || userInfo.role === "ceo") &&
                 adminItems.map((item) => (
                   <MenuItem
                     key={item.text}

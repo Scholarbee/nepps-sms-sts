@@ -79,8 +79,7 @@ function StaffDashboard() {
                   </Button>
                 </Paper>
               </Grid>
-              {/* Announcements and Notifications */}
-              <Grid item xs={12} md={12}>
+              {/* <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
                     padding: "20px",
@@ -101,7 +100,6 @@ function StaffDashboard() {
                 </Paper>
               </Grid>
 
-              {/* Timetable and Schedule */}
               <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
@@ -122,13 +120,12 @@ function StaffDashboard() {
                     ))}
                   </List>
                 </Paper>
-              </Grid>
+              </Grid> */}
             </Stack>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              {/* Student Management */}
               <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
@@ -151,7 +148,6 @@ function StaffDashboard() {
                 </Paper>
               </Grid>
 
-              {/* Reports and Analytics */}
               <Grid item xs={12}>
                 <Paper
                   sx={{
@@ -164,10 +160,8 @@ function StaffDashboard() {
                   <Typography variant="body1">
                     View detailed performance reports and analytics here.
                   </Typography>
-                  {/* You can add charts or detailed reports here */}
                 </Paper>
               </Grid>
-              {/* Task Management */}
               <Grid item xs={12} md={12}>
                 <Paper
                   sx={{
@@ -196,7 +190,7 @@ function StaffDashboard() {
                 </Paper>
               </Grid>
             </Stack>
-          </Grid>
+          </Grid> */}
         </Grid>
       </section>
       <Footer />
