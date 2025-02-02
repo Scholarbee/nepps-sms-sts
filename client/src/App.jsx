@@ -33,6 +33,9 @@ import ResetPassword from "./pages/auth/staff/ResetPassword";
 import StudentLogin from "./pages/auth/student/StudentLogin";
 import CurrentFees from "./pages/student/CurrentFees";
 import FeesReport from "./pages/ceo/FeesReport";
+import ManageSubject from "./pages/admin/subject/ManageSubject";
+import AddSubject from "./pages/admin/subject/AddSubject";
+import UpdateSubject from "./pages/admin/subject/UpdateSubject";
 
 axios.defaults.withCredentials = true;
 
@@ -64,6 +67,17 @@ function App() {
           <Route path="/classes/add-class" Component={AddClass}></Route>
           <Route path="/classes/edit-class/:id" Component={UpdateClass}></Route>
           <Route path="/classes/get-class/:id" Component={GetClass}></Route>
+
+          <Route path="/subjects" Component={ManageSubject}></Route>
+          <Route path="/subjects/add-subject" Component={AddSubject}></Route>
+          <Route
+            path="/subjects/edit-subject/:id"
+            Component={UpdateSubject}
+          ></Route>
+          {/* <Route
+            path="/subjects/get-subject/:id"
+            Component={GetSubject}
+          ></Route> */}
 
           {/* Account */}
           <Route path="/accounts" Component={ManageFees}></Route>

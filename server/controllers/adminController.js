@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const Class = require("../models/classModel");
 const Student = require("../models/Student");
+const Subject = require("../models/subject");
 // const Class = require("../models/CLass");
 // const sendEmail = require("../utils/sendEmail");
 
@@ -100,7 +101,8 @@ exports.editClass = expressAsyncHandler(async (req, res, next) => {
     throw new Error("Something went wrong, please try again.");
   }
 });
-// Add Class
+
+// delete Class
 exports.deleteClass = expressAsyncHandler(async (req, res, next) => {
   res.send("Class deleted");
 });
@@ -128,6 +130,90 @@ exports.getClasses = expressAsyncHandler(async (req, res, next) => {
       success: true,
       classes,
     });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
+});
+
+/**
+ *  get subjects
+ */
+exports.getSubjects = expressAsyncHandler(async (req, res, next) => {
+  const subjects = await Subject.find({}).populate(
+    "subjectMaster",
+    "firstName surname"
+  );
+  if (subjects) {
+    res.status(200).json({
+      success: true,
+      subjects,
+    });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
+});
+
+/**
+ *  Add subject
+ */
+exports.addSubject = expressAsyncHandler(async (req, res, next) => {
+  const { subject, subjectMaster } = req.body;
+
+  if (!subject) {
+    res.status(400);
+    throw new Error("Subject name is required");
+  }
+
+  let subjectExist = await Subject.findOne({ subject: subject });
+  if (subjectExist) {
+    res.status(400);
+    throw new Error("Subject name already exist");
+  }
+
+  let result = await Subject.create({
+    subject,
+    subjectMaster,
+  });
+  if (result) {
+    res.status(201).json({ success: true, result });
+  } else {
+    res.status(500);
+    throw new Error("Something went wrong, please try again.");
+  }
+});
+
+/**
+ *  Edit subject
+ */
+exports.editSubject = expressAsyncHandler(async (req, res, next) => {
+  const { subject, subjectMaster } = req.body;
+  if (!subject) {
+    res.status(400);
+    throw new Error("Subject name is required");
+  }
+
+  let subjectExist = await Subject.findOne({
+    subject: req.body.subject,
+    _id: { $ne: req.params.id },
+  });
+
+  if (subjectExist) {
+    res.status(400);
+    throw new Error("subject already exist");
+  }
+
+  let result = await Subject.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      subject,
+      subjectMaster,
+    }
+  );
+
+  if (result) {
+    res.status(200).json({ success: true, result });
   } else {
     res.status(500);
     throw new Error("Something went wrong, please try again.");

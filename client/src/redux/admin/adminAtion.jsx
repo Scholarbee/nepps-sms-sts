@@ -262,11 +262,11 @@ export const getClasses = async () => {
  * Get all classes
  */
 export const getStudentCounts = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/api/admin//classes/students`
-    );
-    return response;
-  };
+  const response = await axios.get(
+    `${BACKEND_URL}/api/admin//classes/students`
+  );
+  return response;
+};
 
 /**
  * Get single class
@@ -282,4 +282,43 @@ export const getClass = async (id) => {
       error.toString();
     toast.error(message);
   }
+};
+
+/**
+ * Get all subjects
+ */
+export const getSubjects = async () => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/api/admin/subjects`);
+    return response;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+/**
+ * Add subject
+ */
+export const addSubject = async (formData) => {
+  const response = await axios.post(
+    `${BACKEND_URL}/api/admin/subjects/add-subject`,
+    formData
+  );
+
+  return response;
+};
+
+/**
+ * Edit subject
+ */
+export const updateSubject = async (id, formData) => {
+  const response = axios.put(
+    `${BACKEND_URL}/api/admin/subjects/edit-subject/${id}`,
+    formData
+  );
+  return response;
 };

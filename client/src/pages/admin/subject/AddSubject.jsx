@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
-// import React from "react";
-import Navbar from "../../components/global/Navbar";
+// import React from 'react'
+import Navbar from '../../../components/global/Navbar';
+import { Box } from '@mui/material';
 
-function GetStudent() {
+function AddSubject() {
   return (
     <>
       <Navbar />
@@ -16,11 +16,11 @@ function GetStudent() {
             textAlign: "center",
           }}
         >
-          <h1>Student Info</h1>
+          <h1>Add Subject</h1>
         </Box>
       </section>
     </>
   );
 }
 
-export default GetStudent;
+export default AddSubject

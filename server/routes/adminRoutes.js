@@ -5,6 +5,9 @@ const {
   getClass,
   getClasses,
   getStudentCounts,
+  getSubjects,
+  addSubject,
+  editSubject,
 } = require("../controllers/adminController");
 
 
@@ -20,5 +23,10 @@ router.delete("/classes/delete-class/:id", deleteClass);
 router.get("/class/:id", getClass);
 router.get("/classes", getClasses);
 router.get("/classes/students", getStudentCounts);
+
+// router.get("/subject/:id", getClass);
+router.get("/subjects", getSubjects);
+router.post("/subjects/add-subject", addSubject);
+router.put("/subjects/edit-subject/:id", editSubject);
 
 module.exports = router;

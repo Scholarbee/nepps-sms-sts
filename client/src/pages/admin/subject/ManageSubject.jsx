@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/global/Navbar";
+import Navbar from "../../../components/global/Navbar";
 import {
-  Avatar,
   Backdrop,
   Box,
   Button,
-  Chip,
   Fade,
+  FormControl,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
   Modal,
   Paper,
+  Select,
   Stack,
   Table,
   TableBody,
@@ -27,107 +29,86 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 import {
-  addBill,
-  delBill,
-  editBill,
-  getCurrentBill,
-} from "../../redux/account/accountActions";
-import { useParams } from "react-router-dom";
+  addSubject,
+  getClasses,
+  getStaffs,
+  getSubjects,
+  updateSubject,
+} from "../../../redux/admin/adminAtion";
 import { toast } from "react-toastify";
 
-function CurrentBill() {
-  const { id } = useParams();
-  const [currentBill, setCurrentBill] = useState([]);
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const [_class, setClass] = useState("");
+function ManageSubject() {
+  const navigate = useNavigate();
+  const [subjects, setSubjects] = useState([]);
+  const [staffs, setStaffs] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [subjectMaster, setSubjectsMaster] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [desc, setDesc] = useState("");
-  const [amount, setAmount] = useState("");
-  const [feeId, setFeeId] = useState("");
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("");
 
   useEffect(() => {
-    showCurrentBill();
+    getAllSubjects();
+    getAllStaff();
   }, []);
 
-  const showCurrentBill = async () => {
+  const getAllSubjects = async () => {
+    const { data } = await getSubjects();
+    setSubjects(data.subjects);
+    console.log(data);
+  };
+
+  const getAllStaff = async () => {
+    const { data } = await getStaffs();
+    setStaffs(data.staffs);
+    console.log(data);
+  };
+
+  const handleAddSubject = async () => {
+    setLoading(true);
     try {
-      const { data } = await getCurrentBill(id);
-      console.log(data);
-      setCurrentBill(data.currentBill.bills);
-      setImage(data.currentBill.studentId.image.url);
-      setFeeId(data.currentBill._id);
-      setStudentId(data.currentBill.studentId.user.id);
-      setClass(data.currentBill.studentId.classId.className);
-      setName(
-        `${data.currentBill.studentId.firstName} ${data.currentBill.studentId.surname}`
-      );
+      let con = window.confirm("Please confirm action.");
+      if (con) {
+        await addSubject({ subject, subjectMaster });
+        await getAllSubjects();
+      }
+      toast.info("Subject added successfully");
+      setOpen(false);
+      setEdit(false);
+      setLoading(false);
+      setSubject("");
+      setSubjectsMaster("");
     } catch (error) {
-      // console.log(error.response);
+      // console.log(error);
       toast.error(error.response.data.message);
       setLoading(false);
     }
   };
 
-  const handleAddBill = async () => {
+  const handleEditSubject = async () => {
     setLoading(true);
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await addBill(id, { desc, amount });
-        await showCurrentBill();
-        toast.info("Bill added successfully");
+        await updateSubject(editId, { subject, subjectMaster });
+        await getAllSubjects();
+        toast.info("Subject updated successfully");
       }
       setOpen(false);
       setEdit(false);
       setLoading(false);
+      setSubject("");
+      setSubjectsMaster("");
     } catch (error) {
       // console.log(error);
       toast.error(error.response.data.message);
       setLoading(false);
+      //   setEdit(false);
     }
   };
-  const handleEditBill = async () => {
-    setLoading(true);
-    try {
-      let con = window.confirm("Please confirm action.");
-      if (con) {
-        await editBill(feeId, editId, { desc, amount });
-        await showCurrentBill();
-        toast.info("Bill updated successfully");
-      }
-      setOpen(false);
-      setEdit(false);
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteBill = async (billId) => {
-    setLoading(true);
-    try {
-      let con = window.confirm("Please confirm action.");
-      if (con) {
-        await delBill(feeId, billId);
-        await showCurrentBill();
-        toast.info("Bill deleted successfully");
-      }
-      setLoading(false);
-    } catch (error) {
-      // console.log(error);
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       <Navbar />
@@ -145,23 +126,8 @@ function CurrentBill() {
             variant="h4"
             sx={{ color: "darkblue", fontWeight: "bolder" }}
           >
-            Current Bill
+            Subject Management
           </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Chip
-            avatar={<Avatar alt="" src={image} />}
-            label={name}
-            variant="outlined"
-          />
-          <Chip label={`ID: ${studentId}`} variant="outlined" />
-          <Chip label={`Class: ${_class}`} variant="outlined" />
         </Box>
         <Grid
           container
@@ -189,13 +155,11 @@ function CurrentBill() {
               <Button
                 variant="outlined"
                 color="primary"
-                startIcon={<AddIcon />}
                 onClick={() => {
-                  setEdit(false);
-                  setDesc("");
-                  setAmount("");
+                  // navigate("/classes/add-class");
                   setOpen(true);
                 }}
+                startIcon={<AddIcon />}
               >
                 New
               </Button>
@@ -205,29 +169,34 @@ function CurrentBill() {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Sn</StyledTableCell>
-                    <StyledTableCell>Description</StyledTableCell>
-                    <StyledTableCell>Amount</StyledTableCell>
+                    <StyledTableCell>Subject Name</StyledTableCell>
+                    <StyledTableCell>Subject Head</StyledTableCell>
                     <StyledTableCell align="right">Actions</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {currentBill.map((bill, i) => {
+                  {subjects.map((subject, i) => {
                     return (
-                      <StyledTableRow key={bill._id}>
+                      <StyledTableRow key={subject._id}>
                         <StyledTableCell>{i + 1}</StyledTableCell>
                         <StyledTableCell component="th" scope="row">
-                          {bill.desc}
+                          {subject.subject}
                         </StyledTableCell>
-                        <StyledTableCell>{bill.amount}</StyledTableCell>
+                        <StyledTableCell>
+                          {subject.subjectMaster.firstName +
+                            " " +
+                            subject.subjectMaster.surname || " "}
+                        </StyledTableCell>
+
                         <StyledTableCell align="right">
                           <Tooltip title="Edit">
                             <IconButton
                               onClick={() => {
                                 setEdit(true);
                                 setOpen(true);
-                                setAmount(bill.amount);
-                                setDesc(bill.desc);
-                                setEditId(bill._id);
+                                setSubject(subject.subject);
+                                setSubjectsMaster(subject.subjectMaster._id);
+                                setEditId(subject._id);
                               }}
                               color="primary"
                             >
@@ -236,8 +205,7 @@ function CurrentBill() {
                           </Tooltip>
                           <Tooltip title="Delete">
                             <IconButton
-                              disabled={loading}
-                              onClick={() => handleDeleteBill(bill._id)}
+                              //   onClick={() => handleDelete(student.id)}
                               color="secondary"
                             >
                               <DeleteIcon />
@@ -281,45 +249,70 @@ function CurrentBill() {
                 variant="h5"
                 component="h2"
               >
-                {edit ? "Edit Bill" : "Add Bill"}
+                {edit ? "Edit Subject" : "Add Subject"}
               </Typography>
 
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                onChange={(e) => setDesc(e.target.value)}
-                id="desc"
-                label="Description"
-                value={desc}
-                name="desc"
-                autoComplete="desc"
+                onChange={(e) => setSubject(e.target.value)}
+                id="subject"
+                label="Subject Name"
+                value={subject}
+                name="subject"
+                autoComplete="subject"
                 autoFocus
               />
-              <TextField
+              {/* <TextField
                 margin="normal"
                 required
                 fullWidth
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                id="amount"
-                label="Amount"
-                name="amount"
+                value={subjectMaster}
+                onChange={(e) => setSubjectsMaster(e.target.value)}
+                id="subjectMaster"
+                label="Subject Master"
+                name="subjectMaster"
                 autoComplete="amount"
-              />
+              /> */}
+              {/* <Grid item xs={12} sm={4}> */}
+              <FormControl required sx={{ width: "100%" }}>
+                <InputLabel id="demo-simple-select-required-label">
+                  Class
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
+                  value={subjectMaster}
+                  label="Subject Master *"
+                  onChange={(e) => setSubjectsMaster(e.target.value)}
+                >
+                  <MenuItem value="">
+                    <em>select class</em>
+                  </MenuItem>
+                  {staffs.map((staff, i) => {
+                    return (
+                      <MenuItem key={i} value={staff._id}>
+                        {staff.firstName + " " + staff.surname}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              {/* </Grid> */}
               <Stack sx={{ margin: "20px 0 0 0" }}>
                 <Button
                   variant="contained"
                   disabled={loading}
                   onClick={() => {
-                    edit ? handleEditBill() : handleAddBill();
+                    edit ? handleEditSubject() : handleAddSubject();
                   }}
                 >
                   {loading
                     ? "Processing..."
                     : edit
                     ? "Save Changes"
-                    : "Add Bill"}
+                    : "Add Subject"}
                 </Button>
               </Stack>
             </Box>
@@ -330,7 +323,7 @@ function CurrentBill() {
   );
 }
 
-export default CurrentBill;
+export default ManageSubject;
 
 const style = {
   position: "absolute",
@@ -349,10 +342,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.common.white,
     fontWeight: "bold",
-    fontSize: "18px",
+    fontSize: "15px",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 }));
 

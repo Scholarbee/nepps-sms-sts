@@ -291,7 +291,7 @@ const adminItems = [
   { text: "Manage Staffs", path: "/staffs" },
   { text: "Manage Fees", path: "/accounts" },
   { text: "Manage Class", path: "/classes" },
-  // { text: "Manage Users", path: "/classes" },
+  { text: "Subjects", path: "/subjects" },
 ];
 const ceoItems = [
   { text: "Fees Report", path: "/fees-report" },

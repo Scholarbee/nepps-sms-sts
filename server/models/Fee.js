@@ -64,15 +64,15 @@ const feeSchema = mongoose.Schema(
   }
 );
 
-// Instance method to calculate total bills
-feeSchema.methods.calculateTotalBills = function() {
-  return this.bills.reduce((total, bill) => total + bill.amount, 0);
-};
+// // Instance method to calculate total bills
+// feeSchema.methods.calculateTotalBills = function() {
+//   return this.bills.reduce((total, bill) => total + bill.amount, 0);
+// };
 
-// Instance method to calculate total payments
-feeSchema.methods.calculateTotalPayments = function() {
-  return this.paymentList.reduce((total, payment) => total + payment.amount, 0);
-};
+// // Instance method to calculate total payments
+// feeSchema.methods.calculateTotalPayments = function() {
+//   return this.paymentList.reduce((total, payment) => total + payment.amount, 0);
+// };
 
 const Fee = mongoose.model("Fee", feeSchema);
 module.exports = Fee;
