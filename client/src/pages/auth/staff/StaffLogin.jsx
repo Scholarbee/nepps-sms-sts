@@ -28,7 +28,7 @@ function StaffLogin() {
     };
     setIsLoading(true);
     try {
-      const {data} = await loginUser(userData);
+      const { data } = await loginUser(userData);
       // console.log(data);
       dispatch(SET_LOGIN(true));
       dispatch(SET_TOKEN(data.token));
@@ -38,6 +38,12 @@ function StaffLogin() {
       navigate("/dashboard");
       setIsLoading(false);
     } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.response?.data?.message ||
+        error.response?.data?.error;
+      toast.error(errorMessage);
       setIsLoading(false);
     }
   };
