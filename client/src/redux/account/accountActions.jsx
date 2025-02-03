@@ -6,9 +6,9 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 /**
  * Get fees detail
  */
-export const GetFeeDetails = async () => {
+export const GetFeeDetails = async (token) => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/account/fees`);
+    const response = axios.get(`${BACKEND_URL}/api/account/fees/${token}`);
     return response;
   } catch (error) {
     const message =
@@ -22,9 +22,9 @@ export const GetFeeDetails = async () => {
 /**
  * Get fee detail
  */
-export const GetFeeDetail = async () => {
+export const GetFeeDetail = async (token) => {
   try {
-    const response = axios.get(`${BACKEND_URL}/api/account/fee`);
+    const response = axios.get(`${BACKEND_URL}/api/account/fee/${token}`);
     return response;
   } catch (error) {
     const message =
@@ -38,10 +38,10 @@ export const GetFeeDetail = async () => {
 /**
  * Get current Bills
  */
-export const getCurrentBill = async (id) => {
+export const getCurrentBill = async (id, token) => {
   try {
     const response = axios.get(
-      `${BACKEND_URL}/api/account/bills/current/${id}`
+      `${BACKEND_URL}/api/account/bills/current/${id}/${token}`
     );
     return response;
   } catch (error) {
@@ -56,10 +56,10 @@ export const getCurrentBill = async (id) => {
 /**
  * Add payment
  */
-export const addPayment = async (id, formData) => {
+export const addPayment = async (id, formData, token) => {
   try {
     const response = axios.put(
-      `${BACKEND_URL}/api/account/fees/add-payment/${id}`,
+      `${BACKEND_URL}/api/account/fees/add-payment/${id}/${token}`,
       formData
     );
     return response;
@@ -75,10 +75,10 @@ export const addPayment = async (id, formData) => {
 /**
  * Delete payment
  */
-export const delPayment = async (id) => {
+export const delPayment = async (id, token) => {
   try {
     const response = axios.put(
-      `${BACKEND_URL}/api/account/fees/add-payment/${id}`
+      `${BACKEND_URL}/api/account/fees/add-payment/${id}/${token}`
     );
     return response;
   } catch (error) {
@@ -93,9 +93,9 @@ export const delPayment = async (id) => {
 /**
  * Add bill
  */
-export const addBill = async (id, formData) => {
+export const addBill = async (id, formData, token) => {
   const response = axios.put(
-    `${BACKEND_URL}/api/account/bills/add-bill/${id}`,
+    `${BACKEND_URL}/api/account/bills/add-bill/${id}/${token}`,
     formData
   );
   return response;
@@ -104,9 +104,9 @@ export const addBill = async (id, formData) => {
 /**
  * Add bill
  */
-export const editBill = async (feeId, billId, formData) => {
+export const editBill = async (feeId, billId, formData, token) => {
   const response = axios.put(
-    `${BACKEND_URL}/api/account/bills/edit-bill/${feeId}/${billId}`,
+    `${BACKEND_URL}/api/account/bills/edit-bill/${feeId}/${billId}/${token}`,
     formData
   );
   return response;
@@ -115,9 +115,9 @@ export const editBill = async (feeId, billId, formData) => {
 /**
  * Delete bill
  */
-export const delBill = async (feeId, billId) => {
+export const delBill = async (feeId, billId, token) => {
   const response = axios.put(
-    `${BACKEND_URL}/api/account/bills/remove-bill/${feeId}/${billId}`
+    `${BACKEND_URL}/api/account/bills/remove-bill/${feeId}/${billId}/${token}`
   );
   return response;
 };
@@ -125,9 +125,9 @@ export const delBill = async (feeId, billId) => {
 /**
  * get Payment Details
  */
-export const getPaymentDetails = async (paymentId) => {
+export const getPaymentDetails = async (paymentId, token) => {
   const response = axios.get(
-    `${BACKEND_URL}/api/account/fees/payment-details/${paymentId}`
+    `${BACKEND_URL}/api/account/fees/payment-details/${paymentId}/${token}`
   );
   return response;
 };
@@ -135,17 +135,17 @@ export const getPaymentDetails = async (paymentId) => {
 /**
  * get grandtotal
  */
-export const grandtotal = async () => {
-  const response = axios.get(
-    `${BACKEND_URL}/api/account/grandtotal/`
-  );
+export const grandtotal = async (token) => {
+  const response = axios.get(`${BACKEND_URL}/api/account/grandtotal/${token}`);
   return response;
 };
 
 /**
  * get Yearly Payments
  */
-export const getYearlyPayments = async () => {
-  const response = axios.get(`${BACKEND_URL}/api/account/yearly-payment/`);
+export const getYearlyPayments = async (token) => {
+  const response = axios.get(
+    `${BACKEND_URL}/api/account/yearly-payment/${token}`
+  );
   return response;
 };

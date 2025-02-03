@@ -9,6 +9,7 @@ const {
   getStudent,
   getStudents,
 } = require("../controllers/studentController");
+const { userInfo } = require("../middlewares/authMiddleware");
 
 const Multer = require("multer");
 
@@ -17,12 +18,22 @@ const upload = Multer({
   storage,
 });
 
-router.post("/add-student", upload.single("my_file"), addStudent);
-router.put("/edit-student/:id", upload.single("my_file"), editStudent);
-router.delete("/delete-student/:id", deleteStudent);
-router.put("/suspend-student/:id", suspendStudent);
-router.put("/activate-student/:id", activateStudent);
-router.put("/archive-student/:id", archiveStudent);
+router.post(
+  "/add-student/:clientToken",
+  userInfo,
+  upload.single("my_file"),
+  addStudent
+);
+router.put(
+  "/edit-student/:id/:clientToken",
+  userInfo,
+  upload.single("my_file"),
+  editStudent
+);
+router.delete("/delete-student/:id/:clientToken", userInfo, deleteStudent);
+router.put("/suspend-student/:id/:clientToken", userInfo, suspendStudent);
+router.put("/activate-student/:id/:clientToken", userInfo, activateStudent);
+router.put("/archive-student/:id/:clientToken", userInfo, archiveStudent);
 router.get("/student/:id", getStudent);
 router.get("/", getStudents);
 

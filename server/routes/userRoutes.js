@@ -19,9 +19,9 @@ router.put("/unblock-user/:id", userInfo, unblockUser);
 router.post("/login", login);
 router.get("/logout", logout);
 router.get("/login-status/:userToken", loginStatus);
-router.get("/user-info", userInfo, getUser);
+router.get("/user-info/:clientToken", userInfo, getUser);
 
-router.put("/change-password", userInfo, changePassword);
+router.put("/change-password/:clientToken", userInfo, changePassword);
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password/:resetToken", resetPassword);
 

@@ -18,8 +18,11 @@ import { useNavigate } from "react-router-dom";
 import { GetFeeDetails } from "../../redux/account/accountActions";
 import Loader from "../../components/global/Loader";
 import { toast } from "react-toastify";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function ManageFees() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [studentsData, setStudentsData] = useState([]);
@@ -33,7 +36,7 @@ function ManageFees() {
   const showStudents = async () => {
     setPageLoading(true);
     try {
-      const { data } = await GetFeeDetails();
+      const { data } = await GetFeeDetails(userToken);
       // const { data } = await getStudents();
       setStudents(data.feeDetails);
       setStudentsData(data.feeDetails);

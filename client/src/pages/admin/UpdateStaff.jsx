@@ -14,11 +14,14 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { addStaff, getStaff, updateStaff } from "../../redux/admin/adminAtion";
+import { getStaff, updateStaff } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
 import moment from "moment";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function UpdateStaff() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -42,7 +45,7 @@ function UpdateStaff() {
 
   const showRecord = async () => {
     try {
-      let { data } = await getStaff(id);
+      let { data } = await getStaff(id, userToken);
       console.log(data);
       setFirstName(data.staff.firstName);
       setSurname(data.staff.surname);
@@ -79,7 +82,7 @@ function UpdateStaff() {
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await updateStaff(id, formData);
+        await updateStaff(id, formData, userToken);
         // console.log(formData);
         toast.success("Staff added successfully.");
         navigate("/staffs");

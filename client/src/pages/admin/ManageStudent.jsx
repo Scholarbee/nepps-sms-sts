@@ -34,11 +34,14 @@ import {
 } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
 import Loader from "../../components/global/Loader";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function ManageStudent() {
+  const userToken = useSelector(selectToken);
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [studentsData, setStudentsData] = useState([]);
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -53,7 +56,7 @@ function ManageStudent() {
   const showStudents = async () => {
     try {
       setPageLoading(true);
-      const { data } = await getStudents();
+      const { data } = await getStudents(userToken);
       setStudents(data.students);
       setStudentsData(data.students);
       // console.log(data);
@@ -67,7 +70,7 @@ function ManageStudent() {
   const showStudentCounts = async () => {
     try {
       // setPageLoading(true);
-      const { data } = await getStudentCounts();
+      const { data } = await getStudentCounts(userToken);
       setClassCounts(data.classCounts);
       setTotalCount(data.totalCount);
       console.log(data);

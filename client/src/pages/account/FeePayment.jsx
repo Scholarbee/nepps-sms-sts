@@ -17,8 +17,11 @@ import InfoIcon from "@mui/icons-material/Money";
 import { toast } from "react-toastify";
 import { addPayment } from "../../redux/account/accountActions";
 import { useNavigate, useParams } from "react-router-dom";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function FeePayment() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -54,7 +57,7 @@ function FeePayment() {
     try {
       let isConfirm = window.confirm("Please confirm payment.");
       if (isConfirm) {
-        await addPayment(id, formData);
+        await addPayment(id, formData, userToken);
         toast.success(
           `An amount of ¢${amount} has been paid successfully by ${name}`
         );

@@ -16,8 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addStaff } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function AddStaff() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -51,7 +54,7 @@ function AddStaff() {
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await addStaff(formData);
+        await addStaff(formData, userToken);
         // console.log(formData);
         toast.success("Staff added successfully.");
         navigate("/staffs");

@@ -11,22 +11,11 @@ export const validateEmail = (email) => {
 
 // Login User
 export const loginUser = async (userData) => {
-  // try {
-    const response =  axios.post(
-      `${BACKEND_URL}/api/users/login`,
-      userData
-    );
-    if (response.statusText === "OK") {
-      toast.success("Login Successful...");
-    }
-    return response;
-  // } catch (error) {
-  //   const message =
-  //     (error.response && error.response.data && error.response.data.message) ||
-  //     error.message ||
-  //     error.toString();
-  //   toast.error(message);
-  // }
+  const response = axios.post(`${BACKEND_URL}/api/users/login`, userData);
+  if (response.statusText === "OK") {
+    toast.success("Login Successful...");
+  }
+  return response;
 };
 
 // Logout User
@@ -79,9 +68,11 @@ export const getLoginStatus = async (userToken) => {
 };
 
 // Get User Profile
-export const getUser = async () => {
+export const getUser = async (token) => {
   try {
-    const response = await axios.get(`${BACKEND_URL}/api/users/user-info`);
+    const response = await axios.get(
+      `${BACKEND_URL}/api/users/user-info/${token}`
+    );
     return response.data;
   } catch (error) {
     const message =
@@ -107,10 +98,10 @@ export const getUsers = async () => {
 };
 
 // Update Profile
-export const updateUser = async (formData) => {
+export const updateUser = async (formData, token) => {
   try {
     const response = await axios.patch(
-      `${BACKEND_URL}/api/users/updateuser`,
+      `${BACKEND_URL}/api/users/updateuser/${token}`,
       formData
     );
     return response.data;
@@ -128,19 +119,19 @@ export const updateUser = async (formData) => {
  * @param {*} formData
  * @returns
  */
-export const changePassword = async (formData) => {
+export const changePassword = async (formData, token) => {
   const response = axios.put(
-    `${BACKEND_URL}/api/users/change-password`,
+    `${BACKEND_URL}/api/users/change-password/${token}`,
     formData
   );
   return response;
 };
 
 // Block user
-export const adminBlockUser = async (id) => {
+export const adminBlockUser = async (id, token) => {
   try {
     const response = await axios.put(
-      `${BACKEND_URL}/api/users/block-user/${id}`
+      `${BACKEND_URL}/api/users/block-user/${id}/${token}`
     );
     return response.data;
   } catch (error) {
@@ -153,10 +144,10 @@ export const adminBlockUser = async (id) => {
 };
 
 // Unblock user
-export const adminUnblockUser = async (id) => {
+export const adminUnblockUser = async (id, token) => {
   try {
     const response = await axios.put(
-      `${BACKEND_URL}/api/users/unblock-user/${id}`
+      `${BACKEND_URL}/api/users/unblock-user/${id}/${token}`
     );
     return response.data;
   } catch (error) {
@@ -169,10 +160,10 @@ export const adminUnblockUser = async (id) => {
 };
 
 // Delete user
-export const adminDeleteUser = async (id) => {
+export const adminDeleteUser = async (id, token) => {
   try {
     const response = await axios.delete(
-      `${BACKEND_URL}/api/users/delete-user/${id}`
+      `${BACKEND_URL}/api/users/delete-user/${id}/${token}`
     );
     return response.data;
   } catch (error) {

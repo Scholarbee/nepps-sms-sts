@@ -4,8 +4,11 @@ import Navbar from "../../components/global/Navbar";
 import { useParams } from "react-router-dom";
 import { getPaymentDetails } from "../../redux/account/accountActions";
 import { useEffect, useState } from "react";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function PrintReceipt() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
 
   const [paymentDetail, setPaymentDetail] = useState({});
@@ -22,7 +25,7 @@ function PrintReceipt() {
 
   const showPaymentDetails = async () => {
     try {
-      const { data } = await getPaymentDetails(id);
+      const { data } = await getPaymentDetails(id, userToken);
       
       setPaymentDetail(data.paymentDetails.paymentList[0]);
       setTerm(data.paymentDetails.term);

@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const userInfo = asyncHandler(async (req, res, next) => {
   try {
-    const token = req.cookies.smsToken;
+    const token = req.cookies.smsToken || req.params.clientToken;
     // const token = req.params.userToken;
     if (!token) {
       res.status(401);

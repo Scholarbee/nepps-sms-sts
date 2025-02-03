@@ -22,10 +22,10 @@ export const getStudents = async () => {
 /**
  * Get single student
  */
-export const getStudent = async (id) => {
+export const getStudent = async (id,token) => {
   try {
     const response = await axios.get(
-      `${BACKEND_URL}/api/students/student/${id}`
+      `${BACKEND_URL}/api/students/student/${id}/${token}`
     );
     return response;
   } catch (error) {
@@ -40,10 +40,10 @@ export const getStudent = async (id) => {
 /**
  * Add student
  */
-export const addStudent = async (formData) => {
+export const addStudent = async (formData,token) => {
   try {
     const response = axios.post(
-      `${BACKEND_URL}/api/students/add-student`,
+      `${BACKEND_URL}/api/students/add-student/${token}`,
       formData
     );
     if (response.statusText === "OK") {
@@ -62,10 +62,10 @@ export const addStudent = async (formData) => {
 /**
  * Edit student
  */
-export const updateStudent = async (id, formData) => {
+export const updateStudent = async (id, formData, token) => {
   try {
     const response = axios.put(
-      `${BACKEND_URL}/api/students/edit-student/${id}`,
+      `${BACKEND_URL}/api/students/edit-student/${id}/${token}`,
       formData
     );
     if (response.statusText === "OK") {
@@ -84,10 +84,10 @@ export const updateStudent = async (id, formData) => {
 /**
  * Deleted student
  */
-export const deleteStudent = async (id) => {
+export const deleteStudent = async (id, token) => {
   try {
     const response = axios.delete(
-      `${BACKEND_URL}/api/students/delete-student/${id}`
+      `${BACKEND_URL}/api/students/delete-student/${id}/${token}`
     );
     if (response.statusText === "OK") {
       toast.success("Student updated successfully.");
@@ -137,10 +137,10 @@ export const getStaff = async (id) => {
 /**
  * Add staff
  */
-export const addStaff = async (formData) => {
+export const addStaff = async (formData, token) => {
   try {
     const response = axios.post(
-      `${BACKEND_URL}/api/staffs/add-staff`,
+      `${BACKEND_URL}/api/staffs/add-staff/${token}`,
       formData
     );
     if (response.statusText === "OK") {
@@ -159,10 +159,10 @@ export const addStaff = async (formData) => {
 /**
  * Edit staff
  */
-export const updateStaff = async (id, formData) => {
+export const updateStaff = async (id, formData, token) => {
   try {
     const response = axios.put(
-      `${BACKEND_URL}/api/staffs/edit-staff/${id}`,
+      `${BACKEND_URL}/api/staffs/edit-staff/${id}/${token}`,
       formData
     );
     if (response.statusText === "OK") {
@@ -181,10 +181,10 @@ export const updateStaff = async (id, formData) => {
 /**
  * Deleted staff
  */
-export const deleteStaff = async (id) => {
+export const deleteStaff = async (id, token) => {
   try {
     const response = axios.delete(
-      `${BACKEND_URL}/api/staffs/delete-staff/${id}`
+      `${BACKEND_URL}/api/staffs/delete-staff/${id}/${token}`
     );
     if (response.statusText === "OK") {
       toast.success("staff updated successfully.");
@@ -202,10 +202,10 @@ export const deleteStaff = async (id) => {
 /**
  * Add class
  */
-export const addClass = async (formData) => {
+export const addClass = async (formData, token) => {
   try {
     const response = await axios.post(
-      `${BACKEND_URL}/api/admin/classes/add-class`,
+      `${BACKEND_URL}/api/admin/classes/add-class/${token}`,
       formData
     );
     if (response.statusText === "OK") {
@@ -224,10 +224,10 @@ export const addClass = async (formData) => {
 /**
  * Edit class
  */
-export const updateClass = async (id, formData) => {
+export const updateClass = async (id, formData, token) => {
   try {
     const response = await axios.put(
-      `${BACKEND_URL}/api/admin/classes/edit-class/${id}`,
+      `${BACKEND_URL}/api/admin/classes/edit-class/${id}/${token}`,
       formData
     );
     if (response.data.success) {
@@ -303,9 +303,9 @@ export const getSubjects = async () => {
 /**
  * Add subject
  */
-export const addSubject = async (formData) => {
+export const addSubject = async (formData, token) => {
   const response = await axios.post(
-    `${BACKEND_URL}/api/admin/subjects/add-subject`,
+    `${BACKEND_URL}/api/admin/subjects/add-subject/${token}`,
     formData
   );
 
@@ -315,9 +315,9 @@ export const addSubject = async (formData) => {
 /**
  * Edit subject
  */
-export const updateSubject = async (id, formData) => {
+export const updateSubject = async (id, formData, token) => {
   const response = axios.put(
-    `${BACKEND_URL}/api/admin/subjects/edit-subject/${id}`,
+    `${BACKEND_URL}/api/admin/subjects/edit-subject/${id}/${token}`,
     formData
   );
   return response;

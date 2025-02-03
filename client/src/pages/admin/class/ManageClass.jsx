@@ -22,8 +22,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { getClasses } from "../../../redux/admin/adminAtion";
+import { selectToken } from "../../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function ManageClass() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
 
@@ -32,7 +35,7 @@ function ManageClass() {
   }, []);
 
   const getAllClasses = async () => {
-    const { data } = await getClasses();
+    const { data } = await getClasses(userToken);
     setClasses(data.classes);
     // console.log(data);
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../../components/global/Navbar";
 import {
   Box,
@@ -11,10 +11,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { addClass, getClass, updateClass } from "../../../redux/admin/adminAtion";
+import { getClass, updateClass } from "../../../redux/admin/adminAtion";
 import { toast } from "react-toastify";
+import { selectToken } from "../../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function AddClass() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
@@ -24,7 +27,7 @@ function AddClass() {
   const [boardingFee, setBoardingFee] = useState("");
   const [admissionFee, setAdmissionFee] = useState("");
 
-  const formDate = {
+  const formData = {
     className,
     classRep,
     classHead,
@@ -52,9 +55,9 @@ function AddClass() {
   };
 
   const handleSubmit = async () => {
-    console.log(formDate);
+    console.log(formData);
     try {
-      await updateClass(id, formDate);
+      await updateClass(id, formData, userToken);
       navigate("/classes");
     } catch (error) {
       // console.log(error.response.data.message);

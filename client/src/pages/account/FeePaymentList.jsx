@@ -26,8 +26,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 import Loader from "../../components/global/Loader";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function FeePaymentList() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const { id } = useParams();
   const [paymnets, setPayments] = useState([]);
@@ -44,7 +47,7 @@ function FeePaymentList() {
   const showCurrentBill = async () => {
     setLoading(true);
     try {
-      const { data } = await getCurrentBill(id);
+      const { data } = await getCurrentBill(id, userToken);
       // console.log(data.currentBill);
       setPayments(data.currentBill.paymentList);
       setImage(data.currentBill.studentId.image.url);

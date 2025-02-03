@@ -13,8 +13,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { addClass } from "../../../redux/admin/adminAtion";
 import { toast } from "react-toastify";
+import { selectToken } from "../../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function AddClass() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
   // const [classRep, setClassRep] = useState("");
@@ -23,7 +26,7 @@ function AddClass() {
   const [boardingFee, setBoardingFee] = useState("");
   const [admissionFee, setAdmissionFee] = useState("");
 
-  const formDate = {
+  const formData = {
     className,
     // classRep,
     // classHead,
@@ -32,9 +35,9 @@ function AddClass() {
     boardingFee: parseFloat(boardingFee).toFixed(2),
   };
   const handleSubmit = async () => {
-    // console.log(formDate);
+    // console.log(formData);
     try {
-      await addClass(formDate);
+      await addClass(formData, userToken);
       navigate("/classes");
     } catch (error) {
       // console.log(error.response.data.message);

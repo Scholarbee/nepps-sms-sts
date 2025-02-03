@@ -24,10 +24,13 @@ import {
 } from "../../redux/admin/adminAtion";
 import moment from "moment";
 import { ClipLoader } from "react-spinners";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function UpdateStudent() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -73,7 +76,7 @@ function UpdateStudent() {
 
   const showRecord = async () => {
     try {
-      let { data } = await getStudent(id);
+      let { data } = await getStudent(id, userToken);
       console.log(data);
       setFirstName(data.student.firstName);
       setSurname(data.student.surname);
@@ -106,7 +109,7 @@ function UpdateStudent() {
   };
 
   const getAllClasses = async () => {
-    const { data } = await getClasses();
+    const { data } = await getClasses(userToken);
     setClasses(data.classes);
     console.log(data);
   };
@@ -150,18 +153,16 @@ function UpdateStudent() {
     try {
       let isConfirm = window.confirm("Please confirm Action.");
       if (isConfirm) {
-        await updateStudent(id, formData);
+        await updateStudent(id, formData, userToken);
         console.log(formData);
         toast.success("Student record updated successfully.");
         navigate("/students");
+        setLoading(false);
       }
     } catch (error) {
       toast.error(error.response.data.message);
       setLoading(false);
     }
-    // toast.success("Student record updated successfully.");
-    // navigate("/students");
-    setLoading(false);
   };
 
   const handleBack = () => {

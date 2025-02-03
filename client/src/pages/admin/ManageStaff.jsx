@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
 import {
   Box,
@@ -20,22 +20,20 @@ import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
-import BlockIcon from "@mui/icons-material/Block";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import { toast } from "react-toastify";
-import {
-  deleteStaff,
-  getStaffs,
-  getStudents,
-} from "../../redux/admin/adminAtion";
+import { deleteStaff, getStaffs } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
 import Loader from "../../components/global/Loader";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function ManageStaff() {
+  const userToken = useSelector(selectToken);
   const [staffs, setStaffs] = useState([]);
   const [staffsData, setStaffsData] = useState([]);
   const navigate = useNavigate();
@@ -51,7 +49,7 @@ function ManageStaff() {
   const showStaffs = async () => {
     setPageLoading(true);
     try {
-      const { data } = await getStaffs();
+      const { data } = await getStaffs(userToken);
       setStaffs(data.staffs);
       setStaffsData(data.staffs);
       // console.log(data);

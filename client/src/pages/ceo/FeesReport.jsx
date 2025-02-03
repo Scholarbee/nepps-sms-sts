@@ -1,11 +1,17 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/global/Navbar";
-import { getYearlyPayments, grandtotal } from "../../redux/account/accountActions";
+import {
+  getYearlyPayments,
+  grandtotal,
+} from "../../redux/account/accountActions";
 import { toast } from "react-toastify";
 import Loader from "../../components/global/Loader";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function FeesReport() {
+  const userToken = useSelector(selectToken);
   const [totalPayment, setTotalPayment] = useState("");
   const [totalBills, setTotalBills] = useState("");
   const [totalBalance, setTotalBalance] = useState("");
@@ -26,7 +32,7 @@ function FeesReport() {
   const showStudents = async () => {
     setLoading(true);
     try {
-      const { data } = await grandtotal();
+      const { data } = await grandtotal(userToken);
       setTotalBills(data.totalBills);
       setTotalDept(data.totalDept);
       setTotalPayment(data.totalPayments);
@@ -41,8 +47,8 @@ function FeesReport() {
   const showYearlyPayments = async () => {
     setLoading(true);
     try {
-        const { data } = await getYearlyPayments();
-        console.log(data);
+      const { data } = await getYearlyPayments(userToken);
+      console.log(data);
       //   setTotalBills(data.totalBills);
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";

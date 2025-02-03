@@ -35,8 +35,11 @@ import {
 } from "../../redux/account/accountActions";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 function CurrentBill() {
+  const userToken = useSelector(selectToken);
   const { id } = useParams();
   const [currentBill, setCurrentBill] = useState([]);
   const [name, setName] = useState("");
@@ -57,7 +60,7 @@ function CurrentBill() {
 
   const showCurrentBill = async () => {
     try {
-      const { data } = await getCurrentBill(id);
+      const { data } = await getCurrentBill(id, userToken);
       console.log(data);
       setCurrentBill(data.currentBill.bills);
       setImage(data.currentBill.studentId.image.url);
@@ -79,7 +82,7 @@ function CurrentBill() {
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await addBill(id, { desc, amount });
+        await addBill(id, { desc, amount }, userToken);
         await showCurrentBill();
         toast.info("Bill added successfully");
       }
@@ -97,7 +100,7 @@ function CurrentBill() {
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await editBill(feeId, editId, { desc, amount });
+        await editBill(feeId, editId, { desc, amount }, userToken);
         await showCurrentBill();
         toast.info("Bill updated successfully");
       }
@@ -116,7 +119,7 @@ function CurrentBill() {
     try {
       let con = window.confirm("Please confirm action.");
       if (con) {
-        await delBill(feeId, billId);
+        await delBill(feeId, billId, userToken);
         await showCurrentBill();
         toast.info("Bill deleted successfully");
       }

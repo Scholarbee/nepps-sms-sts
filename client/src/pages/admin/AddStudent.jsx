@@ -4,15 +4,11 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Navbar from "../../components/global/Navbar";
 import Footer from "../../components/global/Footer";
 import {
   Avatar,
-  Checkbox,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -23,10 +19,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addStudent, getClasses } from "../../redux/admin/adminAtion";
 import { ClipLoader } from "react-spinners";
+import { selectToken } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const steps = ["Bio", "Parent", "Others"];
 
 function AddStudent() {
+  const userToken = useSelector(selectToken);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -111,7 +110,7 @@ function AddStudent() {
     try {
       let isConfirm = window.confirm("Please confirm action.");
       if (isConfirm) {
-        await addStudent(formData);
+        await addStudent(formData, userToken);
         // console.log(formData);
         toast.success("Student added successfully.");
         navigate("/students");
